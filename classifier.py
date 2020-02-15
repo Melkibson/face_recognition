@@ -1,66 +1,45 @@
 import face_recognition
 import cv2
 import numpy as np
-import os
-from pprint import pprint
+from os import path
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-# Load a sample picture and learn how to recognize it.
-yamna_image = face_recognition.load_image_file("training-data/yamna/1.JPG")
-yamna_face_encoding = face_recognition.face_encodings(yamna_image)[0]
-
-np.savetxt('training-data/yamna/yamna.txt', yamna_face_encoding)
-yamna = np.loadtxt('training-data/yamna/yamna.txt')
-
-leo_image = face_recognition.load_image_file("training-data/leo/1.jpg")
-leo_face_encoding = face_recognition.face_encodings(leo_image)[0]
-
-mathias_image = face_recognition.load_image_file("training-data/mathias/1.jpg")
-mathias_face_encoding = face_recognition.face_encodings(mathias_image)[0]
-
-paul_image = face_recognition.load_image_file("training-data/paul/1.jpg")
-paul_face_encoding = face_recognition.face_encodings(paul_image)[0]
-
-ahmed_image = face_recognition.load_image_file("training-data/ahmed/1.jpg")
-ahmed_face_encoding = face_recognition.face_encodings(ahmed_image)[0]
-
-jonathan_image = face_recognition.load_image_file("training-data/jon/1.jpg")
-jonathan_face_encoding = face_recognition.face_encodings(jonathan_image)[0]
-
-camille_image = face_recognition.load_image_file("training-data/camille/1.jpg")
-camille_face_encoding = face_recognition.face_encodings(camille_image)[0]
-
-dorian_image = face_recognition.load_image_file("training-data/dorian/1.jpg")
-dorian_face_encoding = face_recognition.face_encodings(dorian_image)[0]
-
-nico_image = face_recognition.load_image_file("training-data/niko/1.jpg")
-nico_face_encoding = face_recognition.face_encodings(nico_image)[0]
-
-tchoupi_image = face_recognition.load_image_file("training-data/tchoupi/1.jpg")
-tchoupi_face_encoding = face_recognition.face_encodings(tchoupi_image)[0]
-
-fred_image = face_recognition.load_image_file("training-data/fred/1.jpg")
-fred_face_encoding = face_recognition.face_encodings(fred_image)[0]
-
 # Create arrays of known face encodings and their names
-known_face_encodings = [
-    yamna,
-    leo_face_encoding,
-    mathias_face_encoding,
-    paul_face_encoding,
-    ahmed_face_encoding,
-    jonathan_face_encoding,
-    camille_face_encoding,
-    dorian_face_encoding,
-    nico_face_encoding,
-    tchoupi_face_encoding,
-    fred_face_encoding
-
+user_faces_name = [
+    "yamna",
+    "leo",
+    "mathias",
+    "paul",
+    "ahmed",
+    "jon",
+    "camille",
+    "dorian",
+    "niko",
+    "tchoupi",
+    "fred",
+    "armand",
+    "arthur",
+    "quentin",
+    "batou",
+    "alexandre",
+    "guillaume"
 ]
+
+known_face_encodings = []
+
+for name in user_faces_name:
+    if not path.exists("training-data/{0}/{1}.jpg".format(name, name)):
+        user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
+        user_face_encoding = face_recognition.face_encodings(user_image)[0]
+        np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
+    else:
+        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
+        known_face_encodings.append(user_face_encoding)
+
 known_face_names = [
-    "Melkibson",
+    "yamna",
     "Novaedra",
     "MaTHC",
     "DarkPaul18",
@@ -70,7 +49,14 @@ known_face_names = [
     "Dodo le dozo",
     "Niko le Proprio",
     "Tchoupi en colere",
-    "Frederic Noel"
+    "Frederic Noel",
+    "Le vin c de l'o",
+    "Arthur Cuillere",
+    "Quentin",
+    "Batou",
+    "Alexandre",
+    "Korben Dallas",
+    "Pedobear"
 ]
 
 # Initialize some variables
