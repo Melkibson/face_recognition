@@ -1,36 +1,23 @@
 import face_recognition
 import cv2
 import numpy as np
-from os import path
+from os import path, listdir
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-# Create arrays of known face encodings and their names
-user_faces_name = [
-    "yamna",
-    "leo",
-    "mathias",
-    "paul",
-    "ahmed",
-    "jon",
-    "camille",
-    "dorian",
-    "niko",
-    "tchoupi",
-    "fred",
-    "armand",
-    "arthur",
-    "quentin",
-    "batou",
-    "alexandre",
-    "guillaume"
-]
+# Get list of users directories names
+dir_path = 'training-data'
+
+dir_name = listdir(dir_path)
+user_faces_name = np.append([], dir_name)
 
 known_face_encodings = []
 
+# Encode all users images
+
 for name in user_faces_name:
-    if not path.exists("training-data/{0}/{1}.jpg".format(name, name)):
+    if not path.exists("training-data/{0}/{1}_encoding.txt".format(name, name)):
         user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
         user_face_encoding = face_recognition.face_encodings(user_image)[0]
         np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
@@ -38,26 +25,25 @@ for name in user_faces_name:
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
         known_face_encodings.append(user_face_encoding)
 
-known_face_names = [
-    "yamna",
-    "Novaedra",
-    "MaTHC",
-    "DarkPaul18",
-    "Ben Benzema",
-    "Kanarpp",
-    "Cynath17",
-    "Dodo le dozo",
-    "Niko le Proprio",
-    "Tchoupi en colere",
-    "Frederic Noel",
-    "Le vin c de l'o",
-    "Arthur Cuillere",
-    "Quentin",
-    "Batou",
-    "Alexandre",
-    "Korben Dallas",
-    "Pedobear"
-]
+# known_face_names = [
+#     "Yam-a-moto",
+#     "Novaedra",
+#     "MaTHC",
+#     "DarkPaul18",
+#     "Ben Benzema",
+#     "Kanarpp",
+#     "Cynath17",
+#     "Dodo le dozo",
+#     "Niko le Proprio",
+#     "Tchoupi en colere",
+#     "Frederic Noel",
+#     "Le vin c de l'o",
+#     "Arthur Cuillere",
+#     "Quentin",
+#     "Batou",
+#     "Alexandre",
+#     "Korben Dallas"
+# ]
 
 # Initialize some variables
 face_locations = []
@@ -97,12 +83,11 @@ while True:
             best_match_index = np.argmin(face_distances)
 
             if matches[best_match_index]:
-                name = known_face_names[best_match_index]
+                name = user_faces_name[best_match_index]
 
             face_names.append(name)
 
     process_this_frame = not process_this_frame
-
 
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
