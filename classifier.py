@@ -1,7 +1,9 @@
 import face_recognition
 import cv2
 import numpy as np
+import os
 from os import path, listdir
+import subprocess
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -98,12 +100,18 @@ while True:
         left *= 4
 
         # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+        cv2.rectangle(frame, (left, top), (right, bottom), (255, 255, 255), 2)
 
         # Draw a label with a name below the face
-        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 255, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        if name == 'Ptdr t ki':
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
+        else:
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
+            # command = os.popen('open the porte please')
+            # print(command.read())
+            # print(command.close())
 
     # Display the resulting image
     cv2.imshow('Video', frame)
