@@ -24,6 +24,7 @@ def face_vectorization(frame, name):
     user_face_encoding = face_recognition.face_encodings(user_image)[0]
     np.savetxt('{0}_encoding2.txt'.format(name), user_face_encoding)
     os.remove('{0}.jpg'.format(name))
+    os.chdir('../../')
 
 
 # Encode all users images
@@ -91,9 +92,7 @@ while True:
         left *= 4
 
         font = cv2.FONT_HERSHEY_DUPLEX
-        if name == 'Ptdr t ki':
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
-        elif not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
+        if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
             # mettre a jour photo si date > 1 mois
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             today = datetime.datetime.today()
@@ -101,8 +100,7 @@ while True:
             duration = today - modified_date
             if duration.seconds > 30:
                 face_vectorization(frame, name)
-                os.chdir('../../')
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
+        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
             # command = os.popen('open the porte please')
             # print(command.read())
             # print(command.close())
@@ -117,3 +115,4 @@ while True:
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
+
