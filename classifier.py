@@ -100,14 +100,7 @@ while True:
             duration = today - modified_date
             if duration.days > 30:
                 face_vectorization(frame, name)
-<<<<<<< HEAD
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
-            # command = os.popen('open the porte please')
-            # print(command.read())
-            # print(command.close())
-=======
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
->>>>>>> 69eeb3fc5c310e2a799ea38d61a9e6eb4ea6ef2c
 
     # Display the resulting image
     cv2.imshow('Video', frame)
