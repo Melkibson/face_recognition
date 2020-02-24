@@ -19,7 +19,7 @@ known_face_encodings = []
 
 
 # Encode all users
-def face_encoding():
+def face_encoding(user_faces_name):
     for name in user_faces_name:
         #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
         # effacer image encoding et rename face encoding2 en encoding
@@ -110,7 +110,7 @@ while True:
     cv2.imshow('Video', frame)
 
     if time.time() > timeout:
-        face_encoding()
+        face_encoding(user_faces_name)
         timeout = time.time() + 20
 
     # Hit 'q' on the keyboard to quit!
