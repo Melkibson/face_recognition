@@ -8,18 +8,15 @@ import time
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
-
-# Get list of users directories names
-dir_path = 'training-data'
-
-dir_name = listdir(dir_path)
-user_faces_name = np.append([], dir_name)
-
 known_face_encodings = []
 
 
 # Encode all users
-def face_encoding(user_faces_name):
+def face_encoding():
+    # Get list of users directories names
+    dir_path = 'training-data'
+    dir_name = listdir(dir_path)
+    user_faces_name = np.append([], dir_name)
     for name in user_faces_name:
         #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
         # effacer image encoding et rename face encoding2 en encoding
@@ -39,7 +36,7 @@ def face_update(frame, name):
     cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
 
 
-face_encoding(user_faces_name)
+face_encoding()
 
 # Initialize some variables
 face_locations = []
@@ -110,7 +107,7 @@ while True:
     cv2.imshow('Video', frame)
 
     if time.time() > timeout:
-        face_encoding(user_faces_name)
+        face_encoding()
         timeout = time.time() + 60*60*24
 
     # Hit 'q' on the keyboard to quit!
