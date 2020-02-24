@@ -92,14 +92,15 @@ while True:
         left *= 4
 
         font = cv2.FONT_HERSHEY_DUPLEX
-        if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
-            # mettre a jour photo si date > 1 mois
-            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            today = datetime.datetime.today()
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
-            duration = today - modified_date
-            if duration.days > 30:
-                face_vectorization(frame, name)
+        if not name == 'Ptdr t ki':
+            if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
+                # mettre a jour photo si date > 1 mois
+                location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+                today = datetime.datetime.today()
+                modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
+                duration = today - modified_date
+                if duration.days > 30:
+                    face_vectorization(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
     # Display the resulting image
