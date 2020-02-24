@@ -18,32 +18,28 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
-def test():
-    print("lol")
+# Encode all users
+def face_encoding():
+    for name in user_faces_name:
+        #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
+        # effacer image encoding et rename face encoding2 en encoding
+        if path.exists("training-data/{0}/{1}.jpg".format(name, name)):
+            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
+            user_face_encoding = face_recognition.face_encodings(user_image)[0]
+            os.remove('training-data/{0}/{1}_encoding.txt'.format(name, name))
+            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
+            os.remove("training-data/{0}/{1}.jpg".format(name, name))
+        else:
+            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
+            known_face_encodings.append(user_face_encoding)
 
 
-# update knowed faces
-def face_vectorization(frame, name):
-    os.chdir('training-data/{0}'.format(name))
-    cv2.imwrite('{0}.jpg'.format(name), frame)
-    user_image = face_recognition.load_image_file('{0}.jpg'.format(name))
-    user_face_encoding = face_recognition.face_encodings(user_image)[0]
-    np.savetxt('{0}_encoding2.txt'.format(name), user_face_encoding)
-    os.remove('{0}.jpg'.format(name))
-    os.chdir('../../')
+# update known faces
+def face_update(frame, name):
+    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
 
 
-# Encode all users images
-for name in user_faces_name:
-    #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
-    # effacer image encoding et rename face encoding2 en encoding
-    if not path.exists("training-data/{0}/{1}_encoding.txt".format(name, name)):
-        user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
-        user_face_encoding = face_recognition.face_encodings(user_image)[0]
-        np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
-    else:
-        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
-        known_face_encodings.append(user_face_encoding)
+face_encoding()
 
 # Initialize some variables
 face_locations = []
@@ -107,14 +103,14 @@ while True:
                 modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
                 duration = today - modified_date
                 if duration.days > 30:
-                    face_vectorization(frame, name)
+                    face_update(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
     # Display the resulting image
     cv2.imshow('Video', frame)
 
     if time.time() > timeout:
-        test()
+        face_encoding()
         timeout = time.time() + 20
 
     # Hit 'q' on the keyboard to quit!
