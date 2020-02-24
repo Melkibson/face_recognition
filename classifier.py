@@ -95,10 +95,12 @@ while True:
             today = datetime.datetime.today()
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(surmarouteoui))
             duration = today - modified_date
-            if duration.seconds > 1:
-                cv2.putText(frame, "plus vieux que 1 jours", (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
-            else:
-                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
+            if duration.seconds > 30:
+                facialTemp = video_capture.read()
+                user_image = face_recognition.load_image_file(facialTemp.format(name, name))
+                user_face_encoding = face_recognition.face_encodings(user_image)[0]
+                np.savetxt('training-data/{0}/{1}_encoding2.txt'.format(name, name), user_face_encoding)
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
             # command = os.popen('open the porte please')
             # print(command.read())
             # print(command.close())
