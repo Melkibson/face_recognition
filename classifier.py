@@ -33,6 +33,7 @@ def face_encoding():
         else:
             user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
             known_face_encodings.append(user_face_encoding)
+    del all_user
 
 
 # update known faces
