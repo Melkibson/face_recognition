@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import os
 from os import path, listdir
-import subprocess
+import datetime
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -19,6 +19,8 @@ known_face_encodings = []
 # Encode all users images
 
 for name in user_faces_name:
+    if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
+        # effacer image encoding et rename face encoding2 en encoding
     if not path.exists("training-data/{0}/{1}_encoding.txt".format(name, name)):
         user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
         user_face_encoding = face_recognition.face_encodings(user_image)[0]
@@ -26,26 +28,6 @@ for name in user_faces_name:
     else:
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
         known_face_encodings.append(user_face_encoding)
-
-# known_face_names = [
-#     "Yam-a-moto",
-#     "Novaedra",
-#     "MaTHC",
-#     "DarkPaul18",
-#     "Ben Benzema",
-#     "Kanarpp",
-#     "Cynath17",
-#     "Dodo le dozo",
-#     "Niko le Proprio",
-#     "Tchoupi en colere",
-#     "Frederic Noel",
-#     "Le vin c de l'o",
-#     "Arthur Cuillere",
-#     "Quentin",
-#     "Batou",
-#     "Alexandre",
-#     "Korben Dallas"
-# ]
 
 # Initialize some variables
 face_locations = []
@@ -108,6 +90,12 @@ while True:
         if name == 'Ptdr t ki':
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
         else:
+            # mettre a jour photo si date > 1 mois
+            q = name + "_encoding.txt"
+            lastplus = q.get()
+            if lastplus.date < datetime.datetime.now() - datetime.timedelta(seconds=20):
+                print(q)
+
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
             # command = os.popen('open the porte please')
             # print(command.read())
