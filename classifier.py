@@ -39,7 +39,7 @@ def face_update(frame, name):
     cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
 
 
-face_encoding(face_encoding)
+face_encoding(user_faces_name)
 
 # Initialize some variables
 face_locations = []
