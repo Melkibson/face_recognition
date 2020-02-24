@@ -18,6 +18,10 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
+def test():
+    print("lol")
+
+
 # update knowed faces
 def face_vectorization(frame, name):
     os.chdir('training-data/{0}'.format(name))
@@ -46,8 +50,13 @@ face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
+<<<<<<< HEAD
 
 timeout = time.time() + 20
+=======
+timeout = time.time() + 20
+
+>>>>>>> 6801d97cba9a1ebd87d7acca492616bb0b2eb4f0
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
@@ -104,13 +113,17 @@ while True:
                 duration = today - modified_date
                 if duration.days > 30:
                     face_vectorization(frame, name)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6801d97cba9a1ebd87d7acca492616bb0b2eb4f0
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
     # Display the resulting image
     cv2.imshow('Video', frame)
 
     if time.time() > timeout:
+<<<<<<< HEAD
         break
 
     # Hit 'q' on the keyboard to quit!
@@ -203,4 +216,13 @@ def main_process():
 
 
 
-main_process()
+        test()
+        timeout = time.time() + 20
+
+    # Hit 'q' on the keyboard to quit!
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        # Release handle to the webcam
+        break
+
+video_capture.release()
+cv2.destroyAllWindows()
