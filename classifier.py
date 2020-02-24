@@ -95,7 +95,7 @@ while True:
             today = datetime.datetime.today()
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(surmarouteoui))
             duration = today - modified_date
-            if duration.days > 1:
+            if duration.seconds > 1:
                 cv2.putText(frame, "plus vieux que 1 jours", (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
             else:
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
