@@ -28,26 +28,6 @@ for name in user_faces_name:
         user_face_encoding = np.loadtxt(user_encoding_path)
         known_face_encodings.append(user_face_encoding)
 
-# known_face_names = [
-#     "Yam-a-moto",
-#     "Novaedra",
-#     "MaTHC",
-#     "DarkPaul18",
-#     "Ben Benzema",
-#     "Kanarpp",
-#     "Cynath17",
-#     "Dodo le dozo",
-#     "Niko le Proprio",
-#     "Tchoupi en colere",
-#     "Frederic Noel",
-#     "Le vin c de l'o",
-#     "Arthur Cuillere",
-#     "Quentin",
-#     "Batou",
-#     "Alexandre",
-#     "Korben Dallas"
-# ]
-
 # Initialize some variables
 face_locations = []
 face_encodings = []
@@ -76,11 +56,6 @@ while True:
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
             name = "Ptdr t ki"
 
-            # # If a match was found in known_face_encodings, just use the first one.
-            # if True in matches:
-            #     first_match_index = matches.index(True)
-            #     name = known_face_names[first_match_index]
-
             # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
@@ -107,6 +82,13 @@ while True:
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        if name == 'Ptdr t ki':
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
+        else:
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 255, 0), 1)  # Ouvrir
+            # command = os.popen('open the porte please')
+            # print(command.read())
+            # print(command.close())
 
     # Display the resulting image
     cv2.imshow('Video', frame)
