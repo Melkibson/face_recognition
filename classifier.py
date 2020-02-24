@@ -17,11 +17,13 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
-def face_vectorization(frame, name):
+def face_vectorization(name):
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
     os.chdir('training-data/{0}'.format(name))
     cv2.imwrite('{0}.jpg'.format(name), frame.read())
     user_image = face_recognition.load_image_file('{0}.jpg'.format(name))
-    user_face_encoding = face_recognition.face_encodings(user_image)
+    user_face_encoding = face_recognition.face_encodings(user_image)[0]
     np.savetxt('{0}2.txt'.format(name), user_face_encoding)
     os.remove('{0}.jpg'.format(name))
 
