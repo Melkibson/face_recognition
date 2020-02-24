@@ -102,7 +102,7 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
             duration = today - modified_date
             if duration.seconds > 30:
-                face_vectorization(video_capture.read(), name)
+                face_vectorization(name)
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
             # command = os.popen('open the porte please')
             # print(command.read())
