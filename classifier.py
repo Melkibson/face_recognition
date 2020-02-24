@@ -16,8 +16,17 @@ user_faces_name = np.append([], dir_name)
 
 known_face_encodings = []
 
-# Encode all users images
 
+def face_vectorization(facial_temp, name):
+    route = 'training-data/{0}/{1}'.format(name, name)
+    cv2.imwrite(route, facial_temp)
+    user_image = face_recognition.load_image_file(route + '.jpg'.format(name, name))
+    user_face_encoding = face_recognition.face_encodings(user_image)[0]
+    np.savetxt(route + '2.txt'.format(name, name), user_face_encoding)
+    os.remove(route + ".jpg".format(name, name))
+
+
+# Encode all users images
 for name in user_faces_name:
     #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
     # effacer image encoding et rename face encoding2 en encoding
@@ -81,26 +90,14 @@ while True:
         bottom *= 4
         left *= 4
 
-        # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (255, 255, 255), 2)
-
         # Draw a label with a name below the face
-        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 255, 255), cv2.FILLED)
+        cv2.rectangle(frame, (left, bottom - 50), (right, bottom), (255, 255, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         if name == 'Ptdr t ki':
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
         else:
             # mettre a jour photo si date > 1 mois
-            surmarouteoui = 'training-data/' + name + "/" + name + "_encoding.txt"
-            today = datetime.datetime.today()
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(surmarouteoui))
-            duration = today - modified_date
-            # if duration.seconds > 30:
-            # facialTemp = video_capture.read()
-            # cv2.imwrite('training-data/{0}/{1}_encoding2.jpg'.format(name, name))
-            # user_image = face_recognition.load_image_file(facialTemp.format(name, name))
-            # user_face_encoding = face_recognition.face_encodings(user_image)[0]
-            # np.savetxt('training-data/{0}/{1}_encoding2.txt'.format(name, name), user_face_encoding)
+
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
             # command = os.popen('open the porte please')
             # print(command.read())
