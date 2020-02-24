@@ -17,13 +17,14 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
-def face_vectorization(facial_temp, name):
+def face_vectorization(name):
     route = 'training-data/{0}'.format(name)
-    cv2.imwrite(route, facial_temp)
+    cv2.imwrite(route + '/{0}.jpg'.format(name), mode='RGB')
     user_image = face_recognition.load_image_file(route + '/{0}.jpg'.format(name))
     user_face_encoding = face_recognition.face_encodings(user_image)
     np.savetxt(route + '/{0}2.txt'.format(name), user_face_encoding)
     os.remove(route + "/{0}.jpg".format(name))
+
 
 # Encode all users images
 for name in user_faces_name:
@@ -89,8 +90,6 @@ while True:
         bottom *= 4
         left *= 4
 
-        # Draw a label with a name below the face
-        cv2.rectangle(frame, (left, bottom - 20), (right, bottom), (255, 255, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         if name == 'Ptdr t ki':
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
