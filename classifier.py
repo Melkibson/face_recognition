@@ -18,12 +18,12 @@ known_face_encodings = []
 
 
 def face_vectorization(facial_temp, name):
-    route = 'training-data/{0}/'.format(name)
+    route = 'training-data/{0}'.format(name)
     cv2.imwrite(route, facial_temp)
-    user_image = face_recognition.load_image_file(route + name + '.jpg'.format(name))
-    user_face_encoding = face_recognition.face_encodings(user_image)[0]
-    np.savetxt(route + name + '2.txt'.format(name), user_face_encoding)
-    os.remove(route + name + ".jpg".format(name))
+    user_image = face_recognition.load_image_file(route + '/{0}.jpg'.format(name))
+    user_face_encoding = face_recognition.face_encodings(user_image)
+    np.savetxt(route + '/{0}2.txt'.format(name), user_face_encoding)
+    os.remove(route + "/{0}.jpg".format(name))
 
 # Encode all users images
 for name in user_faces_name:
