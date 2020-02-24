@@ -19,7 +19,7 @@ known_face_encodings = []
 
 def face_vectorization(frame, name):
     os.chdir('training-data/{0}'.format(name))
-    cv2.imwrite('{0}.jpg'.format(name), frame)
+    cv2.imwrite('{0}.jpg'.format(name), frame.read())
     user_image = face_recognition.load_image_file('{0}.jpg'.format(name))
     user_face_encoding = face_recognition.face_encodings(user_image)
     np.savetxt('{0}2.txt'.format(name), user_face_encoding)
