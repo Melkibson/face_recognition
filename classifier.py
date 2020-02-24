@@ -18,7 +18,6 @@ user_faces_name = np.append([], dir_name)
 
 # Encode all users
 def face_encoding():
-
     # Get list of users directories names
     all_user = np.append([], listdir('training-data'))
 
@@ -98,14 +97,13 @@ while True:
 
         font = cv2.FONT_HERSHEY_DUPLEX
         if not name == 'Ptdr t ki':
-            if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
-                location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-                today = datetime.datetime.today()
-                modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
-                duration = today - modified_date
-                if duration.days > 30:
-                    # mettre a jour photo si date > 1 mois
-                    face_update(frame, name)
+            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+            today = datetime.datetime.today()
+            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
+            duration = today - modified_date
+            if duration.days > 30:
+                # mettre a jour photo si date > 1 mois
+                face_update(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
     # Display the resulting image
@@ -113,7 +111,7 @@ while True:
 
     if time.time() > timeout:
         face_encoding()
-        timeout = time.time() + 60
+        timeout = time.time() + 60*60
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
