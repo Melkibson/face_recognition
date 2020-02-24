@@ -20,21 +20,19 @@ user_faces_name = np.append([], dir_name)
 def face_encoding():
 
     # Get list of users directories names
-    dir_path = 'training-data'
-    dir_name = listdir(dir_path)
-    user_faces_name = np.append([], dir_name)
+    all_user = np.append([], listdir('training-data'))
 
-    for name in user_faces_name:
+    for user in all_user:
         #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
         # effacer image encoding et rename face encoding2 en encoding
-        if path.exists("training-data/{0}/{1}.jpg".format(name, name)):
-            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
+        if path.exists("training-data/{0}/{1}.jpg".format(user, user)):
+            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
-            os.remove('training-data/{0}/{1}_encoding.txt'.format(name, name))
-            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
-            os.remove("training-data/{0}/{1}.jpg".format(name, name))
+            os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
+            os.remove("training-data/{0}/{1}.jpg".format(user, user))
         else:
-            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
+            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
             known_face_encodings.append(user_face_encoding)
 
 
@@ -101,12 +99,12 @@ while True:
         font = cv2.FONT_HERSHEY_DUPLEX
         if not name == 'Ptdr t ki':
             if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
-                # mettre a jour photo si date > 1 mois
                 location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
                 today = datetime.datetime.today()
                 modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
                 duration = today - modified_date
                 if duration.days > 30:
+                    # mettre a jour photo si date > 1 mois
                     face_update(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
@@ -119,8 +117,8 @@ while True:
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        # Release handle to the webcam
         break
 
+# Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
