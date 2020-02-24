@@ -1,9 +1,10 @@
-import face_recognition
-import cv2
-import numpy as np
+import datetime
 import os
 from os import path, listdir
-import datetime
+import cv2
+import face_recognition
+import numpy as np
+import time
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -17,6 +18,7 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
+# update knowed faces
 def face_vectorization(frame, name):
     os.chdir('training-data/{0}'.format(name))
     cv2.imwrite('{0}.jpg'.format(name), frame)
@@ -45,6 +47,7 @@ face_encodings = []
 face_names = []
 process_this_frame = True
 
+timeout = time.time() + 20
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
@@ -92,21 +95,23 @@ while True:
         left *= 4
 
         font = cv2.FONT_HERSHEY_DUPLEX
-        if name == 'Ptdr t ki':
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
-        elif not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
-            # mettre a jour photo si date > 1 mois
-            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            today = datetime.datetime.today()
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
-            duration = today - modified_date
-            if duration.days > 30:
-                face_vectorization(frame, name)
+        if not name == 'Ptdr t ki':
+            if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
+                # mettre a jour photo si date > 1 mois
+                location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+                today = datetime.datetime.today()
+                modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
+                duration = today - modified_date
+                if duration.days > 30:
+                    face_vectorization(frame, name)
 
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
     # Display the resulting image
     cv2.imshow('Video', frame)
+
+    if time.time() > timeout:
+        break
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
