@@ -96,9 +96,9 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(surmarouteoui))
             duration = today - modified_date
             if duration.days > 1:
-                print("plus vieux que 1 jours")
-
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
+                cv2.putText(frame, "plus vieux que 1 jours", (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
+            else:
+                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
             # command = os.popen('open the porte please')
             # print(command.read())
             # print(command.close())
