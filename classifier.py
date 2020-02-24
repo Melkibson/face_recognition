@@ -19,8 +19,8 @@ known_face_encodings = []
 # Encode all users images
 
 for name in user_faces_name:
-    if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
-        # effacer image encoding et rename face encoding2 en encoding
+    #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
+    # effacer image encoding et rename face encoding2 en encoding
     if not path.exists("training-data/{0}/{1}_encoding.txt".format(name, name)):
         user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
         user_face_encoding = face_recognition.face_encodings(user_image)[0]
@@ -91,10 +91,12 @@ while True:
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
         else:
             # mettre a jour photo si date > 1 mois
-            q = name + "_encoding.txt"
-            lastplus = q.get()
-            if lastplus.date < datetime.datetime.now() - datetime.timedelta(seconds=20):
-                print(q)
+            surmarouteoui = 'training-data/' + name + "/" + name + "_encoding.txt"
+            today = datetime.datetime.today()
+            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(surmarouteoui))
+            duration = today - modified_date
+            if duration.days > 1:
+                print("plus vieux que 1 jours")
 
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)  # Ouvrir
             # command = os.popen('open the porte please')
