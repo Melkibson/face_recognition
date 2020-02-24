@@ -1,9 +1,10 @@
-import face_recognition
-import cv2
-import numpy as np
+import datetime
 import os
 from os import path, listdir
-import datetime
+import cv2
+import face_recognition
+import numpy as np
+import time
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -17,6 +18,7 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
+# update knowed faces
 def face_vectorization(frame, name):
     os.chdir('training-data/{0}'.format(name))
     cv2.imwrite('{0}.jpg'.format(name), frame)
@@ -45,6 +47,7 @@ face_encodings = []
 face_names = []
 process_this_frame = True
 
+timeout = time.time() + 20
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
@@ -105,6 +108,9 @@ while True:
 
     # Display the resulting image
     cv2.imshow('Video', frame)
+
+    if time.time() > timeout:
+        break
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
