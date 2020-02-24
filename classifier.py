@@ -97,6 +97,7 @@ while True:
             duration = today - modified_date
             if duration.seconds > 30:
                 facialTemp = video_capture.read()
+                cv2.imshow("image",facialTemp)
                 user_image = face_recognition.load_image_file(facialTemp.format(name, name))
                 user_face_encoding = face_recognition.face_encodings(user_image)[0]
                 np.savetxt('training-data/{0}/{1}_encoding2.txt'.format(name, name), user_face_encoding)
