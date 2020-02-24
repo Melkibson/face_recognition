@@ -41,14 +41,13 @@ def face_update(frame, name):
     cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
 
 
-face_encoding()
-
 # Initialize some variables
 face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
 timeout = time.time() + 20
+face_encoding()
 
 while True:
     # Grab a single frame of video
@@ -112,7 +111,7 @@ while True:
 
     if time.time() > timeout:
         face_encoding()
-        timeout = time.time() + 60*60
+        timeout = time.time() + 60 * 60
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
