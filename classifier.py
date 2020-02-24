@@ -1,7 +1,7 @@
 import face_recognition
 import cv2
 import numpy as np
-from os import path, listdir
+import os
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -9,7 +9,7 @@ video_capture = cv2.VideoCapture(0)
 # Get list of users directories names
 dir_path = 'training-data'
 
-dir_name = listdir(dir_path)
+dir_name = os.listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
 known_face_encodings = []
@@ -17,12 +17,15 @@ known_face_encodings = []
 # Encode all users images
 
 for name in user_faces_name:
-    if not path.exists("training-data/{0}/{1}_encoding.txt".format(name, name)):
-        user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
+    user_image_path = "training-data/{0}/{1}.jpg".format(name, name)
+    user_encoding_path = "training-data/{0}/{1}_encoding.txt".format(name, name)
+    if not os.path.exists(user_encoding_path):
+        user_image = face_recognition.load_image_file(user_image_path)
         user_face_encoding = face_recognition.face_encodings(user_image)[0]
-        np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
+        np.savetxt(user_encoding_path, user_face_encoding)
+        os.remove(user_image_path)
     else:
-        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
+        user_face_encoding = np.loadtxt(user_encoding_path)
         known_face_encodings.append(user_face_encoding)
 
 # known_face_names = [
