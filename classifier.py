@@ -16,8 +16,17 @@ user_faces_name = np.append([], dir_name)
 
 known_face_encodings = []
 
-# Encode all users images
 
+def face_vectorization(frame, name):
+    os.chdir('training-data/{0}'.format(name))
+    cv2.imwrite('{0}.jpg'.format(name), frame)
+    user_image = face_recognition.load_image_file('{0}.jpg'.format(name))
+    user_face_encoding = face_recognition.face_encodings(user_image)[0]
+    np.savetxt('{0}_encoding2.txt'.format(name), user_face_encoding)
+    os.remove('{0}.jpg'.format(name))
+
+
+# Encode all users images
 for name in user_faces_name:
     #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
     # effacer image encoding et rename face encoding2 en encoding
@@ -81,35 +90,18 @@ while True:
         bottom *= 4
         left *= 4
 
-        # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (255, 255, 255), 2)
-
-        # Draw a label with a name below the face
-        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 255, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         if name == 'Ptdr t ki':
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 255), 1)  # Ne pas ouvrir
-        else:
+        elif not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
             # mettre a jour photo si date > 1 mois
-            location_for_update = 'training-data/' + name + "/" + name + "_encoding.txt"
+            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             today = datetime.datetime.today()
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
             duration = today - modified_date
             if duration.seconds > 30:
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                cv2.imwrite('training-data/{0}/{1}_encoding2.jpg'.format(name, name), gray)
-                user_image = face_recognition.load_image_file('training-data/{0}/{1}_encoding2.jpg'.format(name, name))
-                user_face_encoding = face_recognition.face_encodings(user_image)
-                user_encoding_path = 'training-data/{0}/{1}_encoding2.txt'.format(name, name)
-                np.savetxt(user_encoding_path, user_face_encoding)
-                with open(user_encoding_path, 'w') as f:
-                    with open(location_for_update, 'w') as f1:
-                        for lines in f1:
-                            f1.write(lines)
-
-
-
-                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
+                face_vectorization(frame, name)
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
             # command = os.popen('open the porte please')
             # print(command.read())
             # print(command.close())
