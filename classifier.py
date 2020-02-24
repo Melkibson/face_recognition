@@ -17,9 +17,9 @@ user_faces_name = np.append([], dir_name)
 known_face_encodings = []
 
 
-def face_vectorization(name):
+def face_vectorization(frame, name):
     route = 'training-data/{0}'.format(name)
-    cv2.imwrite(route + '/{0}.jpg'.format(name), mode='RGB')
+    cv2.imwrite(route + '/{0}.jpg'.format(name), frame)
     user_image = face_recognition.load_image_file(route + '/{0}.jpg'.format(name))
     user_face_encoding = face_recognition.face_encodings(user_image)
     np.savetxt(route + '/{0}2.txt'.format(name), user_face_encoding)
@@ -100,7 +100,7 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
             duration = today - modified_date
             if duration.seconds > 30:
-                face_vectorization(name)
+                face_vectorization(video_capture.read(), name)
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 0, 0), 1)
             # command = os.popen('open the porte please')
             # print(command.read())
