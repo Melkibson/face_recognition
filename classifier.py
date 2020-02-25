@@ -47,7 +47,7 @@ face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
-timeout = time.time() + 20
+timeout = time.time() + 60 * 60 * 24
 all_face_encoding()
 
 while True:
@@ -105,10 +105,14 @@ while True:
             if duration.seconds > 10:
                 # mettre a jour photo si date > 1 mois
                 face_update(frame, name)
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
+        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
     # Display the resulting image
     cv2.imshow('Video', frame)
+
+    if time.time() > timeout:
+        all_face_encoding()
+        timeout = time.time() + 60 * 60 * 24
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
