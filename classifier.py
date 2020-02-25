@@ -46,7 +46,7 @@ face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
-timeout = time.time() + 20
+timeout = time.time() + 60 * 60 * 24
 all_face_encoding()
 
 while True:
@@ -111,7 +111,7 @@ while True:
 
     if time.time() > timeout:
         all_face_encoding()
-        timeout = time.time() + 60 * 60
+        timeout = time.time() + 60 * 60 * 24
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
