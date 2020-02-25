@@ -8,55 +8,47 @@ import time
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
+known_face_encodings = []
 
 # Get list of users directories names
 dir_path = 'training-data'
-
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-known_face_encodings = []
+
+# Encode all users
+def face_encoding():
+
+    # Get list of users directories names
+    all_user = np.append([], listdir('training-data'))
+
+    for user in all_user:
+        #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
+        # effacer image encoding et rename face encoding2 en encoding
+        if path.exists("training-data/{0}/{1}.jpg".format(user, user)):
+            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
+            user_face_encoding = face_recognition.face_encodings(user_image)[0]
+            os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
+            os.remove("training-data/{0}/{1}.jpg".format(user, user))
+        else:
+            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
+            known_face_encodings.append(user_face_encoding)
 
 
-def test():
-    print("lol")
+# update known faces
+def face_update(frame, name):
+    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
 
 
-# update knowed faces
-def face_vectorization(frame, name):
-    os.chdir('training-data/{0}'.format(name))
-    cv2.imwrite('{0}.jpg'.format(name), frame)
-    user_image = face_recognition.load_image_file('{0}.jpg'.format(name))
-    user_face_encoding = face_recognition.face_encodings(user_image)[0]
-    np.savetxt('{0}_encoding2.txt'.format(name), user_face_encoding)
-    os.remove('{0}.jpg'.format(name))
-    os.chdir('../../')
-
-
-# Encode all users images
-for name in user_faces_name:
-    #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
-    # effacer image encoding et rename face encoding2 en encoding
-    if not path.exists("training-data/{0}/{1}_encoding.txt".format(name, name)):
-        user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(name, name))
-        user_face_encoding = face_recognition.face_encodings(user_image)[0]
-        np.savetxt('training-data/{0}/{1}_encoding.txt'.format(name, name), user_face_encoding)
-    else:
-        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(name, name))
-        known_face_encodings.append(user_face_encoding)
+face_encoding()
 
 # Initialize some variables
 face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
-<<<<<<< HEAD
-
 timeout = time.time() + 20
-=======
-timeout = time.time() + 20
-
->>>>>>> 6801d97cba9a1ebd87d7acca492616bb0b2eb4f0
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
@@ -106,24 +98,20 @@ while True:
         font = cv2.FONT_HERSHEY_DUPLEX
         if not name == 'Ptdr t ki':
             if not path.exists('training-data/{0}/{1}_encoding2.txt'.format(name, name)):
-                # mettre a jour photo si date > 1 mois
                 location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
                 today = datetime.datetime.today()
                 modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
                 duration = today - modified_date
                 if duration.days > 30:
-                    face_vectorization(frame, name)
-<<<<<<< HEAD
-
-=======
->>>>>>> 6801d97cba9a1ebd87d7acca492616bb0b2eb4f0
+                    # mettre a jour photo si date > 1 mois
+                    face_update(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
 
     # Display the resulting image
     cv2.imshow('Video', frame)
 
     if time.time() > timeout:
-<<<<<<< HEAD
+
         break
 
     # Hit 'q' on the keyboard to quit!
@@ -214,15 +202,13 @@ def main_process():
             cv2.destroyAllWindows()
             break
 
-
-
-        test()
-        timeout = time.time() + 20
+        face_encoding()
+        timeout = time.time() + 60
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        # Release handle to the webcam
         break
 
+# Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
