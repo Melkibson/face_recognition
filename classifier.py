@@ -104,7 +104,7 @@ while True:
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 face_update(frame, name)
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
+        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
     # Display the resulting image
     cv2.imshow('Video', frame)
