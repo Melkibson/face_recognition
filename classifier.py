@@ -109,10 +109,9 @@ while True:
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m/%d/%Y")
-        if not os.path.isfile("log/" + date):
-            log = open(date, 'a')
-            log.write(name + " / face / " + datestamp + "\n")
-            log.close()
+        log = open(date, 'a')
+        log.write(name + " / face / " + datestamp + "\n")
+        log.close()
 
         # Display the resulting image
     cv2.imshow('Video', frame)
