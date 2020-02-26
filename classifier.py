@@ -45,6 +45,7 @@ def face_update(frame, name):
 face_locations = []
 face_encodings = []
 face_names = []
+face_log = []
 process_this_frame = True
 timeout = time.time() + 60 * 60 * 24
 all_face_encoding()
@@ -110,10 +111,17 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if not os.path.exists('log'):
             os.makedirs('log')
-        mode = 'a' if os.path.isfile("log/" + date) else 'w'
-        with open("log/" + date, mode) as log:
-            log.write(name + " / face / " + datestamp + "\n")
-            log.close()
+
+        if name in face_log and face_log[name] > 0:
+            face_log[name] = face_log[name] - 1
+        elif face_log[name] == 0 or name not in face_log:
+            mode = 'a' if os.path.isfile("log/" + date) else 'w'
+            with open("log/" + date, mode) as log:
+                log.write(name + " / face / " + datestamp + "\n")
+                log.close()
+        else:
+            face_log[name] = 100
+        print(face_log[name])
 
         # Display the resulting image
     cv2.imshow('Video', frame)
@@ -129,4 +137,3 @@ while True:
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
-
