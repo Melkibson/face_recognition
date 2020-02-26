@@ -114,15 +114,14 @@ while True:
 
         face_log = {}
 
-        if name in face_log and face_log[name] > 0:
-            face_log[name] = face_log[name] - 1
-        elif name not in face_log or face_log[name] == 0:
+        if name not in face_log or face_log[name] == 0:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-        else:
             face_log[name] = 100
+        elif name in face_log and face_log[name] > 0:
+            face_log[name] = face_log[name] - 1
         print(face_log)
 
         # Display the resulting image
