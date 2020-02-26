@@ -122,7 +122,7 @@ while True:
             face_log[name] = 100
         elif name in face_log and face_log[name] > 0:
             face_log[name] = face_log[name] - 1
-        print(face_log)
+        print(name + " - " + face_log[name])
 
         # Display the resulting image
     cv2.imshow('Video', frame)
