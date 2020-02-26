@@ -112,14 +112,14 @@ while True:
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        name2 = name
+        name2 = {}
 
         if name2 in face_log and face_log[name2] > 0:
             face_log[name2] = face_log[name2] - 1
         elif face_log[name2] == 0 or name2 not in face_log:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
-                log.write(name2 + " / face / " + datestamp + "\n")
+                log.write(name + " / face / " + datestamp + "\n")
                 log.close()
         else:
             face_log[name2] = 100
