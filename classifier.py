@@ -108,7 +108,7 @@ while True:
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m/%d/%Y")
-        mode = 'a' if os.path.exists(writepath) else 'w'
+        mode = 'a' if os.path.isfile("log/" + date) else 'w'
         with open(date, mode) as log:
             log.write(name + " / face / " + datestamp + "\n")
             log.close()
