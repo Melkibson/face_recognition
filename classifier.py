@@ -6,7 +6,6 @@ import face_recognition
 import numpy as np
 import cv2
 import time
-import sys
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -23,14 +22,16 @@ def all_face_encoding():
     # Get list of users directories names
     all_user = np.append([], listdir('training-data'))
     for user in all_user:
-        #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
+        encoding_path = 'training-data/{0}/{1}_encoding.txt'.format(user, user)
+        img_path = "training-data/{0}/{1}.jpg".format(user, user)
+
         # effacer image encoding et rename face encoding2 en encoding
-        if path.exists("training-data/{0}/{1}.jpg".format(user, user)):
-            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
+        if path.exists(img_path):
+            user_image = face_recognition.load_image_file(img_path)
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
-            os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
-            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
-            os.remove("training-data/{0}/{1}.jpg".format(user, user))
+            os.remove(encoding_path)
+            np.savetxt(encoding_path, user_face_encoding)
+            os.remove(img_path)
         else:
             user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
             known_face_encodings.append(user_face_encoding)
@@ -40,10 +41,9 @@ def all_face_encoding():
 
 # update known faces
 def face_update(frame, name):
-    img_path = 'training-data/{0}/{1}.jpg'
-    cv2.imwrite(img_path.format(name, name), frame)
+    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
     all_face_encoding()
-    os.execl(sys.executable, sys.executable, * sys.argv)
+
 
 # Initialize some variables
 face_locations = []
@@ -105,7 +105,7 @@ while True:
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
             duration = today - modified_date
-            if duration.seconds > 60:
+            if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 face_update(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
