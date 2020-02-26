@@ -1,9 +1,9 @@
 import datetime
 import os
 from os import path, listdir
-import cv2
 import face_recognition
 import numpy as np
+import cv2
 import time
 
 # Get a reference to webcam #0 (the default one)
@@ -96,10 +96,10 @@ while True:
         bottom *= 4
         left *= 4
 
+        today = datetime.datetime.today()
         font = cv2.FONT_HERSHEY_DUPLEX
         if not name == 'Ptdr t ki':
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            today = datetime.datetime.today()
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
             duration = today - modified_date
             if duration.seconds > 10:
@@ -107,7 +107,14 @@ while True:
                 face_update(frame, name)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
-    # Display the resulting image
+        datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
+        date = today.strftime("%m/%d/%Y")
+        if not os.path.isfile("log/" + date):
+            log = open(date, 'a')
+            log.write(name + " / face / " + datestamp + "\n")
+            log.close()
+
+        # Display the resulting image
     cv2.imshow('Video', frame)
 
     if time.time() > timeout:
