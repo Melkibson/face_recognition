@@ -116,7 +116,7 @@ while True:
                 log.close()
             if name == "leo":
                 pygame.mixer.init()
-                son = pygame.mixer.Sound('son.mp3')
+                son = pygame.mixer.Sound('leo.mp3')
                 canal = son.play()
                 pygame.quit()
     # Display the resulting image
