@@ -3,7 +3,7 @@ import os
 from os import path, listdir
 import face_recognition
 import numpy as np
-# import cv2
+import cv2
 import time
 #import pygame
 
@@ -33,23 +33,9 @@ def all_face_encoding():
                 os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
             np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
             os.remove("training-data/{0}/{1}.jpg".format(user, user))
-<<<<<<< HEAD
-        else:
-            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
-            known_face_encodings.append(user_face_encoding)
-
-    del all_user
-
-
-# update known faces
-def face_update(frame, name):
-    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-=======
         # load every user
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
->>>>>>> 7301df4cddf04ce920c97e1597ad21775a20d8a1
-
 
 # Initialize some variables
 face_locations = []
