@@ -22,7 +22,6 @@ def camstream():
         for event in pygame.event.get():
             if event.type == QUIT:
                 capture = False
-            elif event.type == KEYDOWN and event.key == K_s:
                 pygame.image.save(screen, FILENAME)
     camera.stop()
     pygame.quit()
