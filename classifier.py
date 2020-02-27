@@ -47,7 +47,7 @@ face_encodings = []
 face_names = []
 face_log = []
 process_this_frame = True
-timeout = time.time() + 60 * 60 * 24
+reset = time.time() + 60 * 60 * 24
 all_face_encoding()
 
 while True:
@@ -99,7 +99,7 @@ while True:
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
+            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
@@ -112,28 +112,26 @@ while True:
             os.makedirs('log')
 
         face_log = {}
+        delaylog = time.time() + 60
         try:
             face_log[name]
         except KeyError:
-            face_log[name] = 100
+            face_log[name] = today.strftime("%H:%M:%S")
 
-        if face_log[name] > 0:
-            face_log[name] = face_log[name] - 1
-            print(name + " - " + str(face_log[name]))
-
-        elif face_log[name] == 0:
+        if time.time() > delaylog:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-            face_log[name] = 100
+            face_log[name] = today.strftime("%H:%M:%S")
+            print(name + " - " + str(face_log[name]))
 
-        # Display the resulting image
+    # Display the resulting image
     cv2.imshow('Video', frame)
 
-    if time.time() > timeout:
+    if time.time() > reset:
         all_face_encoding()
-        timeout = time.time() + 60 * 60 * 24
+        reset = time.time() + 60 * 60 * 24
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
