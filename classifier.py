@@ -46,7 +46,7 @@ def face_update(frame, name):
 face_locations = []
 face_encodings = []
 face_names = []
-face_log = []
+face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 all_face_encoding()
@@ -88,7 +88,6 @@ while True:
             face_names.append(name)
 
     process_this_frame = not process_this_frame
-    face_log = {}
 
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
