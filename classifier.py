@@ -117,17 +117,16 @@ while True:
         except KeyError:
             face_log[name] = 100
 
-        if face_log[name] == 0:
+        if face_log[name] > 0:
+            face_log[name] = face_log[name] - 1
+            print(name + " - " + str(face_log[name]))
+
+        elif face_log[name] == 0:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
             face_log[name] = 100
-            print("here")
-
-        elif name in face_log and face_log[name] > 0:
-            face_log[name] = face_log[name] - 1
-        print(name + " - " + str(face_log[name]))
 
         # Display the resulting image
     cv2.imshow('Video', frame)
