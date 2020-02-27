@@ -22,7 +22,7 @@ def camstream():
                 camera.stop()
                 pygame.quit()
             elif event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+                if event.key == "escape":
                     camera.stop()
                     pygame.quit()
 
