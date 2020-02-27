@@ -118,8 +118,8 @@ while True:
         except KeyError:
             face_log[name] = today.strftime("%H:%M:%S")
 
-        montemps = time.time()
-        print(montemps + " - " + delaylog)
+        print(time.time())
+        print(delaylog)
         if time.time() > delaylog:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
