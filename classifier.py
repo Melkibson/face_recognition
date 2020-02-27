@@ -88,6 +88,7 @@ while True:
             face_names.append(name)
 
     process_this_frame = not process_this_frame
+    face_log = {}
 
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
@@ -112,18 +113,15 @@ while True:
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        face_log = {}
         if name not in face_log:
             face_log[name] = time.time() + 60
-
-        print(face_log[name])
         if time.time() > face_log[name]:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
             face_log[name] = today.strftime("%H:%M:%S")
-            print(name + " - " + str(face_log[name]))
+            print(name + " - " + face_log[name])
 
     # Display the resulting image
     cv2.imshow('Video', frame)
