@@ -106,13 +106,14 @@ while True:
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 face_update(frame, name)
-        print(name)
+        # print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if not os.path.exists('log'):
             os.makedirs('log')
 
+        print(face_log + " - " + name)
         if name not in face_log:
             face_log[name] = time.time() + 60
         if time.time() > face_log[name]:
