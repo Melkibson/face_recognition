@@ -107,7 +107,6 @@ while True:
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        print(time.time())
         if name not in face_log:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
@@ -121,7 +120,6 @@ while True:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
             face_log[name] = time.time() + 10
-            print("log créer !")
 
     # Display the resulting image
     cv2.imshow('Video', frame)
