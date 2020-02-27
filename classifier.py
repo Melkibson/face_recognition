@@ -5,8 +5,10 @@ import face_recognition
 import numpy as np
 # import cv2
 import time
+#import pygame
 
 # Get a reference to webcam #0 (the default one)
+
 video_capture = cv2.VideoCapture(0)
 known_face_encodings = []
 
@@ -27,9 +29,11 @@ def all_face_encoding():
         if path.exists("training-data/{0}/{1}.jpg".format(user, user)):
             user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
-            os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+            if path.exists('training-data/{0}/{1}_encoding.txt'.format(user, user)):
+                os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
             np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
             os.remove("training-data/{0}/{1}.jpg".format(user, user))
+<<<<<<< HEAD
         else:
             user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
             known_face_encodings.append(user_face_encoding)
@@ -40,15 +44,21 @@ def all_face_encoding():
 # update known faces
 def face_update(frame, name):
     cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+=======
+        # load every user
+        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
+        known_face_encodings.append(user_face_encoding)
+>>>>>>> 7301df4cddf04ce920c97e1597ad21775a20d8a1
 
 
 # Initialize some variables
 face_locations = []
 face_encodings = []
 face_names = []
-face_log = []
+face_log = {}
 process_this_frame = True
-timeout = time.time() + 60 * 60 * 24
+reset = time.time() + 60 * 60 * 24
+
 all_face_encoding()
 
 while True:
@@ -98,38 +108,39 @@ while True:
         left *= 4
 
         today = datetime.datetime.today()
-        location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-        modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
-        duration = today - modified_date
-        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)) and duration.seconds > 30:
-            # mettre a jour photo si date > 1 mois
-            face_update(frame, name)
-        # print(name)
+        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
+            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
+            duration = today - modified_date
+            if duration.seconds > 30:
+                # mettre a jour photo si date > 1 mois
+                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+        print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        face_log = {}
-
-        if name not in face_log or face_log[name] == 0:
+        if name not in face_log or time.time() > face_log[name]:
+            face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-            print("ça passe là")
-            face_log[name] = 100
-        elif name in face_log and face_log[name] > 0:
-            face_log[name] = face_log[name] - 1
-        print(name + " - " + str(face_log[name]))
-
-        # Display the resulting image
+            # if name == "leo":
+                # pygame.mixer.init()
+                # pygame.mixer.music.load('leo.mp3')
+                # pygame.mixer.music.play()
+                # time.sleep(5)
+                # pygame.mixer.music.stop()
+                # pygame.quit()
+    # Display the resulting image
     cv2.imshow('Video', frame)
 
-    if time.time() > timeout:
+    if time.time() > reset:
         all_face_encoding()
-        timeout = time.time() + 60 * 60 * 24
+        reset = time.time() + 60 * 60 * 24
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
