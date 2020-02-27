@@ -39,6 +39,7 @@ def all_face_encoding():
 # update known faces
 def face_update(frame, name):
     cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+    all_face_encoding()
 
 
 # Initialize some variables
@@ -104,7 +105,7 @@ while True:
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 face_update(frame, name)
-        print(name)
+        # print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
@@ -117,6 +118,7 @@ while True:
         except KeyError:
             face_log[name] = time.time() + 60
 
+        print(time.time())
         print(face_log)
         if time.time() > face_log[name]:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
