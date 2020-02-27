@@ -46,6 +46,7 @@ def face_update(frame, name):
 face_locations = []
 face_encodings = []
 face_names = []
+face_log = []
 process_this_frame = True
 timeout = time.time() + 60 * 60 * 24
 all_face_encoding()
@@ -97,22 +98,31 @@ while True:
         left *= 4
 
         today = datetime.datetime.today()
-        font = cv2.FONT_HERSHEY_DUPLEX
-        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
-            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
-            duration = today - modified_date
-            if duration.seconds > 10:
-                # mettre a jour photo si date > 1 mois
-                face_update(frame, name)
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+        modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
+        duration = today - modified_date
+        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)) and duration.seconds > 30:
+            # mettre a jour photo si date > 1 mois
+            face_update(frame, name)
+        # print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
-        mode = 'a' if os.path.isfile("log/" + date) else 'w'
-        with open("log/" + date, mode) as log:
-            log.write(name + " / face / " + datestamp + "\n")
-            log.close()
+        if not os.path.exists('log'):
+            os.makedirs('log')
+
+        face_log = {}
+
+        if name not in face_log or face_log[name] == 0:
+            mode = 'a' if os.path.isfile("log/" + date) else 'w'
+            with open("log/" + date, mode) as log:
+                log.write(name + " / face / " + datestamp + "\n")
+                log.close()
+            print("ça passe là")
+            face_log[name] = 100
+        elif name in face_log and face_log[name] > 0:
+            face_log[name] = face_log[name] - 1
+        print(name + " - " + str(face_log[name]))
 
         # Display the resulting image
     cv2.imshow('Video', frame)
@@ -128,4 +138,3 @@ while True:
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
-
