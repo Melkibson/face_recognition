@@ -112,11 +112,10 @@ while True:
             os.makedirs('log')
 
         face_log = {}
-        delaylog = time.time() + 60
         try:
             face_log[name]
         except KeyError:
-            face_log[name] = delaylog
+            face_log[name] = time.time() + 60
 
         print(time.time())
         print(face_log[name])
