@@ -23,9 +23,9 @@ def camstream():
                 capture = False
                 return
             elif event.type == pygame.KEYDOWN:
-                print(event.key)
+                print(event.name)
                 # If pressed key is ESC quit program
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE or pygame.K_q:
                     capture = False
     camera.stop()
     pygame.quit()
