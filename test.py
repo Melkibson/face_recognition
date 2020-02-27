@@ -1,7 +1,8 @@
 import pygame
+import pygame.camera
 
 DEVICE = '/dev/video0'
-SIZE = (1280, 720)
+SIZE = (640, 480)
 FILENAME = 'capture.png'
 
 
@@ -19,12 +20,13 @@ def camstream():
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
-                camera.stop()
-                pygame.quit()
+                capture = False
             elif event.type == KEYDOWN:
                 if event.key == "escape":
-                    camera.stop()
-                    pygame.quit()
+                    capture = False
+    camera.stop()
+    pygame.quit()
+    return
 
 
 if __name__ == '__main__':
