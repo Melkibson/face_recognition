@@ -114,15 +114,19 @@ while True:
 
         print(time.time())
         if name not in face_log:
-            face_log[name] = time.time() + 60
-            print("mon temps : " + str(face_log[name]))
+            face_log[name] = time.time() + 10
+            mode = 'a' if os.path.isfile("log/" + date) else 'w'
+            with open("log/" + date, mode) as log:
+                log.write(name + " / face / " + datestamp + "\n")
+                log.close()
+
         if time.time() > face_log[name]:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-            face_log[name] = time.time() + 60
-            print("log créer")
+            face_log[name] = time.time() + 10
+            print("log créer !")
 
     # Display the resulting image
     cv2.imshow('Video', frame)
