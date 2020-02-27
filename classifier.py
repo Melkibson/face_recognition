@@ -112,14 +112,10 @@ while True:
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        face_log = {}
-        try:
-            face_log[name]
-        except KeyError:
+        face_log[name] = ""
+        if face_log[name] == "":
             face_log[name] = time.time() + 60
 
-        print(time.time())
-        print(face_log)
         if time.time() > face_log[name]:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
