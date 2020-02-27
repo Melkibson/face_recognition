@@ -3,7 +3,7 @@ import os
 from os import path, listdir
 import face_recognition
 import numpy as np
-import cv2
+# import cv2
 import time
 
 # Get a reference to webcam #0 (the default one)
