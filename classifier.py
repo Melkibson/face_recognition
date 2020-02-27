@@ -115,9 +115,9 @@ while True:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
             if name == "leo":
-                pygame.mixer.init()
-                son = pygame.mixer.Sound('leo.mp3')
-                canal = son.play()
+                pygame.mixer.music.init()
+                son = pygame.mixer.music('leo.mp3')
+                son.play()
                 pygame.quit()
     # Display the resulting image
     cv2.imshow('Video', frame)
