@@ -118,6 +118,7 @@ while True:
                 pygame.mixer.init()
                 pygame.mixer.music.load('leo.mp3')
                 pygame.mixer.music.play()
+                time.sleep(5)
                 pygame.mixer.music.stop()
                 pygame.quit()
     # Display the resulting image
