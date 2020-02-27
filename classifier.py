@@ -113,9 +113,9 @@ while True:
 
         face_log = {}
         try:
-            face_log[name]  # does a exist in the current namespace
-        except NameError:
-            face_log[name] = 100  # nope
+            face_log[name]
+        except KeyError:
+            face_log[name] = 100
 
         if face_log[name] == 0:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
