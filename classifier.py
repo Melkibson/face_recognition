@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import datetime
 import os
 from os import path, listdir
