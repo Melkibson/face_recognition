@@ -31,15 +31,9 @@ def all_face_encoding():
                 os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
             np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
             os.remove("training-data/{0}/{1}.jpg".format(user, user))
-        else:
-            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
-            known_face_encodings.append(user_face_encoding)
-    del all_user
-
-
-# update known faces
-def face_update(frame, name):
-    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+        # load every user
+        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
+        known_face_encodings.append(user_face_encoding)
 
 
 # Initialize some variables
@@ -49,6 +43,7 @@ face_names = []
 face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
+
 all_face_encoding()
 
 while True:
@@ -104,7 +99,7 @@ while True:
             duration = today - modified_date
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
-                face_update(frame, name)
+                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
