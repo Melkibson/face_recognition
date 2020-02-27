@@ -113,7 +113,7 @@ while True:
 
         face_log = {}
 
-        if name not in face_log or face_log[name] == 0:
+        if not face_log[name] or face_log[name] == 0:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
