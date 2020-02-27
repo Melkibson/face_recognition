@@ -15,7 +15,6 @@ def camstream():
     screen = pygame.surface.Surface(SIZE, 0, display)
     capture = True
     while capture:
-        print(pygame.key.get_pressed)
         screen = camera.get_image(screen)
         display.blit(screen, (0, 0))
         pygame.display.flip()
@@ -23,8 +22,10 @@ def camstream():
             if event.type == pygame.QUIT:
                 capture = False
                 return
-            elif event.type == pygame.key.get_pressed:
-                if event.key == "escape":
+            elif event.type == pygame.KEYDOWN:
+                print(event.key)
+                # If pressed key is ESC quit program
+                if event.key == pygame.K_ESCAPE:
                     capture = False
     camera.stop()
     pygame.quit()
