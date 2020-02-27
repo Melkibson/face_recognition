@@ -1,6 +1,4 @@
 import pygame
-import pygame.camera
-from pygame.locals import *
 
 DEVICE = '/dev/video0'
 SIZE = (640, 480)
@@ -21,11 +19,12 @@ def camstream():
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
-                capture = False
-                pygame.image.save(screen, FILENAME)
-    camera.stop()
-    pygame.quit()
-    return
+                camera.stop()
+                pygame.quit()
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    camera.stop()
+                    pygame.quit()
 
 
 if __name__ == '__main__':
