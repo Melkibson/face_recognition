@@ -117,8 +117,7 @@ while True:
         except KeyError:
             face_log[name] = time.time() + 60
 
-        print(time.time())
-        print(face_log[name])
+        print(face_log)
         if time.time() > face_log[name]:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
