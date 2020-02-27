@@ -1,7 +1,7 @@
 import pygame
 
 DEVICE = '/dev/video0'
-SIZE = (640, 480)
+SIZE = (1280, 720)
 FILENAME = 'capture.png'
 
 
