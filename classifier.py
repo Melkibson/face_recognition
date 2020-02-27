@@ -112,7 +112,7 @@ while True:
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        face_log[name] = ""
+        face_log = {name: ""}
         if face_log[name] == "":
             face_log[name] = time.time() + 60
 
