@@ -19,8 +19,9 @@ def camstream():
         display.blit(screen, (0, 0))
         pygame.display.flip()
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 capture = False
+                return
             elif event.type == KEYDOWN:
                 if event.key == "escape":
                     capture = False
