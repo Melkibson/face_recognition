@@ -39,7 +39,6 @@ def all_face_encoding():
 # update known faces
 def face_update(frame, name):
     cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-    all_face_encoding()
 
 
 # Initialize some variables
