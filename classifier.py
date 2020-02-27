@@ -4,6 +4,7 @@ from os import path, listdir
 import face_recognition
 import numpy as np
 import cv2
+import pygame.mixer
 import time
 
 # Get a reference to webcam #0 (the default one)
@@ -107,19 +108,15 @@ while True:
         if not os.path.exists('log'):
             os.makedirs('log')
 
-        if name not in face_log:
+        if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-
-        if time.time() > face_log[name]:
-            mode = 'a' if os.path.isfile("log/" + date) else 'w'
-            with open("log/" + date, mode) as log:
-                log.write(name + " / face / " + datestamp + "\n")
-                log.close()
-            face_log[name] = time.time() + 10
+            if name == "leo":
+                pygame.mixer.music.load("leo.mp3")  # chargement de la musique
+                pygame.mixer.music.play()  # la musique est jouée
 
     # Display the resulting image
     cv2.imshow('Video', frame)
