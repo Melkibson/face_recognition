@@ -4,7 +4,6 @@ from os import path, listdir
 import face_recognition
 import numpy as np
 import cv2
-import pygame.mixer
 import time
 
 # Get a reference to webcam #0 (the default one)
@@ -115,9 +114,7 @@ while True:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
             if name == "leo":
-                pygame.mixer.music.load("leo.mp3")  # chargement de la musique
-                pygame.mixer.music.play()  # la musique est jouée
-
+                os.system("mpg123 " + "leo.mp3")
     # Display the resulting image
     cv2.imshow('Video', frame)
 
