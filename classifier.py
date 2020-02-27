@@ -5,9 +5,10 @@ import face_recognition
 import numpy as np
 import cv2
 import time
-import pygame
+#import pygame
 
 # Get a reference to webcam #0 (the default one)
+
 video_capture = cv2.VideoCapture(0)
 known_face_encodings = []
 
@@ -114,13 +115,13 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-            if name == "leo":
-                pygame.mixer.init()
-                pygame.mixer.music.load('leo.mp3')
-                pygame.mixer.music.play()
-                time.sleep(5)
-                pygame.mixer.music.stop()
-                pygame.quit()
+            # if name == "leo":
+                # pygame.mixer.init()
+                # pygame.mixer.music.load('leo.mp3')
+                # pygame.mixer.music.play()
+                # time.sleep(5)
+                # pygame.mixer.music.stop()
+                # pygame.quit()
     # Display the resulting image
     cv2.imshow('Video', frame)
 
