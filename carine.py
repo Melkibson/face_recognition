@@ -11,6 +11,7 @@ def camstream():
     pygame.camera.init()
     display = pygame.display.set_mode(SIZE, 0)
     camera = pygame.camera.Camera(DEVICE, SIZE, "RGB")
+    camera.saturation = 0
     camera.start()
     screen = pygame.surface.Surface(SIZE, 0, display)
     capture = True
