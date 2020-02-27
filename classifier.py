@@ -115,6 +115,7 @@ while True:
 
         print(face_log)
         if name not in face_log:
+            print("ça passe")
             face_log[name] = time.time() + 60
         if time.time() > face_log[name]:
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
