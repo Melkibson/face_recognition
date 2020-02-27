@@ -97,15 +97,13 @@ while True:
         left *= 4
 
         today = datetime.datetime.today()
-        font = cv2.FONT_HERSHEY_DUPLEX
-        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
-            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
-            duration = today - modified_date
-            if duration.days > 30:
-                # mettre a jour photo si date > 1 mois
-                face_update(frame, name)
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+        modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))
+        duration = today - modified_date
+        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)) and duration.seconds > 30:
+            # mettre a jour photo si date > 1 mois
+            face_update(frame, name)
+        print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
@@ -122,7 +120,7 @@ while True:
             face_log[name] = 100
         elif name in face_log and face_log[name] > 0:
             face_log[name] = face_log[name] - 1
-        print(name + " - " + face_log[name])
+        print(name + " - " + str(face_log[name]))
 
         # Display the resulting image
     cv2.imshow('Video', frame)
