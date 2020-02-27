@@ -96,11 +96,6 @@ def main():
 
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
-        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-        top *= 4
-        right *= 4
-        bottom *= 4
-        left *= 4
 
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
