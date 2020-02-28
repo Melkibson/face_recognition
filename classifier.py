@@ -4,14 +4,16 @@ from os import path, listdir
 import face_recognition
 import numpy as np
 import cv2
-import picamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import time
 
-# Get a reference to webcam #0 (the default one)
+# initialize the camera and grab a reference to the raw camera capture
+camera = PiCamera()
+rawCapture = PiRGBArray(camera)
 
-camera = picamera.PiCamera()
-camera.resolution = (320, 240)
-output = np.empty((240, 320, 3), dtype=np.uint8)
+# allow the camera to warmup
+time.sleep(0.1)
 
 known_face_encodings = []
 
@@ -52,11 +54,12 @@ reset = time.time() + 60 * 60 * 24
 all_face_encoding()
 
 while True:
-    # Grab a single frame of video
-    camera.capture(output, format="rgb")
+    # grab an image from the camera
+    camera.capture(rawCapture, format="bgr")
+    frame = rawCapture.array
 
     # Resize frame of video to 1/4 size for faster face recognition processing
-    small_frame = cv2.resize(output, (0, 0), fx=0.25, fy=0.25)
+    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
@@ -104,7 +107,7 @@ while True:
             duration = today - modified_date
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
-                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), output)
+                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
             os.system("python3 lock_control.py authorized " + name)
         else:
             os.system("python3 lock_control.py unauthorized")
@@ -129,7 +132,7 @@ while True:
             # pygame.mixer.music.stop()
             # pygame.quit()
     # Display the resulting image
-    cv2.imshow('Video', output)
+    cv2.imshow("Image", frame)
 
     if time.time() > reset:
         all_face_encoding()
