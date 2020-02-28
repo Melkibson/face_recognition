@@ -4,12 +4,15 @@ from os import path, listdir
 import face_recognition
 import numpy as np
 import cv2
-from picamera import PiCamera
+import picamera
 import time
 
 # Get a reference to webcam #0 (the default one)
 
-video_capture = PiCamera()
+camera = picamera.PiCamera()
+camera.resolution = (320, 240)
+frame = np.empty((240, 320, 3), dtype=np.uint8)
+
 known_face_encodings = []
 
 # Get list of users directories names
@@ -50,7 +53,7 @@ all_face_encoding()
 
 while True:
     # Grab a single frame of video
-    ret, frame = video_capture.read()
+    camera.capture(frame, format="rgb")
 
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
