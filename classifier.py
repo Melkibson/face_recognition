@@ -4,11 +4,12 @@ from os import path, listdir
 import face_recognition
 import numpy as np
 import cv2
+from picamera import PiCamera
 import time
 
 # Get a reference to webcam #0 (the default one)
 
-video_capture = cv2.VideoCapture(0)
+video_capture = PiCamera()
 known_face_encodings = []
 
 # Get list of users directories names
@@ -19,7 +20,6 @@ user_faces_name = np.append([], dir_name)
 
 # Encode all users
 def all_face_encoding():
-
     # Get list of users directories names
     all_user = np.append([], listdir('training-data'))
 
@@ -36,6 +36,7 @@ def all_face_encoding():
         # load every user
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
+
 
 # Initialize some variables
 face_locations = []
@@ -118,12 +119,12 @@ while True:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
             # if name == "leo":
-                # pygame.mixer.init()
-                # pygame.mixer.music.load('leo.mp3')
-                # pygame.mixer.music.play()
-                # time.sleep(5)
-                # pygame.mixer.music.stop()
-                # pygame.quit()
+            # pygame.mixer.init()
+            # pygame.mixer.music.load('leo.mp3')
+            # pygame.mixer.music.play()
+            # time.sleep(5)
+            # pygame.mixer.music.stop()
+            # pygame.quit()
     # Display the resulting image
     cv2.imshow('Video', frame)
 
