@@ -8,9 +8,11 @@ import picamera
 import time
 
 # Get a reference to webcam #0 (the default one)
+print("start camera")
 camera = picamera.PiCamera()
 camera.resolution = (720, 480)
 frame = np.empty((240, 320, 3), dtype=np.uint8)
+print("end start camera")
 
 known_face_encodings = []
 
@@ -47,7 +49,7 @@ face_names = []
 face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
-
+print("encoder tout le monde")
 all_face_encoding()
 
 while True:
@@ -57,8 +59,10 @@ while True:
     # Only process every other frame of video to save time
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
+        print("reconnaissance blablabla")
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
+        print("fin reconnaissance blablabla")
 
         face_names = []
         for face_encoding in face_encodings:
