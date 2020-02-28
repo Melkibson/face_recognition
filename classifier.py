@@ -9,7 +9,7 @@ import time
 
 # Get a reference to webcam #0 (the default one)
 
-video_capture = camera = PiCamera()
+video_capture = PiCamera()
 known_face_encodings = []
 
 # Get list of users directories names
