@@ -20,6 +20,7 @@ user_faces_name = np.append([], dir_name)
 
 # Encode all users
 def all_face_encoding():
+
     # Get list of users directories names
     all_user = np.append([], listdir('training-data'))
 
