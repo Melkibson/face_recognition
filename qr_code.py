@@ -1,6 +1,7 @@
 import pygame
 import pygame.camera
 import qrtools
+from qrtools.qrtools import QR
 
 DEVICE = '/dev/video0'
 SIZE = (640, 480)
@@ -20,7 +21,7 @@ def qr_code_reader():
         screen = camera.get_image(screen)
         display.blit(screen, (0, 0))
         pygame.display.flip()
-        qr = qrtools.QR()
+        qr = QR()
         qr.decode(screen)
         s = qr.data
         print("The decoded QR code is: %s" % s)
