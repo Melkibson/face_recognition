@@ -53,8 +53,10 @@ print("encoder tout le monde")
 all_face_encoding()
 
 while True:
+    print("Capturing frame")
     # Grab a single frame of video
     camera.capture(frame, format="rgb")
+    print("end Capturing frame")
 
     # Only process every other frame of video to save time
     if process_this_frame:
