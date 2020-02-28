@@ -102,6 +102,9 @@ while True:
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+            os.system("script2.py authorized " + name)
+        else:
+            os.system("script2.py unauthorized")
         print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
