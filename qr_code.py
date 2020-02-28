@@ -1,6 +1,7 @@
 import pygame
 import pygame.camera
-import qrtools
+import pyzbar
+from qrtools.qrtools import QR
 
 DEVICE = '/dev/video0'
 SIZE = (640, 480)
@@ -20,10 +21,11 @@ def qr_code_reader():
         screen = camera.get_image(screen)
         display.blit(screen, (0, 0))
         pygame.display.flip()
-        qr = qrtools.qrtools.QR()
-        qr.decode(screen)
-        s = qr.data
-        print("The decoded QR code is: %s" % s)
+        decodedObjects = pyzbar.decode(screen)
+
+        for obj in decodedObjects:
+            print("Type:", obj.type)
+            print("Data: ", obj.data, "\n")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 capture = False
