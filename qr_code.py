@@ -14,10 +14,9 @@ def qr_code_reader():
     display = pygame.display.set_mode(SIZE, 0)
     camera = pygame.camera.Camera(DEVICE, SIZE, "RGB")
     camera.start()
-    screen = pygame.surface.Surface(SIZE, 0, display)
     capture = True
     while capture:
-        screen = camera.get_image(screen)
+        screen = camera.get_image()
         display.blit(screen, (0, 0))
         pygame.display.flip()
         decodedObjects = pyzbar.decode(screen)
