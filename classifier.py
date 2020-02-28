@@ -10,7 +10,7 @@ import time
 # Get a reference to webcam #0 (the default one)
 
 camera = picamera.PiCamera()
-camera.resolution = (320, 240)
+camera.resolution = (720, 480)
 frame = np.empty((240, 320, 3), dtype=np.uint8)
 
 known_face_encodings = []
