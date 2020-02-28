@@ -2,6 +2,7 @@ import pygame
 from pygame import camera
 from pygame.locals import *
 import qrtools
+
 pygame.init()
 camera.init()
 
@@ -18,6 +19,15 @@ def qr_code_reader():
         qr.decode(image)
         s = qr.data
         print("The decoded QR code is: %s" % s)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                print("pressed w")
+            if event.key == pygame.K_s:
+                print("pressed s")
+
 
 
 qr_code_reader()
