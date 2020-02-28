@@ -1,7 +1,6 @@
 import pygame
 import pygame.camera
 import pyzbar
-from qrtools.qrtools import QR
 
 DEVICE = '/dev/video0'
 SIZE = (640, 480)
