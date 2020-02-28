@@ -10,12 +10,16 @@ user_code = 'http://google.fr'
 def qr_code_reader():
     pygame.init()
     pygame.camera.init()
-
+    display = pygame.camera.Camera(DEVICE, (640, 480))
     cam = pygame.camera.Camera(DEVICE, (640, 480))
-    image = cam.get_image()
-    qr = qrtools.QR()
-    qr.decode(image)
-    s = qr.data
+    cam.start()
+    image = pygame.surface.Surface((640, 480), display )
+    image = cam.get_image(image)
+    capture = True
+    while capture:
+        qr = qrtools.QR()
+        qr.decode(image)
+        s = qr.data
     print("The decoded QR code is: %s" % s)
 
     cam.stop()
