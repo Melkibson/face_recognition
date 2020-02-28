@@ -1,6 +1,6 @@
 import pygame
 import pygame.camera
-import pyzbar
+import pyzbar.pyzbar as pyzbar
 
 DEVICE = '/dev/video0'
 SIZE = (640, 480)
