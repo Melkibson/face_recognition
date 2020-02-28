@@ -20,10 +20,10 @@ def qr_code_reader():
         screen = camera.get_image(screen)
         display.blit(screen, (0, 0))
         pygame.display.flip()
-        # qr = qrtools.QR()
-        # qr.decode(screen)
-        # s = qr.data
-        # print("The decoded QR code is: %s" % s)
+        qr = qrtools.QR()
+        qr.decode(screen)
+        s = qr.data
+        print("The decoded QR code is: %s" % s)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 capture = False
