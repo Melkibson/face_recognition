@@ -61,9 +61,10 @@ if not os.path.exists('log'):
 while True:
     # grab an image from the camera
     img = cam.get_image()
-    frame = pygame.surfarray.array3d(img)
-    screen.blit(frame, (0, 0))
+    screen.blit(img, (0, 0))
     pygame.display.flip()
+    frame = pygame.surfarray.array3d(img)
+    frame.swapaxes(0, 1)
 
     # Only process every other frame of video to save time
     if process_this_frame:
