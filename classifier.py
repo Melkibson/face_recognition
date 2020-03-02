@@ -121,8 +121,8 @@ while True:
         break
 
     print("truncate")
-    rawCapture.empty()
-    frame.trunc(0)
+    rawCapture.truncate(0)
+    frame.empty()
     print("finish truncate")
 
 # Release handle to the webcam
