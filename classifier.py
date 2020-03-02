@@ -41,6 +41,7 @@ def all_face_encoding():
         # load every user
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
+    print(known_face_encodings)
 
 
 # Initialize some variables
