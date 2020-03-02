@@ -61,6 +61,7 @@ while True:
     screen.blit(img, (0, 0))
     pygame.display.flip()
     frame = img.convert()
+    print(frame)
 
     # Only process every other frame of video to save time
     if process_this_frame:
