@@ -9,23 +9,18 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 
 # Get a reference to webcam #0 (the default one)
-camera = PiCamera()
-print("accès camera")
+camera = PiCamera(0)
 camera.resolution = (640, 480)
 camera.framerate = 32
-print("raw capture")
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
-print("wait")
-time.sleep(3)
-print("continue")
+time.sleep(1)
 
 known_face_encodings = []
 # Get list of users directories names
 dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
-print("pass")
 
 
 # Encode all users
@@ -56,10 +51,13 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 all_face_encoding()
+print("all faces is encoded")
+
 while True:
     # Grab a single frame of video
     camera.capture(rawCapture, format='bgr')
     frame = rawCapture.array
+    print("frame is defined")
 
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
