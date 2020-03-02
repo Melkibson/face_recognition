@@ -21,22 +21,20 @@ user_faces_name = np.append([], dir_name)
 def all_face_encoding():
     # Get list of users directories names
     all_user = np.append([], os.listdir('training-data'))
+
     for user in all_user:
-        encoding_path = 'training-data/{0}/{1}_encoding.txt'.format(user, user)
-        img_path = "training-data/{0}/{1}.jpg".format(user, user)
-
+        #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
         # effacer image encoding et rename face encoding2 en encoding
-        if os.path.exists(img_path):
-            user_image = face_recognition.load_image_file(img_path)
+        if os.path.exists("training-data/{0}/{1}.jpg".format(user, user)):
+            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
-            os.remove(encoding_path)
-            np.savetxt(encoding_path, user_face_encoding)
-            os.remove(img_path)
-        else:
-            user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
-            known_face_encodings.append(user_face_encoding)
-
-    del all_user
+            if os.path.exists('training-data/{0}/{1}_encoding.txt'.format(user, user)):
+                os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
+            os.remove("training-data/{0}/{1}.jpg".format(user, user))
+        # load every user
+        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
+        known_face_encodings.append(user_face_encoding)
 
 
 # update known faces
