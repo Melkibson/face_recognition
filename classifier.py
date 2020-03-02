@@ -57,6 +57,7 @@ all_face_encoding()
 while True:
     # grab an image from the camera
     frame = cam.get_image()
+    print(frame)
 
     # Only process every other frame of video to save time
     if process_this_frame:
