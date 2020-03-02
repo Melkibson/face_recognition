@@ -5,7 +5,7 @@ import face_recognition
 import numpy as np
 import cv2
 import time
-from picamera.array import PiRGBArray
+from picamera import PiRGBArray
 from picamera import PiCamera
 
 # Get a reference to webcam #0 (the default one)
