@@ -77,6 +77,7 @@ while True:
 
         face_names = []
         for face_encoding in face_encodings:
+            print("I see someone ")
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
             name = "Ptdr t ki"
@@ -91,20 +92,14 @@ while True:
             best_match_index = np.argmin(face_distances)
 
             if matches[best_match_index]:
-                print("I see someone " + name)
                 name = user_faces_name[best_match_index]
 
             face_names.append(name)
 
     process_this_frame = not process_this_frame
 
-    # Display the results
-    for (top, right, bottom, left), name in zip(face_locations, face_names):
-        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-        top *= 4
-        right *= 4
-        bottom *= 4
-        left *= 4
+    for name in zip(face_locations, face_names):
+        print(name)
 
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
@@ -114,10 +109,9 @@ while True:
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 output.save('training-data/{0}/{1}.jpg'.format(name, name))
-            os.system("python3 lock_control.py authorized " + name)
+            os.system("python3 lock_control.py authorized " + str(name))
         else:
             os.system("python3 lock_control.py unauthorized")
-        print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
@@ -128,15 +122,8 @@ while True:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
-                log.write(name + " / face / " + datestamp + "\n")
+                log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
-            # if name == "leo":
-            # pygame.mixer.init()
-            # pygame.mixer.music.load('leo.mp3')
-            # pygame.mixer.music.play()
-            # time.sleep(5)
-            # pygame.mixer.music.stop()
-            # pygame.quit()
 
     if time.time() > reset:
         all_face_encoding()
