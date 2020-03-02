@@ -62,7 +62,6 @@ while True:
     # grab an image from the camera
     img = cam.get_image()
     frame = pygame.PixelArray(img)
-    print("ici" + str(frame))
 
     # Only process every other frame of video to save time
     if process_this_frame:
