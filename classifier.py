@@ -60,7 +60,8 @@ while True:
     img = cam.get_image()
     screen.blit(img, (0, 0))
     pygame.display.flip()
-    frame = img.PixelArray()
+    frame = pygame.surfarray.array3d(img)
+    frame.swapaxes(0, 1)
     print("ici" + str(frame))
 
     # Only process every other frame of video to save time
