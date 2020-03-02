@@ -10,10 +10,11 @@ def qr_code_reader(code):
     while capture:
         ret, frame = camera.read()
         decodedObjects = pyzbar.decode(frame)
-        for obj in decodedObjects:
+        while decodedObjects:
             decoded = decodedObjects[0].data
             if decoded == bytes(code, 'utf-8'):
                 print("Access granted")
+                break
             else:
                 print("Access denied")
 
