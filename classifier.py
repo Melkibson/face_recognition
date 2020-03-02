@@ -14,7 +14,7 @@ pygame.init()
 pygame.camera.init()
 
 # Get a reference to webcam #0 (the default one)
-screen = pygame.display.set_mode(640, 480 )
+screen = pygame.display.set_mode((640, 480))
 camlist = pygame.camera.list_cameras()
 cam = pygame.camera.Camera(camlist[0], (640, 480))
 cam.start()
@@ -60,6 +60,7 @@ while True:
     img = cam.get_image()
     screen.blit(img, (0, 0))
     pygame.display.flip()
+    frame = img.convert()
 
     # Only process every other frame of video to save time
     if process_this_frame:
