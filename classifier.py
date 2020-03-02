@@ -14,6 +14,7 @@ pygame.init()
 pygame.camera.init()
 
 # Get a reference to webcam #0 (the default one)
+screen = pygame.display.set_mode(640, 480 )
 camlist = pygame.camera.list_cameras()
 cam = pygame.camera.Camera(camlist[0], (640, 480))
 cam.start()
@@ -56,8 +57,9 @@ all_face_encoding()
 
 while True:
     # grab an image from the camera
-    frame = cam.get_image()
-    print("ma frame :" + frame)
+    img = cam.get_image()
+    screen.blit(img, (0, 0))
+    pygame.display.flip()
 
     # Only process every other frame of video to save time
     if process_this_frame:
@@ -119,10 +121,7 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-    # Display the resulting image
-    cv2.imshow("Image", frame)
 
-    cv2.imshow('Video', frame)
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
