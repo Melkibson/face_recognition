@@ -58,11 +58,11 @@ all_face_encoding()
 while True:
     # grab an image from the camera
     img = cam.get_image()
+    time.sleep(0.5)
     screen.blit(img, (0, 0))
     pygame.display.flip()
     frame = pygame.surfarray.array3d(img)
     frame.swapaxes(0, 1)
-    print("ici" + str(frame))
 
     # Only process every other frame of video to save time
     if process_this_frame:
@@ -75,11 +75,6 @@ while True:
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
             name = "Ptdr t ki"
-
-            # # If a match was found in known_face_encodings, just use the first one.
-            # if True in matches:
-            #     first_match_index = matches.index(True)
-            #     name = known_face_names[first_match_index]
 
             # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
@@ -130,6 +125,6 @@ while True:
         reset = time.time() + 60 * 60 * 24
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.KEYDOWN:
             pygame.quit()
             exit()
