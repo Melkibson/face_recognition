@@ -11,7 +11,7 @@ from picamera import PiCamera
 # Get a reference to webcam #0 (the default one)
 camera = PiCamera()
 camera.resolution = (640, 480)
-camera.framerate = 32
+camera.framerate = 5
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
 time.sleep(1)
