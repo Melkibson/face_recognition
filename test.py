@@ -91,6 +91,7 @@ while True:
             best_match_index = np.argmin(face_distances)
 
             if matches[best_match_index]:
+                print("I see someone " + name)
                 name = user_faces_name[best_match_index]
 
             face_names.append(name)
