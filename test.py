@@ -136,8 +136,6 @@ while True:
             # time.sleep(5)
             # pygame.mixer.music.stop()
             # pygame.quit()
-    # Display the resulting image
-    output.show()
 
     if time.time() > reset:
         all_face_encoding()
