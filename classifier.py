@@ -61,9 +61,9 @@ if not os.path.exists('log'):
 while True:
     # grab an image from the camera
     img = cam.get_image()
-    screen.blit(img, (0, 0))
-    pygame.display.flip()
     frame = pygame.surfarray.array3d(img)
+    screen.blit(frame, (0, 0))
+    pygame.display.flip()
 
     # Only process every other frame of video to save time
     if process_this_frame:
@@ -102,7 +102,6 @@ while True:
             os.system("python3 lock_control.py authorized " + str(name))
         else:
             os.system("python3 lock_control.py unauthorized")
-        print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
