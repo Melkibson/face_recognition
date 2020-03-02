@@ -51,19 +51,18 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 all_face_encoding()
-print("all faces is encoded")
 
 while True:
     # Grab a single frame of video
     camera.capture(rawCapture, format='bgr')
     frame = rawCapture.array
-    print("frame is defined")
 
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
+    print("convert to rgb")
 
     # Only process every other frame of video to save time
     if process_this_frame:
@@ -115,7 +114,9 @@ while True:
                 log.close()
 
     # Display the resulting image
+    print("show image")
     cv2.imshow('Video', frame)
+    print("finish show image")
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
@@ -123,8 +124,10 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+    print("truncate")
     rawCapture.truncate(0)
     frame.truncate(0)
+    print("finish truncate")
 
 # Release handle to the webcam
 cv2.destroyAllWindows()
