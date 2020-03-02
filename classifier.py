@@ -16,6 +16,10 @@ camera.framerate = 32
 print("raw capture")
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
+print("wait")
+time.sleep(3)
+print("continue")
+
 known_face_encodings = []
 # Get list of users directories names
 dir_path = 'training-data'
