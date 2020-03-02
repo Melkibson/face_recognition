@@ -21,6 +21,7 @@ def qr_code_reader():
         for obj in decodedObjects:
             print("Type:", obj.type)
             print("Data: ", obj.data, "\n")
+        capture = not capture
 
 
 qr_code_reader()
