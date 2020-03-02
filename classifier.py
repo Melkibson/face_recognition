@@ -25,6 +25,9 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
+if not os.path.exists('log'):
+    os.makedirs('log')
+
 
 # Encode all users
 def all_face_encoding():
@@ -58,9 +61,7 @@ all_face_encoding()
 while True:
     # grab an image from the camera
     img = cam.get_image()
-    screen.blit(img, (0, 0))
-    pygame.display.flip()
-    frame = pygame.PixelArray(screen)
+    frame = pygame.PixelArray(img)
     print("ici" + str(frame))
 
     # Only process every other frame of video to save time
@@ -114,8 +115,6 @@ while True:
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
-        if not os.path.exists('log'):
-            os.makedirs('log')
 
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
@@ -129,6 +128,6 @@ while True:
         reset = time.time() + 60 * 60 * 24
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.KEYDOWN:
             pygame.quit()
             exit()
