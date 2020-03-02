@@ -9,7 +9,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 
 # Get a reference to webcam #0 (the default one)
-camera = PiCamera(0)
+camera = PiCamera()
 camera.resolution = (640, 480)
 camera.framerate = 32
 rawCapture = PiRGBArray(camera, size=(640, 480))
@@ -113,10 +113,6 @@ while True:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
 
-    # Display the resulting image
-    print("show image")
-    cv2.imshow('Video', frame)
-    print("finish show image")
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
