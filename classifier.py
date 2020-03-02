@@ -121,7 +121,7 @@ while True:
         break
 
     print("truncate")
-    rawCapture.truncate(0)
+    rawCapture.empty()
     frame.trunc(0)
     print("finish truncate")
 
