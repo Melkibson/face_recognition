@@ -2,7 +2,6 @@ import os
 from os import listdir, path
 import face_recognition
 import numpy as np
-import cv2
 import time
 import datetime
 import pygame
@@ -99,7 +98,7 @@ while True:
             duration = today - modified_date
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
-                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+                frame.save('training-data/{0}/{1}.jpg'.format(name, name), frame)
             os.system("python3 lock_control.py authorized " + str(name))
         else:
             os.system("python3 lock_control.py unauthorized")
