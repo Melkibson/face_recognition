@@ -2,6 +2,7 @@ import os
 from os import listdir, path
 import face_recognition
 import numpy as np
+import cv2
 import time
 import datetime
 import pygame
@@ -54,16 +55,13 @@ reset = time.time() + 60 * 60 * 24
 
 all_face_encoding()
 
-if not os.path.exists('log'):
-    os.makedirs('log')
-
 while True:
     # grab an image from the camera
     img = cam.get_image()
     screen.blit(img, (0, 0))
     pygame.display.flip()
-    frame = pygame.surfarray.array3d(img)
-    frame.swapaxes(0, 1)
+    frame = pygame.PixelArray(screen)
+    print("ici" + str(frame))
 
     # Only process every other frame of video to save time
     if process_this_frame:
@@ -77,6 +75,11 @@ while True:
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
             name = "Ptdr t ki"
 
+            # # If a match was found in known_face_encodings, just use the first one.
+            # if True in matches:
+            #     first_match_index = matches.index(True)
+            #     name = known_face_names[first_match_index]
+
             # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
@@ -89,28 +92,36 @@ while True:
     process_this_frame = not process_this_frame
 
     # Display the results
-    for name in zip(face_locations, face_names):
+    for (top, right, bottom, left), name in zip(face_locations, face_names):
+        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+        top *= 4
+        right *= 4
+        bottom *= 4
+        left *= 4
 
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
-            if duration.days > 30:
+            if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
-                frame.save('training-data/{0}/{1}.jpg'.format(name, name), frame)
-            os.system("python3 lock_control.py authorized " + str(name))
+                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+            os.system("python3 lock_control.py authorized " + name)
         else:
             os.system("python3 lock_control.py unauthorized")
+        print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
+        if not os.path.exists('log'):
+            os.makedirs('log')
 
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
-                log.write(str(name) + " / face / " + str(datestamp) + "\n")
+                log.write(name + " / face / " + datestamp + "\n")
                 log.close()
 
     if time.time() > reset:
@@ -118,6 +129,6 @@ while True:
         reset = time.time() + 60 * 60 * 24
 
     for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.QUIT:
             pygame.quit()
             exit()
