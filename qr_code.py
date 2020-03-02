@@ -1,30 +1,49 @@
-import picamera
-import numpy as np
+import cv2
 import pyzbar.pyzbar as pyzbar
-
-DEVICE = '/dev/video0'
-SIZE = (640, 480)
-
-user_code = 'http://google.fr'
+import requests
+import json
 
 
-def qr_code_reader():
-    camera = picamera.PiCamera()
-    camera.resolution = (320, 240)
-    output = np.empty((240, 320, 3), dtype=np.uint8)
-
+def qr_code_reader(code):
+    camera = cv2.VideoCapture(0)
     capture = True
     while capture:
-        img = camera.capture(output, format="rgb")
-        decodedObjects = pyzbar.decode(img)
-
+        ret, frame = camera.read()
+        decodedObjects = pyzbar.decode(frame)
         for obj in decodedObjects:
-            print("Type:", obj.type)
-            print("Data: ", obj.data, "\n")
-        capture = not capture
+            decoded = decodedObjects[0].data
+            if decoded == bytes(code, 'utf-8'):
+                print("Access granted")
+            else:
+                print("Access denied")
+
+        cv2.imshow('Video', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
 
-qr_code_reader()
+video_capture = cv2.VideoCapture(0)
 
+url_login = 'http://kanarpp.xyz:3000/user/login'
+url_qrcode = 'http://kanarpp.xyz:3000/qrcode'
+
+params = {"email": "yam@yam.fr", "password": "yam"}
+
+
+response = requests.post(url_login, params)
+token = json.loads(response.text)['token']
+
+headers = {
+    "Authorization": "Bearer " + token,
+    "content-type": "application/json",
+}
+try:
+    response = requests.get(url_qrcode, headers=headers)
+    user_codes = json.loads(response.text)
+    for user_code in user_codes['data']:
+        qr_code = user_code['qrcode']
+        qr_code_reader(qr_code)
+except requests.exceptions.ConnectionError:
+    response.status_code = "Connection refused"
 
 
