@@ -10,7 +10,9 @@ from picamera import PiCamera
 
 # Get a reference to webcam #0 (the default one)
 camera = PiCamera()
-rawCapture = PiRGBArray(camera)
+camera.resolution = (640, 480)
+camera.framerate = 32
+rawCapture = PiRGBArray(camera, size=(640, 480))
 
 known_face_encodings = []
 # Get list of users directories names
@@ -116,6 +118,8 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+    rawCapture.truncate(0)
+    frame.truncate(0)
+
 # Release handle to the webcam
-video_capture.release()
 cv2.destroyAllWindows()
