@@ -55,6 +55,9 @@ reset = time.time() + 60 * 60 * 24
 
 all_face_encoding()
 
+if not os.path.exists('log'):
+    os.makedirs('log')
+
 while True:
     # grab an image from the camera
     img = cam.get_image()
@@ -88,36 +91,29 @@ while True:
     process_this_frame = not process_this_frame
 
     # Display the results
-    for (top, right, bottom, left), name in zip(face_locations, face_names):
-        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-        top *= 4
-        right *= 4
-        bottom *= 4
-        left *= 4
+    for name in zip(face_locations, face_names):
 
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
-            if duration.seconds > 30:
+            if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-            os.system("python3 lock_control.py authorized " + name)
+            os.system("python3 lock_control.py authorized " + str(name))
         else:
             os.system("python3 lock_control.py unauthorized")
         print(name)
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
-        if not os.path.exists('log'):
-            os.makedirs('log')
 
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
-                log.write(name + " / face / " + datestamp + "\n")
+                log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
 
     if time.time() > reset:
