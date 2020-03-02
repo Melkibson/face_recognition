@@ -5,18 +5,22 @@ import face_recognition
 import numpy as np
 import cv2
 import time
-#import pygame
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+
 # Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(0)
+camera = PiCamera()
+rawCapture = PiRGBArray(camera)
+
 known_face_encodings = []
 # Get list of users directories names
 dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
+
 # Encode all users
 def all_face_encoding():
-
     # Get list of users directories names
     all_user = np.append([], listdir('training-data'))
 
@@ -33,6 +37,8 @@ def all_face_encoding():
         # load every user
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
+
+
 # Initialize some variables
 face_locations = []
 face_encodings = []
@@ -43,13 +49,18 @@ reset = time.time() + 60 * 60 * 24
 all_face_encoding()
 while True:
     # Grab a single frame of video
-    ret, frame = video_capture.read()
+    camera.capture(rawCapture, format='bgr')
+    frame = rawCapture.array
+
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
+
     # Only process every other frame of video to save time
     if process_this_frame:
+
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
@@ -95,13 +106,7 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-            # if name == "leo":
-                # pygame.mixer.init()
-                # pygame.mixer.music.load('leo.mp3')
-                # pygame.mixer.music.play()
-                # time.sleep(5)
-                # pygame.mixer.music.stop()
-                # pygame.quit()
+
     # Display the resulting image
     cv2.imshow('Video', frame)
     if time.time() > reset:
@@ -110,6 +115,7 @@ while True:
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
