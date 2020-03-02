@@ -119,7 +119,7 @@ while True:
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-    cv2.imshow('video', rgb_small_frame)
+    cv2.imshow('Frame', rawCapture)
     rawCapture.truncate(0)
     del frame
 
