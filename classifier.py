@@ -10,8 +10,10 @@ from picamera import PiCamera
 
 # Get a reference to webcam #0 (the default one)
 camera = PiCamera()
+print("accès camera")
 camera.resolution = (640, 480)
 camera.framerate = 32
+print("raw capture")
 rawCapture = PiRGBArray(camera, size=(640, 480))
 
 known_face_encodings = []
@@ -19,6 +21,7 @@ known_face_encodings = []
 dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
+print("pass")
 
 
 # Encode all users
