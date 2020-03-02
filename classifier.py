@@ -74,18 +74,16 @@ while True:
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
-            name = "Ptdr t ki"
-            # # If a match was found in known_face_encodings, just use the first one.
-            # if True in matches:
-            #     first_match_index = matches.index(True)
-            #     name = known_face_names[first_match_index]
-            # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
+            name = "Ptdr t ki"
+
             if matches[best_match_index]:
                 name = user_faces_name[best_match_index]
             face_names.append(name)
+
     process_this_frame = not process_this_frame
+
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
@@ -120,7 +118,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-    del rawCapture
+    rawCapture.truncate(0)
     del frame
 
 # Release handle to the webcam
