@@ -58,9 +58,6 @@ while True:
     # grab an image from the camera
     frame = cam.get_image()
 
-    # Resize frame of video to 1/4 size for faster face recognition processing
-    frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-
     # Only process every other frame of video to save time
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
