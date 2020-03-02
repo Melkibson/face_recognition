@@ -120,10 +120,5 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-    print("truncate")
-    rawCapture.truncate(0)
-    frame.truncate(0)
-    print("finish truncate")
-
 # Release handle to the webcam
 cv2.destroyAllWindows()
