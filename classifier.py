@@ -126,6 +126,7 @@ while True:
     process_this_frame = not process_this_frame
     # Display the results
     for name in zip(face_locations, face_names):
+        print(name)
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
