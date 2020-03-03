@@ -59,8 +59,8 @@ def lock_control(argument, user):
 
     r.start(0)
 
-    if sys.argv[1] == "authorized":
-        lcd.write("Bienvenue " + sys.argv[2])
+    if argument == "authorized":
+        lcd.write("Bienvenue " + user)
         backlight.rgb(0, 255, 0)
         r.ChangeDutyCycle(5)
         time.sleep(10)
@@ -68,11 +68,11 @@ def lock_control(argument, user):
         r.ChangeDutyCycle(10)
         time.sleep(3)
 
-    if sys.argv[1] == "waiting":
+    if argument == "waiting":
         backlight.rgb(255, 255, 0)
         time.sleep(2)
 
-    if sys.argv[1] == "unauthorized":
+    if argument == "unauthorized":
         backlight.rgb(255, 0, 0)
         lcd.write("Acces non autorise.")
         time.sleep(2)
@@ -92,9 +92,12 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
-waiting = threading.Thread(None, lock_control, None, (None,), {'argument': 'waiting'})
+waiting = threading.Thread(None, lock_control, None, (None,), {'argument': 'waiting', 'user': 'no'})
 waiting.start()
 all_face_encoding()
+
+if not os.path.exists('log'):
+    os.makedirs('log')
 
 print("Im watching you...")
 while True:
@@ -137,16 +140,14 @@ while True:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
             print(name)
-            authorized = threading.Thread(None, lock_control, None, (None,), {'argument': 'authorized'})
+            authorized = threading.Thread(None, lock_control, None, (None,), {'argument': 'authorized', 'user': name})
             authorized.start()
         else:
             print(name)
-            unauthorized = threading.Thread(None, lock_control, None, (None,), {'argument': 'unauthorized'})
+            unauthorized = threading.Thread(None, lock_control, None, (None,), {'argument': 'unauthorized', 'user': 'no'})
             unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
-        if not os.path.exists('log'):
-            os.makedirs('log')
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
