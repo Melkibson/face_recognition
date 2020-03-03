@@ -61,11 +61,13 @@ def lock_control(argument, identifiant):
     if argument == "authorized":
         backlight.rgb(0, 128, 0)
         lcd.write("Bienvenue " + identifiant)
+        print("Bienvenue " + identifiant)
         r.ChangeDutyCycle(0)
         time.sleep(10)
         lcd.clear()
         backlight.rgb(128, 128, 128)
         lcd.write("Closing ...")
+        print("Closing ...")
         r.ChangeDutyCycle(100)
         time.sleep(10)
 
@@ -106,7 +108,7 @@ all_face_encoding()
 if not os.path.exists('log'):
     os.makedirs('log')
 
-print("Im see you...")
+print("I see you...")
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
