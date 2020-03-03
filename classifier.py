@@ -68,7 +68,7 @@ def lock_control(argument, identifiant):
         backlight.rgb(128, 128, 128)
         lcd.write("Closing ...")
         print("Closing ...")
-        r.ChangeDutyCycle(4)
+        r.ChangeDutyCycle(5)
         time.sleep(10)
 
     if argument == "waiting":
