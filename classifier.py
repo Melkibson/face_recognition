@@ -30,6 +30,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
 
+
 # Encode all users
 def all_face_encoding():
     # Get list of users directories names
@@ -51,29 +52,28 @@ def all_face_encoding():
 
 
 def lock_control(argument, identifiant):
-
     # declare LCD display
     lcd.clear()
     r.start(0)
 
     if argument == "authorized":
-        lcd.write("Bienvenue " + identifiant)
         backlight.rgb(0, 128, 0)
+        lcd.write("Bienvenue " + identifiant)
         r.ChangeDutyCycle(5)
-        time.sleep(5)
-        lcd.write("Closing ...")
+        time.sleep(10)
         backlight.rgb(128, 128, 128)
+        lcd.write("Closing ...")
         r.ChangeDutyCycle(10)
-        time.sleep(5)
+        time.sleep(10)
 
     if argument == "waiting":
         backlight.rgb(128, 128, 0)
-        time.sleep(2)
+        time.sleep(1)
 
     if argument == "unauthorized":
         backlight.rgb(128, 0, 0)
         lcd.write("Acces non autorise.")
-        time.sleep(2)
+        time.sleep(1)
 
     r.stop()
     backlight.graph_off()
@@ -140,7 +140,6 @@ while True:
                 print("authorized")
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
-
 
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
