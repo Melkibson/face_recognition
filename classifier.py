@@ -71,13 +71,15 @@ def lock_control(argument, identifiant):
         r.stop()
 
         r.start(0)
-        print("90 degree")
+        time.sleep(2)  # sleep 2 second
+        r.ChangeDutyCycle(2.5)  # turn towards 90 degree
+        time.sleep(2)  # sleep 2 second
+        r.ChangeDutyCycle(5)  # turn towards 90 degree
+        time.sleep(2)  # sleep 2 second
         r.ChangeDutyCycle(7.5)  # turn towards 90 degree
         time.sleep(2)  # sleep 2 second
-        print("0 degree")
-        r.ChangeDutyCycle(2.5)  # turn towards 0 degree
+        r.ChangeDutyCycle(10)  # turn towards 0 degree
         time.sleep(2)  # sleep 2 second
-        print("180 degree")
         r.ChangeDutyCycle(12.5)  # turn towards 180 degree
         time.sleep(2)  # sleep 2 second
 
