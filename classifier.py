@@ -133,6 +133,7 @@ while True:
             duration = today - modified_date
             authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
             if not authorized.is_alive():
+                print("authorized")
                 authorized.start()
 
             if duration.days > 30:
@@ -140,6 +141,7 @@ while True:
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
             if not unauthorized.is_alive():
+                print("unauthorized")
                 unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
