@@ -3,7 +3,6 @@
 
 import sys
 import time
-import math
 import RPi.GPIO as GPIO
 
 import dothat.lcd as lcd

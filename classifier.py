@@ -1,10 +1,24 @@
-import datetime
+#!/usr/bin/env python
+# coding: utf-8
+
+import sys
+import time
+import RPi.GPIO as GPIO
+
+import dothat.lcd as lcd
+import dothat.backlight as backlight
+
 import os
 from os import path, listdir
-import face_recognition
+
 import numpy as np
 import cv2
+import face_recognition
+
+import datetime
 import time
+
+import threading
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
@@ -35,6 +49,41 @@ def all_face_encoding():
         known_face_encodings.append(user_face_encoding)
 
 
+def lock_control(argument, user):
+    lcd.clear()
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(18, GPIO.OUT)
+
+    r = GPIO.PWM(18, 50)
+
+    r.start(0)
+
+    if sys.argv[1] == "authorized":
+        lcd.write("Bienvenue " + sys.argv[2])
+        backlight.rgb(0, 255, 0)
+        r.ChangeDutyCycle(5)
+        time.sleep(10)
+        backlight.rgb(255, 255, 255)
+        r.ChangeDutyCycle(10)
+        time.sleep(3)
+
+    if sys.argv[1] == "waiting":
+        backlight.rgb(255, 255, 0)
+        time.sleep(2)
+
+    if sys.argv[1] == "unauthorized":
+        backlight.rgb(255, 0, 0)
+        lcd.write("Acces non autorise.")
+        time.sleep(2)
+
+    r.stop()
+    backlight.graph_off()
+    backlight.off()
+    lcd.clear()
+    GPIO.cleanup()
+
+
 # Initialize some variables
 face_locations = []
 face_encodings = []
@@ -43,6 +92,8 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
+waiting = threading.Thread(None, lock_control, None, (None,), {'argument': 'waiting'})
+waiting.start()
 all_face_encoding()
 
 print("Im watching you...")
@@ -85,10 +136,13 @@ while True:
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-            os.system("python3 lock_control.py authorized " + str(name))
+            print(name)
+            authorized = threading.Thread(None, lock_control, None, (None,), {'argument': 'authorized'})
+            authorized.start()
         else:
-            os.system("python3 lock_control.py unauthorized")
-        print(name)
+            print(name)
+            unauthorized = threading.Thread(None, lock_control, None, (None,), {'argument': 'unauthorized'})
+            unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if not os.path.exists('log'):
