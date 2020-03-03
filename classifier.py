@@ -132,7 +132,7 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
-            if authorized.is_alive():
+            if not authorized.is_alive():
                 authorized.start()
 
             if duration.days > 30:
