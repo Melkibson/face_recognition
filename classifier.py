@@ -80,7 +80,6 @@ def lock_control(argument, identifiant):
     backlight.graph_off()
     backlight.off()
     lcd.clear()
-    GPIO.cleanup()
 
 
 # Initialize some variables
