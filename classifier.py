@@ -20,8 +20,6 @@ import time
 
 import threading
 
-# Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(0)
 known_face_encodings = []
 # Get list of users directories names
 dir_path = 'training-data'
@@ -94,6 +92,11 @@ authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {}
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
 waiting.start()
+
+# Get a reference to webcam #0 (the default one)
+video_capture = cv2.VideoCapture(0)
+
+# encode everyone
 all_face_encoding()
 
 if not os.path.exists('log'):
