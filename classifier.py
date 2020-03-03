@@ -73,13 +73,13 @@ def lock_control(argument, identifiant):
 
         print("90 degree")
         r.ChangeDutyCycle(7.5)  # turn towards 90 degree
-        time.sleep(1)  # sleep 1 second
+        time.sleep(5)  # sleep 1 second
         print("0 degree")
         r.ChangeDutyCycle(2.5)  # turn towards 0 degree
-        time.sleep(1)  # sleep 1 second
+        time.sleep(5)  # sleep 1 second
         print("180 degree")
         r.ChangeDutyCycle(12.5)  # turn towards 180 degree
-        time.sleep(1)  # sleep 1 second
+        time.sleep(5)  # sleep 1 second
 
     if argument == "waiting":
         backlight.rgb(128, 128, 0)
