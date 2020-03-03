@@ -56,20 +56,20 @@ def all_face_encoding():
 def lock_control(argument, identifiant):
     # declare LCD display
     lcd.clear()
-    r.start(0)
+    r.start(5)
 
     if argument == "authorized":
         backlight.rgb(0, 128, 0)
         lcd.write("Bienvenue " + identifiant)
         print("Bienvenue " + identifiant)
-        r.ChangeDutyCycle(10)
-        time.sleep(10)
+        r.ChangeDutyCycle(20)
+        time.sleep(0.5)
         lcd.clear()
         backlight.rgb(128, 128, 128)
         lcd.write("Closing ...")
         print("Closing ...")
         r.ChangeDutyCycle(5)
-        time.sleep(10)
+        time.sleep(0.5)
 
     if argument == "waiting":
         backlight.rgb(128, 128, 0)
