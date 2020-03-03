@@ -92,6 +92,7 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
+unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
 waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
 waiting.start()
 all_face_encoding()
@@ -132,14 +133,16 @@ while True:
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
+            authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
+            if authorized.is_alive():
+                authorized.start()
+
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-            authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
-            authorized.start()
         else:
-            unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
-            unauthorized.start()
+            if not unauthorized.is_alive():
+                unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
