@@ -102,9 +102,6 @@ while True:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
 
-    # Display the resulting image
-    cv2.imshow('Video', frame)
-
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
