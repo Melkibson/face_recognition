@@ -42,8 +42,10 @@ face_names = []
 face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
+print("I know you...")
 all_face_encoding()
 
+print("Im watching you...")
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
@@ -61,16 +63,12 @@ while True:
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
             name = "Ptdr t ki"
-            # # If a match was found in known_face_encodings, just use the first one.
-            # if True in matches:
-            #     first_match_index = matches.index(True)
-            #     name = known_face_names[first_match_index]
-            # Or instead, use the known face with the smallest distance to the new face
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
                 name = user_faces_name[best_match_index]
             face_names.append(name)
+
     process_this_frame = not process_this_frame
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
@@ -87,6 +85,9 @@ while True:
             if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+            os.system("python3 lock_control.py authorized " + str(name))
+        else:
+            os.system("python3 lock_control.py unauthorized")
         print(name)
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
@@ -98,9 +99,6 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
-
-    # Display the resulting image
-    cv2.imshow('Video', frame)
 
     if time.time() > reset:
         all_face_encoding()
