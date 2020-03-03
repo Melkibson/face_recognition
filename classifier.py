@@ -125,12 +125,7 @@ while True:
 
     process_this_frame = not process_this_frame
     # Display the results
-    for (top, right, bottom, left), name in zip(face_locations, face_names):
-        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-        top *= 4
-        right *= 4
-        bottom *= 4
-        left *= 4
+    for name in zip(face_locations, face_names):
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
@@ -152,7 +147,7 @@ while True:
             face_log[name] = time.time() + 10
             mode = 'a' if os.path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
-                log.write(name + " / face / " + datestamp + "\n")
+                log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
 
     if time.time() > reset:
