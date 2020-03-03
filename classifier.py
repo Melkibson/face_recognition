@@ -25,7 +25,7 @@ def all_face_encoding():
         # effacer image encoding et rename face encoding2 en encoding
         if path.exists("training-data/{0}/{1}.jpg".format(user, user)):
             user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
-            user_face_encoding = face_recognition.face_encodings(user_image)
+            user_face_encoding = face_recognition.face_encodings(user_image)[0]
             if path.exists('training-data/{0}/{1}_encoding.txt'.format(user, user)):
                 os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
             np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
@@ -84,14 +84,13 @@ while True:
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
-            if duration.days > 30:
+            if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
             os.system("python3 lock_control.py authorized " + str(name))
         else:
             os.system("python3 lock_control.py unauthorized")
         print(name)
-
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if not os.path.exists('log'):
@@ -102,6 +101,9 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(name + " / face / " + datestamp + "\n")
                 log.close()
+
+    # Display the resulting image
+    cv2.imshow('Video', frame)
 
     if time.time() > reset:
         all_face_encoding()
