@@ -42,8 +42,10 @@ face_names = []
 face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
+print("I know you...")
 all_face_encoding()
 
+print("Im watching you...")
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
