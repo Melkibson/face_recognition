@@ -61,6 +61,7 @@ def lock_control(argument, identifiant):
         lcd.write("Bienvenue " + identifiant)
         r.ChangeDutyCycle(5)
         time.sleep(10)
+        lcd.clear()
         backlight.rgb(128, 128, 128)
         lcd.write("Closing ...")
         r.ChangeDutyCycle(10)
