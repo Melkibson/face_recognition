@@ -26,20 +26,17 @@ if sys.argv[1] == "authorized":
     lcd.write("Bienvenue " + sys.argv[2])
     backlight.rgb(0, 255, 0)
     r.ChangeDutyCycle(5)
-    time.sleep(2)
 
 if sys.argv[1] == "waiting":
     backlight.rgb(255, 255, 0)
-    time.sleep(4)
 
 if sys.argv[1] == "close":
+    backlight.rgb(255, 255, 255)
     r.ChangeDutyCycle(10)
-    time.sleep(2)
 
 if sys.argv[1] == "unauthorized":
     backlight.rgb(255, 0, 0)
     lcd.write("Accès non autorisé.")
-    time.sleep(2)
 
 r.stop()
 backlight.graph_off()
