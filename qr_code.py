@@ -3,7 +3,6 @@ import pyzbar.pyzbar as pyzbar
 import requests
 import json
 import os
-from classifier import frame
 
 
 def qr_code_reader(code, frame):
@@ -35,13 +34,12 @@ headers = {
     "Authorization": "Bearer " + token,
     "content-type": "application/json",
 }
-
 try:
     response = requests.get(url_qrcode, headers=headers)
     user_codes = json.loads(response.text)
     for user_code in user_codes['data']:
         qr_code = user_code['qrcode']
-        qr_code_reader(qr_code, frame)
+        qr_code_reader(qr_code)
 except requests.exceptions.ConnectionError:
     response.status_code = "Connection refused"
 
