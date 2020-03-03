@@ -70,11 +70,15 @@ def lock_control(argument, identifiant):
         print("Closing ...")
         r.ChangeDutyCycle(5)
         time.sleep(5)
-        p.ChangeDutyCycle(7.5)  # turn towards 90 degree
+
+        print("90 degree")
+        r.ChangeDutyCycle(7.5)  # turn towards 90 degree
         time.sleep(1)  # sleep 1 second
-        p.ChangeDutyCycle(2.5)  # turn towards 0 degree
+        print("0 degree")
+        r.ChangeDutyCycle(2.5)  # turn towards 0 degree
         time.sleep(1)  # sleep 1 second
-        p.ChangeDutyCycle(12.5)  # turn towards 180 degree
+        print("180 degree")
+        r.ChangeDutyCycle(12.5)  # turn towards 180 degree
         time.sleep(1)  # sleep 1 second
 
     if argument == "waiting":
