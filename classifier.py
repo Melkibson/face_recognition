@@ -28,14 +28,6 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-# declare LCD display
-lcd.clear()
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-r = GPIO.PWM(18, 50)
-r.start(0)
-
 
 # Encode all users
 def all_face_encoding():
@@ -58,7 +50,14 @@ def all_face_encoding():
 
 
 def lock_control(argument, identifiant):
+
+    # declare LCD display
     lcd.clear()
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(18, GPIO.OUT)
+    r = GPIO.PWM(18, 50)
+    r.start(0)
 
     if argument == "authorized":
         lcd.write("Bienvenue " + identifiant)
@@ -136,11 +135,9 @@ while True:
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-            print(name)
             authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
             authorized.start()
         else:
-            print(name)
             unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
             unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
