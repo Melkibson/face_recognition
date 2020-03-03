@@ -63,13 +63,13 @@ def lock_control(argument, identifiant):
         lcd.write("Bienvenue " + identifiant)
         print("Bienvenue " + identifiant)
         r.ChangeDutyCycle(20)
-        time.sleep(0.5)
+        time.sleep(5)
         lcd.clear()
         backlight.rgb(128, 128, 128)
         lcd.write("Closing ...")
         print("Closing ...")
         r.ChangeDutyCycle(5)
-        time.sleep(0.5)
+        time.sleep(5)
 
     if argument == "waiting":
         backlight.rgb(128, 128, 0)
