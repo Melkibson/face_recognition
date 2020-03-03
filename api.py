@@ -1,9 +1,8 @@
 import concurrent.futures
 import requests
 import threading
-import os
 import json
-import time
+
 
 thread_local = threading.local()
 
@@ -14,16 +13,24 @@ def get_session():
     return thread_local.session
 
 
-def authenticate():
-    url_login = os.getenv('API_LOGIN_ROUTE')
-    params = {"email": "yam@yam.fr", "password": "yam"}
+def get_login():
     session = get_session()
-    with session.post(url_login, params) as response:
+    params = {"email": "yam@yam.fr", "password": "yam"}
+    url_login = 'http://kanarpp.xyz:3000/user/login'
+    url_qrcode = 'http://kanarpp.xyz:3000/qrcode'
+    with session.post(url_login, data=params) as response:
         token = json.loads(response.text)['token']
-    response = requests.post(url_login, params)
-    token = json.loads(response.text)['token']
+        headers = {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json",
+        }
+        with session.get(url_qrcode, headers=headers) as res:
 
-    headers = {
-        "Authorization": "Bearer " + token,
-        "content-type": "application/json",
-    }
+            user_codes = json.loads(res.text)
+            for user_code in user_codes['data']:
+                qr_code = user_code['qrcode']
+                print(qr_code)
+
+
+if __name__ == '__main__':
+    get_login()
