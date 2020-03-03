@@ -90,6 +90,7 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
+authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
 waiting.start()
@@ -131,10 +132,11 @@ while True:
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
-            authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
             if not authorized.is_alive():
                 print("authorized")
+                authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
+
 
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
