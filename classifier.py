@@ -60,7 +60,7 @@ def lock_control(argument, identifiant):
     r.start(0)
 
     if argument == "authorized":
-        lcd.write("Bienvenue " + user)
+        lcd.write("Bienvenue " + identifiant)
         backlight.rgb(0, 255, 0)
         r.ChangeDutyCycle(5)
         time.sleep(10)
