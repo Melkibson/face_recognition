@@ -90,6 +90,7 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
+unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
 waiting.start()
 all_face_encoding()
@@ -139,9 +140,9 @@ while True:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
-            unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
             if not unauthorized.is_alive():
                 print("unauthorized")
+                unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
