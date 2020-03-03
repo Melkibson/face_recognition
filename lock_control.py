@@ -37,7 +37,7 @@ if sys.argv[1] == "waiting":
 
 if sys.argv[1] == "unauthorized":
     backlight.rgb(255, 0, 0)
-    lcd.write("Accès non autorisé.")
+    lcd.write("Acces non autorise.")
     time.sleep(2)
 
 r.stop()
