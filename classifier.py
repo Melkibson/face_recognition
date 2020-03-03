@@ -29,7 +29,8 @@ user_faces_name = np.append([], dir_name)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
-r.start(2.5) # Initialization
+r.ChangeDutyCycle(0)
+r.ChangeDutyCycle(0)
 
 
 # Encode all users
@@ -60,12 +61,12 @@ def lock_control(argument, identifiant):
     if argument == "authorized":
         backlight.rgb(0, 128, 0)
         lcd.write("Bienvenue " + identifiant)
-        r.ChangeDutyCycle(5)
+        r.ChangeDutyCycle(0)
         time.sleep(10)
         lcd.clear()
         backlight.rgb(128, 128, 128)
         lcd.write("Closing ...")
-        r.ChangeDutyCycle(10)
+        r.ChangeDutyCycle(100)
         time.sleep(10)
 
     if argument == "waiting":
