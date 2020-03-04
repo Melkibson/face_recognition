@@ -70,10 +70,6 @@ def lock_control(argument, identifiant):
         time.sleep(2)
         r.stop()
 
-    if argument == "waiting":
-        backlight.rgb(128, 128, 0)
-        time.sleep(1)
-
     if argument == "unauthorized":
         backlight.rgb(128, 0, 0)
         lcd.write("Acces non autorise.")
@@ -95,8 +91,6 @@ reset = time.time() + 60 * 60 * 24
 print("I know you...")
 authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
-waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
-waiting.start()
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
