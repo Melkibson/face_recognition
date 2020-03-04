@@ -163,9 +163,3 @@ while True:
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
-    # Hit 'q' on the keyboard to quit!
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-# Release handle to the webcam
-video_capture.release()
-cv2.destroyAllWindows()
