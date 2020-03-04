@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys
-import time
 import RPi.GPIO as GPIO
 
 import dothat.lcd as lcd
 import dothat.backlight as backlight
 
-import os
-from os import path, listdir
+from os import path, listdir, makedirs, remove
 
 import numpy as np
 import cv2
@@ -45,9 +42,9 @@ def all_face_encoding():
             user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
             if path.exists('training-data/{0}/{1}_encoding.txt'.format(user, user)):
-                os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+                remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
             np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
-            os.remove("training-data/{0}/{1}.jpg".format(user, user))
+            remove("training-data/{0}/{1}.jpg".format(user, user))
         # load every user
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
@@ -107,8 +104,8 @@ video_capture = cv2.VideoCapture(0)
 # encode everyone
 all_face_encoding()
 
-if not os.path.exists('log'):
-    os.makedirs('log')
+if not path.exists('log'):
+    makedirs('log')
 
 print("I see you...")
 while True:
@@ -139,9 +136,9 @@ while True:
     for name in face_names:
         print(name)
         today = datetime.datetime.today()
-        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
+        if not name == 'Ptdr t ki' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
+            modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             if not authorized.is_alive():
                 print("authorized")
@@ -162,7 +159,7 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
-            mode = 'a' if os.path.isfile("log/" + date) else 'w'
+            mode = 'a' if path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
