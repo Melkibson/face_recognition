@@ -3,10 +3,10 @@
 
 import sys
 import time
-import RPi.GPIO as GPIO
-
-import dothat.lcd as lcd
-import dothat.backlight as backlight
+# import RPi.GPIO as GPIO
+#
+# import dothat.lcd as lcd
+# import dothat.backlight as backlight
 
 import os
 from os import path, listdir
@@ -49,39 +49,39 @@ def all_face_encoding():
         known_face_encodings.append(user_face_encoding)
 
 
-def lock_control(argument, identifiant):
-
-    # declare LCD display
-    lcd.clear()
-
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(18, GPIO.OUT)
-    r = GPIO.PWM(18, 50)
-    r.start(0)
-
-    if argument == "authorized":
-        lcd.write("Bienvenue " + identifiant)
-        backlight.rgb(0, 255, 0)
-        r.ChangeDutyCycle(5)
-        time.sleep(10)
-        backlight.rgb(255, 255, 255)
-        r.ChangeDutyCycle(10)
-        time.sleep(3)
-
-    if argument == "waiting":
-        backlight.rgb(255, 255, 0)
-        time.sleep(2)
-
-    if argument == "unauthorized":
-        backlight.rgb(255, 0, 0)
-        lcd.write("Acces non autorise.")
-        time.sleep(2)
-
-    r.stop()
-    backlight.graph_off()
-    backlight.off()
-    lcd.clear()
-    GPIO.cleanup()
+# def lock_control(argument, identifiant):
+#
+#     # declare LCD display
+#     lcd.clear()
+#
+#     GPIO.setmode(GPIO.BCM)
+#     GPIO.setup(18, GPIO.OUT)
+#     r = GPIO.PWM(18, 50)
+#     r.start(0)
+#
+#     if argument == "authorized":
+#         lcd.write("Bienvenue " + identifiant)
+#         backlight.rgb(0, 255, 0)
+#         r.ChangeDutyCycle(5)
+#         time.sleep(10)
+#         backlight.rgb(255, 255, 255)
+#         r.ChangeDutyCycle(10)
+#         time.sleep(3)
+#
+#     if argument == "waiting":
+#         backlight.rgb(255, 255, 0)
+#         time.sleep(2)
+#
+#     if argument == "unauthorized":
+#         backlight.rgb(255, 0, 0)
+#         lcd.write("Acces non autorise.")
+#         time.sleep(2)
+#
+#     r.stop()
+#     backlight.graph_off()
+#     backlight.off()
+#     lcd.clear()
+#     GPIO.cleanup()
 
 
 # Initialize some variables
@@ -92,8 +92,8 @@ face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
-waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
-waiting.start()
+# waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
+# waiting.start()
 all_face_encoding()
 
 if not os.path.exists('log'):
@@ -135,11 +135,11 @@ while True:
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-            authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
-            authorized.start()
-        else:
-            unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
-            unauthorized.start()
+            # authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
+            # authorized.start()
+        # else:
+            # unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
+            # unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
