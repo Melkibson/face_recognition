@@ -20,6 +20,8 @@ import time
 
 import threading
 
+import vlc
+
 known_face_encodings = []
 # Get list of users directories names
 dir_path = 'training-data'
@@ -58,10 +60,7 @@ def lock_control(argument, identifiant):
     if argument == "authorized":
         r.start(0)
         backlight.rgb(0, 128, 0)
-        lcd.write("Bienvenue ")
-        lcd.cursor_pos = (1, 0)
-        lcd.write(identifiant)
-        lcd.cursor_pos = (0, 0)
+        lcd.write("Bienvenue " + identifiant)
         print("Bienvenue " + identifiant)
         r.ChangeDutyCycle(20)
         backlight.rgb(0, 128, 0)
@@ -146,6 +145,8 @@ while True:
             duration = today - modified_date
             if not authorized.is_alive():
                 print("authorized")
+                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                p.play()
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
 
