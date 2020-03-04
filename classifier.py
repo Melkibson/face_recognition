@@ -141,8 +141,9 @@ while True:
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
 
-            if duration.days > 30:
+            if duration.seconds > 30:
                 # mettre a jour photo si date > 1 mois
+                print("image créer")
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
             if not unauthorized.is_alive():
