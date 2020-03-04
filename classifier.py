@@ -59,7 +59,7 @@ def lock_control(argument, identifiant):
         backlight.rgb(0, 128, 0)
         lcd.write("Bienvenue " + identifiant)
         print("Bienvenue " + identifiant)
-        r.ChangeDutyCycle(20)
+        r.ChangeDutyCycle(10)
         backlight.rgb(0, 128, 0)
         time.sleep(10)
         lcd.clear()
@@ -137,6 +137,7 @@ while True:
             if not authorized.is_alive():
                 print("authorized")
                 p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                p.audio_set_volume(100)
                 p.play()
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
