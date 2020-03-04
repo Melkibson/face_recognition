@@ -18,7 +18,6 @@ import time
 import threading
 
 from pydub import AudioSegment
-from pydub.playback import play
 
 known_face_encodings = []
 # Get list of users directories names
@@ -137,9 +136,9 @@ while True:
             duration = today - modified_date
             if not authorized.is_alive():
                 print("authorized")
-                p = AudioSegment.from_mp3("training-data/{0}/{1}.mp3".format(name, name))
-                p = p + 10
-                play(p)
+                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                p.audio_set_volume(100)
+                p.play()
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
 
@@ -149,9 +148,9 @@ while True:
         else:
             if not unauthorized.is_alive():
                 print("unauthorized")
-                p = AudioSegment.from_mp3("autre.mp3")
-                p = p + 10
-                play(p)
+                p = vlc.MediaPlayer("autre.mp3")
+                p.audio_set_volume(100)
+                p.play()
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
