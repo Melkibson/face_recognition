@@ -149,6 +149,7 @@ while True:
             if not unauthorized.is_alive():
                 print("unauthorized")
                 p = vlc.MediaPlayer("autre.mp3")
+                p.audio_set_volume(100)
                 p.play()
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
