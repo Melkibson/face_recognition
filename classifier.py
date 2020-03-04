@@ -148,6 +148,7 @@ while True:
             if not unauthorized.is_alive():
                 print("unauthorized")
                 p = vlc.MediaPlayer("autre.mp3")
+                p.play()
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
