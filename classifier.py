@@ -73,7 +73,7 @@ def lock_control(argument, identifiant):
     if argument == "unauthorized":
         backlight.rgb(128, 0, 0)
         lcd.write("Acces non autorise.")
-        time.sleep(1)
+        time.sleep(5)
 
     r.stop()
     backlight.graph_off()
