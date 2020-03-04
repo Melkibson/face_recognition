@@ -17,7 +17,7 @@ import time
 
 import threading
 
-from pydub import AudioSegment
+import vlc
 
 known_face_encodings = []
 # Get list of users directories names
