@@ -138,7 +138,6 @@ while True:
                 print("authorized")
                 p = AudioSegment.from_mp3("training-data/{0}/{1}.mp3".format(name, name))
                 p = p + 10
-                p.audio_set_volume(100)
                 p.play()
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
@@ -151,7 +150,6 @@ while True:
                 print("unauthorized")
                 p = AudioSegment.from_mp3("autre.mp3")
                 p = p + 10
-                p.audio_set_volume(100)
                 p.play()
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
