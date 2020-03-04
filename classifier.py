@@ -141,9 +141,8 @@ while True:
                 authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                 authorized.start()
 
-            if duration.seconds > 30:
+            if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
-                print("image créer")
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
             if not unauthorized.is_alive():
@@ -161,8 +160,7 @@ while True:
 
     if time.time() > reset:
         all_face_encoding()
-        print("")
-        reset = time.time() + 60
+        reset = time.time() + 60 * 60 * 24
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
