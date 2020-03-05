@@ -140,7 +140,7 @@ while True:
 
                 if not i1:
                     RGB_frame = Image.fromarray(cropped_image)
-                    i1 = ImageOps.grayscale(cropped_image)
+                    i1 = ImageOps.grayscale(RGB_frame)
                     i1 = ImageOps.solarize(i1, threshold=128)
 
                 i2 = i1
