@@ -5,10 +5,10 @@ i = 1
 while not i == 5:
     i = i + 1
 
-    img = Image.open("training-data/dorian/dorian" + i + ".jpg")
+    img = Image.open("training-data/dorian/dorian" + str(i) + ".jpg")
     gray = ImageOps.grayscale(img)
     solarize = ImageOps.solarize(gray, threshold=128)
-    solarize.save("solarize" + i + ".jpg")
+    solarize.save("solarize" + str(i) + ".jpg")
 
     i1 = Image.open("dorian1.jpg")
     i2 = solarize
