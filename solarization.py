@@ -1,18 +1,18 @@
 from PIL import Image, ImageOps
 
-i = 1
+i = 0
 
 while not i == 6:
     i = i + 1
+
+    i1 = Image.open("dorian1.jpg")
+    i1 = ImageOps.grayscale(i1)
+    i1 = ImageOps.solarize(i1, threshold=128)
 
     img = Image.open("dorian" + str(i) + ".jpg")
     gray = ImageOps.grayscale(img)
     solarize = ImageOps.solarize(gray, threshold=128)
     solarize.save("solarize" + str(i) + ".jpg")
-
-    i1 = Image.open("dorian1.jpg")
-    i1 = ImageOps.grayscale(i1)
-    i1 = ImageOps.solarize(i1, threshold=128)
 
     i2 = solarize
     assert i1.mode == i2.mode, "Different kinds of images."
