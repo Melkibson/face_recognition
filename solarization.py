@@ -26,4 +26,4 @@ while not i == 5:
         dif = sum(abs(c1 - c2) for p1, p2 in pairs for c1, c2 in zip(p1, p2))
 
     ncomponents = i1.size[0] * i1.size[1] * 3
-    print("Difference (percentage):", (dif / 255.0 * 100) / ncomponents)
+    print("Difference (percentage) pour " + "dorian" + str(i) + ".jpg" + " :", (dif / 255.0 * 100) / ncomponents)
