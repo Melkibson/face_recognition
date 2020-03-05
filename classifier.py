@@ -124,8 +124,8 @@ while True:
     process_this_frame = not process_this_frame
     # Display the results
     for name in face_names:
-        print("I already see : " + seen)
-        print(name)
+        print("I already see : " + str(seen))
+        print("I see : " + str(name))
         today = datetime.datetime.today()
         if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
@@ -133,7 +133,7 @@ while True:
             duration = today - modified_date
             if name == seen:
                 if not authorized.is_alive():
-                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                    p = vlc.MediaPlayer("training-datsa/{0}/{1}.mp3".format(name, name))
                     p.audio_set_volume(100)
                     p.play()
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
