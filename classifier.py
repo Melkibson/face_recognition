@@ -100,6 +100,8 @@ print("I can see you...")
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    cv2.imshow('Gray image', frame)
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
@@ -158,3 +160,6 @@ while True:
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
