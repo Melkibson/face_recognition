@@ -113,9 +113,6 @@ while True:
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
-        if face_locations:
-            cropped_image = frame[face_locations[0][0]:face_locations[0][1], face_locations[0][2]:face_locations[0][3]]
-            cv2.imwrite('cropped_image.jpg', cropped_image)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
         face_names = []
         for face_encoding in face_encodings:
@@ -136,6 +133,11 @@ while True:
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
+
+            if face_locations:
+                face_locations2 = face_locations[0]
+                cropped_image = frame[face_locations2[0]:face_locations2[1], face_locations2[2]:face_locations2[3]]
+                cv2.imwrite('cropped_image.jpg', cropped_image)
 
             if name == seen:  # check if not a false positive
                 if not i1:
