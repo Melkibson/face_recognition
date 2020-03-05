@@ -81,7 +81,7 @@ def lock_control(argument, identifiant):
 face_locations = []
 face_encodings = []
 i1 = False
-seuil_min = 3
+seuil_max = 3
 face_names = []
 face_log = {}
 seen = False
@@ -159,7 +159,7 @@ while True:
                 dif = round(dif / 255.0 * 100 / ncomponents, 2)
                 print("Difference (percentage) pour " + name + " :", dif)
 
-                if dif > seuil_min:
+                if dif < seuil_max:
                     seen = False
                     if not authorized.is_alive():
                         p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
