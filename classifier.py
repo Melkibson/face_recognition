@@ -114,7 +114,7 @@ while True:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
         print(face_locations)
-        cropped_image = frame[50:170, 150:250]
+        cropped_image = frame[face_locations]
         cv2.imwrite('cropped_image.jpg', cropped_image)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
         face_names = []
