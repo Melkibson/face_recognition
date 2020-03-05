@@ -108,6 +108,11 @@ while True:
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
+
+    print(type(frame))
+    print(type(small_frame))
+    print(type(rgb_small_frame))
+
     # Only process every other frame of video to save time
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
@@ -136,7 +141,7 @@ while True:
 
             if name == seen:  # check if not a false positive
                 if not i1:
-                    i1 = ImageOps.grayscale(small_frame)
+                    i1 = ImageOps.grayscale(frame)
                     i1 = ImageOps.solarize(i1, threshold=128)
 
                 i2 = i1
