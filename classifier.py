@@ -2,22 +2,33 @@
 # coding: utf-8
 
 import RPi.GPIO as GPIO
+print("GPIO")
 
 import dothat.lcd as lcd
 import dothat.backlight as backlight
+print("lcd")
 
 from os import path, listdir, makedirs, remove
+print("os")
 
 import numpy as np
+print("numpy")
+
 import cv2
+print("cv2")
+
 import face_recognition
+print("face_recognition")
 
 import datetime
 import time
+print("time")
 
 import threading
+print("threading")
 
 import vlc
+print("vlc")
 
 known_face_encodings = []
 # Get list of users directories names
