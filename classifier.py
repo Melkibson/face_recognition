@@ -81,7 +81,7 @@ def lock_control(argument, identifiant):
 face_locations = []
 face_encodings = []
 i1 = False
-seuil_max = 2
+seuil_min = 3
 face_names = []
 face_log = {}
 seen = False
@@ -113,6 +113,7 @@ while True:
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
+        print(face_locations)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
         face_names = []
         for face_encoding in face_encodings:
@@ -128,7 +129,6 @@ while True:
     process_this_frame = not process_this_frame
     # Display the results
     for name in face_names:
-        print(name)
         today = datetime.datetime.today()
         if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
@@ -159,7 +159,7 @@ while True:
                 dif = round(dif / 255.0 * 100 / ncomponents, 2)
                 print("Difference (percentage) pour " + name + " :", dif)
 
-                if dif < seuil_max and not dif == 0:
+                if dif > seuil_min and not dif == 0:
                     seen = False
                     if not authorized.is_alive():
                         p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
