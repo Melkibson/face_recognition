@@ -9,4 +9,4 @@ im1 = Image.open(r"training-data/dorian/dorian.jpg")
 # applying solarize method  
 im2 = ImageOps.solarize(im1, threshold=130)
 
-im2.show() 
+im2.show()
