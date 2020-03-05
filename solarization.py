@@ -8,7 +8,7 @@ look_up_table = np.ones((256, 1), dtype='uint8') * 0
 for i in range(256):
     look_up_table[i][0] = np.abs(np.sin(i * solarization_const)) * 100
 
-img_src = cv2.imread("./image/sora2.jpg", 1)
+img_src = cv2.imread("training-data/dorian/dorian.jpg", 1)
 
 img_sola = cv2.LUT(img_src, look_up_table)
 
