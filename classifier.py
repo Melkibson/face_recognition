@@ -81,7 +81,7 @@ def lock_control(argument, identifiant):
 face_locations = []
 face_encodings = []
 i1 = False
-seuil_min = 3
+seuil_min = 3.5
 face_names = []
 face_log = {}
 seen = False
