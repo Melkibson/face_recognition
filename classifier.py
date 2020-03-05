@@ -159,7 +159,7 @@ while True:
                 dif = round(dif / 255.0 * 100 / ncomponents, 2)
                 print("Difference (percentage) pour " + name + " :", dif)
 
-                if dif < seuil_max:
+                if dif < seuil_max and not dif == 0:
                     seen = False
                     if not authorized.is_alive():
                         p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
