@@ -132,6 +132,7 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             if name == seen:
+                seen = False
                 if not authorized.is_alive():
                     p = vlc.MediaPlayer("training-datsa/{0}/{1}.mp3".format(name, name))
                     p.audio_set_volume(100)
