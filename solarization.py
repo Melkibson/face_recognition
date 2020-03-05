@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 img = mpimg.imread('training-data/dorian/dorian.jpg')
-img = plt.imshow(img)
 img.savefig('img.png')
 
 lum_img = img[:, :, 0]
