@@ -2,7 +2,7 @@ from PIL import Image, ImageOps
 
 i = 0
 
-while not i == 6:
+while not i == 9:
     i = i + 1
 
     i1 = Image.open("dorian1.jpg")
