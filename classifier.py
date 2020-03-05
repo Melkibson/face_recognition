@@ -137,12 +137,12 @@ while True:
             if face_locations:
                 print(face_locations)
                 face_locations2 = face_locations[0]
-                print(face_locations2[0])
-                print(face_locations2[1])
-                print(face_locations2[2])
-                print(face_locations2[3])
+                print(face_locations2[0]*4)
+                print(face_locations2[1]*4)
+                print(face_locations2[2]*4)
+                print(face_locations2[3]*4)
 
-                cropped_image = frame[face_locations2[0]:face_locations2[2], face_locations2[3]:face_locations2[1]]
+                cropped_image = frame[face_locations2[0]*4:face_locations2[2]*4, face_locations2[3]*4:face_locations2[1]*4]
                 cv2.imwrite('cropped_image.jpg', cropped_image)
 
             if name == seen:  # check if not a false positive
