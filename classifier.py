@@ -69,7 +69,7 @@ def lock_control(argument, identifiant):
         lcd.write("Acces")
         lcd.set_cursor_position(0, 1)
         lcd.write("non autorise.")
-        time.sleep(5)
+        time.sleep(1)
 
     r.stop()
     backlight.graph_off()
