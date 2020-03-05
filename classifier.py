@@ -134,25 +134,17 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
 
-            if face_locations:
-                print(face_locations)
-                face_locations2 = face_locations[0]
-                print(face_locations2[0]*4)
-                print(face_locations2[1]*4)
-                print(face_locations2[2]*4)
-                print(face_locations2[3]*4)
-
-                cropped_image = frame[face_locations2[0]*4:face_locations2[2]*4, face_locations2[3]*4:face_locations2[1]*4]
-                cv2.imwrite('cropped_image.jpg', cropped_image)
-
             if name == seen:  # check if not a false positive
+                coord = face_locations[0]
+                cropped_image = frame[coord[0] * 4:coord[2] * 4, coord[3] * 4:coord[1] * 4]
+
                 if not i1:
-                    RGB_frame = Image.fromarray(frame)
-                    i1 = ImageOps.grayscale(RGB_frame)
+                    RGB_frame = Image.fromarray(cropped_image)
+                    i1 = ImageOps.grayscale(cropped_image)
                     i1 = ImageOps.solarize(i1, threshold=128)
 
                 i2 = i1
-                RGB_frame = Image.fromarray(frame)
+                RGB_frame = Image.fromarray(cropped_image)
                 i1 = ImageOps.grayscale(RGB_frame)
                 i1 = ImageOps.solarize(i1, threshold=128)
                 assert i1.mode == i2.mode, "Different kinds of images."
