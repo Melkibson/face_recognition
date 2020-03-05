@@ -11,6 +11,7 @@ import datetime
 import time
 import threading
 import vlc
+from PIL import Image, ImageOps
 
 known_face_encodings = []
 # Get list of users directories names
@@ -79,6 +80,8 @@ def lock_control(argument, identifiant):
 # Initialize some variables
 face_locations = []
 face_encodings = []
+i1 = False
+seuil_min = 10000000
 face_names = []
 face_log = {}
 seen = False
@@ -130,14 +133,34 @@ while True:
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
+
             if name == seen:  # check if not a false positive
-                seen = False
-                if not authorized.is_alive():
-                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                    p.audio_set_volume(100)
-                    p.play()
-                    authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    authorized.start()
+                if not i1:
+                    i1 = ImageOps.grayscale(frame)
+                    i1 = ImageOps.solarize(i1, threshold=128)
+
+                i2 = i1
+                assert i1.mode == i2.mode, "Different kinds of images."
+                assert i1.size == i2.size, "Different sizes."
+
+                pairs = zip(i1.getdata(), i2.getdata())
+                if len(i1.getbands()) == 1:
+                    # for gray-scale jpegs
+                    dif = sum(abs(p1 - p2) for p1, p2 in pairs)
+                else:
+                    dif = sum(abs(c1 - c2) for p1, p2 in pairs for c1, c2 in zip(p1, p2))
+
+                ncomponents = i1.size[0] * i1.size[1] * 3
+                print("Difference (percentage) pour " + name + " :", round(dif, 2))
+
+                if dif > seuil_min:
+                    seen = False
+                    if not authorized.is_alive():
+                        p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                        p.audio_set_volume(100)
+                        p.play()
+                        authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
+                        authorized.start()
             else:
                 seen = name
 
