@@ -115,9 +115,7 @@ while True:
         face_locations = face_recognition.face_locations(rgb_small_frame)
         print(type(face_locations))
         if face_locations:
-            face_locations2 = list(face_locations)
-            print(face_locations2)
-            print(str(face_locations2[0]) + " : " + str(face_locations2[1]) + " : " + str(face_locations2[2]) + " : " + str(face_locations2[3]))
+            print(len(face_locations[0]))
             cropped_image = frame[face_locations[0]:face_locations[1], face_locations[2]:face_locations[3]]
             cv2.imwrite('cropped_image.jpg', cropped_image)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
