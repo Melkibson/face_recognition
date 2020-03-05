@@ -1,15 +1,8 @@
-# Importing Image and ImageOps module from PIL package  
-from PIL import Image, ImageOps
-import time
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
-# creating a image1 object  
-im1 = Image.open(r"training-data/dorian/dorian.jpg")
+img = mpimg.imread('training-data/dorian/dorian.jpg')
+plt.imshow(img, cmap='gray')
 
-# image segmentation  
-# using threshold value = 130 
-# applying solarize method  
-im2 = ImageOps.solarize(im1, threshold=130)
-im1.show()
-time.sleep(3)
-im2.show()
-time.sleep(3)
+lum_img = img[:, :, 0]
+plt.imshow(lum_img, cmap="hot")
