@@ -148,7 +148,6 @@ while True:
                 i1 = ImageOps.grayscale(RGB_frame)
                 i1 = ImageOps.solarize(i1, threshold=128)
                 assert i1.mode == i2.mode, "Different kinds of images."
-                assert i1.size == i2.size, "Different sizes."
 
                 pairs = zip(i1.getdata(), i2.getdata())
                 if len(i1.getbands()) == 1:
