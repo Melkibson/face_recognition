@@ -2,10 +2,10 @@ from PIL import Image, ImageOps
 
 i = 0
 
-while not i == 9:
+while not i == 11:
     i = i + 1
 
-    i1 = Image.open("dorian1.jpg")
+    i1 = Image.open("dorian10.jpg")
     i1 = ImageOps.grayscale(i1)
     i1 = ImageOps.solarize(i1, threshold=128)
 
