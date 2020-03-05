@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 img = mpimg.imread('training-data/dorian/dorian.jpg')
-plt.imshow(img, cmap='gray')
-plt.savefig('img.png')
+img = plt.imshow(img)
+img.savefig('img.png')
 
 lum_img = img[:, :, 0]
 plt.imshow(lum_img, cmap="hot")
