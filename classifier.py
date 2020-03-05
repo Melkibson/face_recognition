@@ -83,7 +83,6 @@ face_names = []
 face_log = {}
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
-print("I know you...")
 authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 
@@ -92,11 +91,12 @@ video_capture = cv2.VideoCapture(0)
 
 # encode everyone
 all_face_encoding()
+print("I know you...")
 
 if not path.exists('log'):
     makedirs('log')
 
-print("I see you...")
+print("I can see you...")
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
