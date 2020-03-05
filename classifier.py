@@ -120,7 +120,7 @@ while True:
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
-            name = "Ptdr t ki"
+            name = "non reconnu"
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
@@ -132,7 +132,7 @@ while True:
     for name in face_names:
         print(name)
         today = datetime.datetime.today()
-        if not name == 'Ptdr t ki' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
+        if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
@@ -152,6 +152,7 @@ while True:
                 print("unauthorized")
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
+
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
