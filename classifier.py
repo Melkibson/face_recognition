@@ -113,7 +113,7 @@ while True:
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
-        print(face_locations)
+        print(type(face_locations))
         if face_locations:
             face_locations2 = list(face_locations)
             print(face_locations2)
