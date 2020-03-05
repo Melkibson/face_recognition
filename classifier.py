@@ -130,7 +130,6 @@ while True:
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             if not authorized.is_alive():
-                print("authorized")
                 p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
                 p.audio_set_volume(100)
                 p.play()
@@ -142,7 +141,6 @@ while True:
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
             if not unauthorized.is_alive():
-                print("unauthorized")
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
 
