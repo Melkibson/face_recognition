@@ -136,7 +136,7 @@ while True:
 
             if name == seen:  # check if not a false positive
                 if not i1:
-                    i1 = ImageOps.grayscale(rgb_small_frame)
+                    i1 = ImageOps.grayscale(small_frame)
                     i1 = ImageOps.solarize(i1, threshold=128)
 
                 i2 = i1
