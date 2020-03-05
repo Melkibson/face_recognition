@@ -28,16 +28,29 @@ def authenticate():
         return headers
 
 
-def get_qrcode():
+def compare_qrcode(code):
     headers = authenticate()
     session = get_session()
-    url_qrcode = getenv('API_QRCODE_ROUTE')
-    with session.get(url_qrcode, headers=headers) as response:
+    url_qrcode = getenv('API_QRCODE_ROUTE') + str(code)
 
-        user_codes = loads(response.text)
-        for user_code in user_codes['data']:
-            qr_code = user_code['qrcode']
-            return qr_code
+    with session.get(url_qrcode, headers=headers) as response:
+        if response:
+            return loads(response.text)['qrcode']
+        else:
+            print(code)
+
+
+# def post_audio(sound):
+#     headers = authenticate()
+#     session = get_session()
+#     url_audio = getenv('API_AUDIO_ROUTE')
+#     with session.post(url_audio, headers=headers) as response:
+#         return response.text
+
+
+
+
+
 
 
 

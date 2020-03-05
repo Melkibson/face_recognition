@@ -1,9 +1,8 @@
 import cv2
 import pyzbar.pyzbar as pyzbar
-from api import get_qrcode
 
 
-def qr_code_reader(code):
+def qr_code_reader():
     camera = cv2.VideoCapture(0)
     capture = True
     while capture:
@@ -11,17 +10,11 @@ def qr_code_reader(code):
         decodedObjects = pyzbar.decode(frame)
         while decodedObjects:
             decoded = decodedObjects[0].data
-            if decoded == bytes(code, 'utf-8'):
-                print("Access granted")
-                break
-            else:
-                print("Access denied")
-
+            return decoded
         cv2.imshow('Video', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
 
-code = get_qrcode()
-qr_code_reader(code)
+qr_code_reader()
 
