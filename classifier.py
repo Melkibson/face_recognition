@@ -18,6 +18,9 @@ import face_recognition
 import datetime
 import time
 
+import pyzbar.pyzbar as pyzbar
+from api_requests import compare_qrcode
+
 import threading
 
 # Get a reference to webcam #0 (the default one)
@@ -48,6 +51,12 @@ def all_face_encoding():
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
 
+
+def qr_code_reader(code_frame):
+    decodedObjects = pyzbar.decode(code_frame)
+    while decodedObjects:
+        decoded = decodedObjects[0].data
+        return decoded
 
 # def lock_control(argument, identifiant):
 #
@@ -126,7 +135,6 @@ while True:
     process_this_frame = not process_this_frame
     # Display the results
     for name in face_names:
-        print(name)
         today = datetime.datetime.today()
         if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
@@ -152,7 +160,13 @@ while True:
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
+
     #QR CODE
+
+    code = qr_code_reader(frame)
+    if code is not None:
+        code = code.decode()
+        compare_qrcode(code)
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):

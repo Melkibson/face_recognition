@@ -35,9 +35,9 @@ def compare_qrcode(code):
 
     with session.get(url_qrcode, headers=headers) as response:
         if response:
-            return loads(response.text)['qrcode']
+            print('code:' + loads(response.text)['qrcode'])
         else:
-            print(code)
+            print('wrong code')
 
 
 # def post_audio(sound):
