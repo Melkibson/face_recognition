@@ -11,4 +11,5 @@ im1 = Image.open(r"training-data/dorian/dorian.jpg")
 im2 = ImageOps.solarize(im1, threshold=130)
 time.sleep(3)
 
+im1.show()
 im2.show()
