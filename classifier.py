@@ -135,6 +135,7 @@ while True:
             duration = today - modified_date
 
             if face_locations:
+                print(face_locations)
                 face_locations2 = face_locations[0]
                 print(face_locations2[0])
                 print(face_locations2[1])
