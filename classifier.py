@@ -139,7 +139,8 @@ while True:
                     p.play()
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     authorized.start()
-            seen = name
+            else:
+                seen = name
 
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
