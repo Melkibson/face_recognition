@@ -163,14 +163,14 @@ while True:
 
                 # if dif > seuil_min and not dif == 0:
                 seen = False
-                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                p.audio_set_volume(100)
-                p.play()
 
                 if not authorized.is_alive():
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     authorized.start()
+                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                    p.audio_set_volume(100)
+                    p.play()
             else:
                 seen = name
 
