@@ -93,7 +93,7 @@ seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
-sound = threading.Thread(None, play_sound, None, ("sound", "no"), {})
+sound = threading.Thread(None, play_sound, None, "no", {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 # seuil_min = 1.5
 
