@@ -171,9 +171,11 @@ while True:
                 # if dif > seuil_min and not dif == 0:
                 seen = False
 
+                print("ici")
                 if not sound.is_alive():
                     sound = threading.Thread(None, play_sound, None, name, {})
                     sound.start()
+                print("fini")
 
                 if not authorized.is_alive():
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
