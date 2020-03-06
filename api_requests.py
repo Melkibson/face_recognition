@@ -1,22 +1,15 @@
 import requests
-from threading import local
 from os import getenv
 from dotenv import load_dotenv
 from json import loads
-
-
-thread_local = local()
+# import vlc
 env = load_dotenv('.env')
+# sound = 'tindeck_1.mp3'
 
-
-def get_session():
-    if not hasattr(thread_local, "session"):
-        thread_local.session = requests.Session()
-    return thread_local.session
+session = requests.Session()
 
 
 def authenticate():
-    session = get_session()
     params = {"email": getenv('EMAIL'), "password": getenv('PASSWORD')}
     url_login = getenv('API_LOGIN_ROUTE')
     with session.post(url_login, data=params) as response:
@@ -28,9 +21,26 @@ def authenticate():
         return headers
 
 
+def get_users():
+    headers = authenticate()
+    url_users = getenv('API_ALL_USERS_ROUTE')
+    with session.get(url_users, headers=headers) as response:
+        all_users = loads(response.text)['data'][0]
+        return all_users
+
+
+def get_user_by_id():
+    headers = authenticate()
+    _id = get_users()['_id']
+    url_user = getenv('API_USER_ROUTE') + str(_id)
+    with session.get(url_user, headers=headers) as response:
+        user = loads(response.text)
+        print(user)
+
+
 def compare_qrcode(code):
     headers = authenticate()
-    session = get_session()
+    session = requests.Session()
     url_qrcode = getenv('API_QRCODE_ROUTE') + str(code)
 
     with session.get(url_qrcode, headers=headers) as response:
@@ -40,14 +50,17 @@ def compare_qrcode(code):
             print('wrong code')
 
 
-# def post_audio(sound):
+# def post_audio():
 #     headers = authenticate()
-#     session = get_session()
-#     url_audio = getenv('API_AUDIO_ROUTE')
+#     session = requests.Session()
+#     _id = get_users()['_id']
+#     url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
 #     with session.post(url_audio, headers=headers) as response:
-#         return response.text
+#         sound = loads(response.text)
+#         print(sound)
 
 
+# post_audio()
 
 
 
