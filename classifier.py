@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/.env python
 # coding: utf-8
 from os import path, listdir, makedirs, remove
 import RPi.GPIO as GPIO
@@ -11,7 +11,7 @@ import datetime
 import time
 import threading
 import vlc
-from PIL import Image, ImageOps
+# from PIL import Image, ImageOps
 
 known_face_encodings = []
 # Get list of users directories names
@@ -77,25 +77,31 @@ def lock_control(argument, identifiant):
     lcd.clear()
 
 
+def play_sound(nom):
+    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(nom, nom))
+    p.audio_set_volume(100)
+    p.play()
+
+
 # Initialize some variables
 face_locations = []
 face_encodings = []
 i1 = False
-seuil_min = 1.5
 face_names = []
 face_log = {}
 seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
+sound = threading.Thread(None, play_sound, None, ("sound", "no"), {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+# seuil_min = 1.5
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
 # encode everyone
 all_face_encoding()
-print("I know you...")
 
 if not path.exists('log'):
     makedirs('log')
@@ -163,10 +169,12 @@ while True:
 
                 # if dif > seuil_min and not dif == 0:
                 seen = False
+
+                if not sound.is_alive():
+                    sound = threading.Thread(None, play_sound, None, ("sound", name), {})
+                    sound.start()
+
                 if not authorized.is_alive():
-                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                    p.audio_set_volume(100)
-                    p.play()
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     authorized.start()
             else:
