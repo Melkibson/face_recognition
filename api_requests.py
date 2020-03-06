@@ -30,28 +30,19 @@ def authenticate():
 def returnLog(pseudo, method, datetime):
     header = authenticate()
     session = get_session()
+    url_log = getenv('API_LOG_ROUTE')
 
-    API_ENDPOINT = "http://kanarpp.xyz:/log"
-
-    # your API key here
-    API_KEY = "keyRaspb"
-
-    # your source code here
-    log = {
+    # data to be sent to api
+    data = {
         "pseudo":pseudo,
         "method":method,
         "datetime":datetime
     }
 
-    # data to be sent to api
-    data = {'api_dev_key': API_KEY,
-            'api_option': 'paste',
-            'api_paste_code': log,
-            'api_paste_format': 'python'}
-
-    # sending post request and saving response as response object
-    r = requests.post(url=API_ENDPOINT, data=data)
-
-    # extracting response text
-    pastebin_url = r.text
-    print("The pastebin URL is:%s" % pastebin_url)
+    with session.post(url_log, data=data) as response:
+        token = loads(response.text)['token']
+        headers = {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json",
+        }
+        return response
