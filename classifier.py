@@ -78,8 +78,12 @@ def lock_control(argument, identifiant):
 
 
 def play_sound(nom):
+    print("C " + nom + " le son")
+    print("début")
     p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(nom, nom))
+    print("volume")
     p.audio_set_volume(100)
+    print("play")
     p.play()
 
 
