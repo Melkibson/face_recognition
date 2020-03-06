@@ -172,7 +172,7 @@ while True:
                 seen = False
 
                 if not sound.is_alive():
-                    sound = threading.Thread(None, play_sound, None, ("sound", name), {})
+                    sound = threading.Thread(None, play_sound, None, name, {})
                     sound.start()
 
                 if not authorized.is_alive():
