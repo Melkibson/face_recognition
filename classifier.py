@@ -97,8 +97,8 @@ seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
-sound = threading.Thread(None, play_sound, None, "no", {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+sound = threading.Thread(None, play_sound, None, "no", {})
 # seuil_min = 1.5
 
 # Get a reference to webcam #0 (the default one)
@@ -147,8 +147,8 @@ while True:
             duration = today - modified_date
 
             if name == seen:  # check if not a false positive
-                coord = face_locations[0]
-                cropped_image = frame[coord[0] * 4:coord[2] * 4, coord[3] * 4:coord[1] * 4]
+                # coord = face_locations[0]
+                # cropped_image = frame[coord[0] * 4:coord[2] * 4, coord[3] * 4:coord[1] * 4]
 
                 # if not i1:
                 # RGB_frame = Image.fromarray(cropped_image)
@@ -177,7 +177,7 @@ while True:
 
                 print("ici")
                 if not sound.is_alive():
-                    sound = threading.Thread(None, play_sound, None, name, {})
+                    sound = threading.Thread(None, play_sound, None, (name), {})
                     sound.start()
                 print("fini")
 
