@@ -39,7 +39,7 @@ def returnLog(pseudo, method):
         "method":method
     }
 
-    with session.post(url_log, headers=headers, data=data) as response:
+    with session.post("http://kanarpp.xyz:3000/log", headers=headers, data=data) as response:
         if response:
             token = loads(response.text)['log']
         else:
