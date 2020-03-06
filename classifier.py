@@ -56,12 +56,12 @@ def lock_control(argument, identifiant):
         lcd.write(identifiant)
         r.ChangeDutyCycle(5)
         backlight.rgb(0, 128, 0)
-        time.sleep(2)
+        time.sleep(10)
         lcd.clear()
         lcd.write("Closing ...")
         r.ChangeDutyCycle(10)
         backlight.rgb(128, 128, 128)
-        time.sleep(2)
+        time.sleep(5)
         lcd.write("Finish")
 
     if argument == "unauthorized":
@@ -69,7 +69,7 @@ def lock_control(argument, identifiant):
         lcd.write("Acces")
         lcd.set_cursor_position(0, 1)
         lcd.write("non autorise.")
-        time.sleep(1)
+        time.sleep(3)
 
     r.stop()
     backlight.graph_off()
@@ -195,4 +195,4 @@ while True:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
 
-    time.sleep(0.25)
+    time.sleep(0.1)
