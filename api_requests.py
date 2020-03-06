@@ -27,22 +27,31 @@ def authenticate():
         }
         return headers
 
-
-def compare_qrcode(code):
-    headers = authenticate()
+def returnLog(pseudo, method, datetime):
+    header = authenticate()
     session = get_session()
-    url_qrcode = getenv('API_QRCODE_ROUTE') + str(code)
 
-    with session.get(url_qrcode, headers=headers) as response:
-        if response:
-            print('code:' + loads(response.text)['qrcode'])
-        else:
-            print('wrong code')
+    API_ENDPOINT = "http://kanarpp.xyz:/log"
 
+    # your API key here
+    API_KEY = "keyRaspb"
 
-# def post_audio(sound):
-#     headers = authenticate()
-#     session = get_session()
-#     url_audio = getenv('API_AUDIO_ROUTE')
-#     with session.post(url_audio, headers=headers) as response:
-#         return response.text
+    # your source code here
+    log = {
+        "pseudo":pseudo,
+        "method":method,
+        "datetime":datetime
+    }
+
+    # data to be sent to api
+    data = {'api_dev_key': API_KEY,
+            'api_option': 'paste',
+            'api_paste_code': log,
+            'api_paste_format': 'python'}
+
+    # sending post request and saving response as response object
+    r = requests.post(url=API_ENDPOINT, data=data)
+
+    # extracting response text
+    pastebin_url = r.text
+    print("The pastebin URL is:%s" % pastebin_url)

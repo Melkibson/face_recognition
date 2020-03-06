@@ -11,6 +11,7 @@ import datetime
 import time
 import threading
 import vlc
+from api_requests import returnLog
 # from PIL import Image, ImageOps
 
 known_face_encodings = []
@@ -193,10 +194,7 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
-            mode = 'a' if path.isfile("log/" + date) else 'w'
-            with open("log/" + date, mode) as log:
-                log.write(str(name) + " / face / " + str(datestamp) + "\n")
-                log.close()
+            returnLog(name,"face",str(datestamp))
 
     if time.time() > reset:
         all_face_encoding()
