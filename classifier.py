@@ -194,7 +194,7 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
-            returnLog(name,"face",str(datestamp))
+            returnLog(name,"face")
 
     if time.time() > reset:
         all_face_encoding()

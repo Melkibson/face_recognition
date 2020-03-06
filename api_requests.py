@@ -27,22 +27,21 @@ def authenticate():
         }
         return headers
 
-def returnLog(pseudo, method, datetime):
-    header = authenticate()
+
+def returnLog(pseudo, method):
+    headers = authenticate()
     session = get_session()
     url_log = getenv('API_LOG_ROUTE')
 
     # data to be sent to api
     data = {
         "pseudo":pseudo,
-        "method":method,
-        "datetime":datetime
+        "method":method
     }
 
-    with session.post(url_log, data=data) as response:
-        token = loads(response.text)['token']
-        headers = {
-            "Authorization": "Bearer " + token,
-            "content-type": "application/json",
-        }
+    with session.post(url_log, headers=headers, data=data) as response:
+        if response:
+            token = loads(response.text)['log']
+        else:
+            print("error")
         return response
