@@ -181,9 +181,9 @@ while True:
             else:
                 seen = name
 
-            if duration.days > 30:
+            # if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
-                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+                # cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
             if not unauthorized.is_alive():
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
