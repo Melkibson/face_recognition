@@ -178,7 +178,7 @@ while True:
                 # mettre a jour photo si date > 1 mois
                 # cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
         else:
-            if not unauthorized.is_alive():
+            if not unauthorized.is_alive() and not authorized.is_alive():
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
                 unauthorized.start()
 
