@@ -194,3 +194,5 @@ while True:
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
+
+    time.sleep(0.25)
