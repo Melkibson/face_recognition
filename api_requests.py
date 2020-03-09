@@ -34,7 +34,7 @@ def compare_qrcode(code):
     url_qrcode = getenv('API_QRCODE_ROUTE') + str(code)
 
     with session.get(url_qrcode, headers=headers) as response:
-        if response:
+        if response:o
             print('code:' + loads(response.text)['qrcode'])
         else:
             print('wrong code')
