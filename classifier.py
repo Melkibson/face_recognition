@@ -115,7 +115,7 @@ while True:
         face_names = []
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
-            matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.6)
+            matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
             name = "non reconnu"
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
