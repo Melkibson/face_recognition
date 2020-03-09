@@ -11,8 +11,6 @@ import datetime
 import time
 import threading
 import vlc
-from api_requests import compare_qrcode
-# from PIL import Image, ImageOps
 
 known_face_encodings = []
 # Get list of users directories names
@@ -137,6 +135,7 @@ while True:
             duration = today - modified_date
 
             if name == seen:  # check if not a false positive
+
                 # coord = face_locations[0]
                 # cropped_image = frame[coord[0] * 4:coord[2] * 4, coord[3] * 4:coord[1] * 4]
 
@@ -163,6 +162,7 @@ while True:
                 # print("Difference (percentage) pour " + name + " :", dif)
 
                 # if dif > seuil_min and not dif == 0:
+
                 seen = False
 
                 if not authorized.is_alive():
