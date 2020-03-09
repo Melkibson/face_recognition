@@ -100,7 +100,6 @@ if not path.exists('log'):
 
 print("I can see you...")
 while True:
-    time.sleep(1)
     # Grab a single frame of video
     ret, frame = video_capture.read()
     # Resize frame of video to 1/4 size for faster face recognition processing
