@@ -68,7 +68,7 @@ def lock_control(argument, identifiant):
         lcd.write("Acces")
         lcd.set_cursor_position(0, 1)
         lcd.write("non autorise.")
-        time.sleep(3)
+        time.sleep(1)
 
     r.stop()
     backlight.graph_off()
@@ -100,11 +100,11 @@ if not path.exists('log'):
 
 print("I can see you...")
 while True:
+    time.sleep(1)
     # Grab a single frame of video
     ret, frame = video_capture.read()
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-    small_frame = cv2.flip(small_frame, 0)
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
 
