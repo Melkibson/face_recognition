@@ -2,9 +2,9 @@ import requests
 from os import getenv
 from dotenv import load_dotenv
 from json import loads
-# import vlc
+import vlc
 env = load_dotenv('.env')
-# sound = 'tindeck_1.mp3'
+sound = vlc.MediaPlayer('tindeck_1.mp3')
 
 session = requests.Session()
 
@@ -40,7 +40,6 @@ def get_user_by_id():
 
 def compare_qrcode(code):
     headers = authenticate()
-    session = requests.Session()
     url_qrcode = getenv('API_QRCODE_ROUTE') + str(code)
 
     with session.get(url_qrcode, headers=headers) as response:
@@ -50,20 +49,16 @@ def compare_qrcode(code):
             print('wrong code')
 
 
-# def post_audio():
-#     headers = authenticate()
-#     session = requests.Session()
-#     _id = get_users()['_id']
-#     url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
-#     with session.post(url_audio, headers=headers) as response:
-#         sound = loads(response.text)
-#         print(sound)
+def post_audio():
+    headers = authenticate()
+    session = requests.Session()
+    _id = get_users()['_id']
+    url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
+    with session.post(url_audio, headers=headers) as response:
+        sound = loads(response.text)
+        print(sound)
 
-
-# post_audio()
-
-
-
+get_user_by_id()
 
 
 
