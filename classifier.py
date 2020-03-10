@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/.env python
 # coding: utf-8
 
 import sys
@@ -7,29 +7,26 @@ import time
 #
 # import dothat.lcd as lcd
 # import dothat.backlight as backlight
-
-import os
-from os import path, listdir
-
+from os import path, listdir, makedirs, remove
 import numpy as np
 import cv2
 import face_recognition
-
 import datetime
 import time
-
 import pyzbar.pyzbar as pyzbar
 from api_requests import compare_qrcode
-
 import threading
+import vlc
 
-# Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(0)
 known_face_encodings = []
 # Get list of users directories names
 dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+r = GPIO.PWM(18, 50)
 
 
 # Encode all users
@@ -44,19 +41,12 @@ def all_face_encoding():
             user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
             if path.exists('training-data/{0}/{1}_encoding.txt'.format(user, user)):
-                os.remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+                remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
             np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
-            os.remove("training-data/{0}/{1}.jpg".format(user, user))
+            remove("training-data/{0}/{1}.jpg".format(user, user))
         # load every user
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
-
-
-def qr_code_reader(code_frame):
-    decodedObjects = pyzbar.decode(code_frame)
-    while decodedObjects:
-        decoded = decodedObjects[0].data
-        return decoded
 
 # def lock_control(argument, identifiant):
 #
@@ -92,23 +82,31 @@ def qr_code_reader(code_frame):
 #     lcd.clear()
 #     GPIO.cleanup()
 
-
 # Initialize some variables
 face_locations = []
 face_encodings = []
+i1 = False
 face_names = []
 face_log = {}
+seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
 print("I know you...")
-# waiting = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
-# waiting.start()
+
+authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
+unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+# seuil_min = 1.5
+
+# Get a reference to webcam #0 (the default one)
+video_capture = cv2.VideoCapture(0)
+
+# encode everyone
 all_face_encoding()
 
-if not os.path.exists('log'):
-    os.makedirs('log')
+if not path.exists('log'):
+    makedirs('log')
 
-print("Im watching you...")
+print("I can see you...")
 while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
@@ -116,6 +114,7 @@ while True:
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
     rgb_small_frame = small_frame[:, :, ::-1]
+
     # Only process every other frame of video to save time
     if process_this_frame:
         # Find all the faces and face encodings in the current frame of video
@@ -125,7 +124,7 @@ while True:
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
             matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.5)
-            name = "Ptdr t ki"
+            name = "non reconnu"
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
@@ -136,9 +135,9 @@ while True:
     # Display the results
     for name in face_names:
         today = datetime.datetime.today()
-        if not name == 'Ptdr t ki' and not os.path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
+        if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-            modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(location_for_update))  # remove datetime
+            modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
@@ -148,11 +147,61 @@ while True:
         # else:
             # unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
             # unauthorized.start()
+            if name == seen:  # check if not a false positive
+
+                # coord = face_locations[0]
+                # cropped_image = frame[coord[0] * 4:coord[2] * 4, coord[3] * 4:coord[1] * 4]
+
+                # if not i1:
+                # RGB_frame = Image.fromarray(cropped_image)
+                # i1 = ImageOps.grayscale(RGB_frame)
+                # i1 = ImageOps.solarize(i1, threshold=128)
+
+                # i2 = i1
+                # RGB_frame = Image.fromarray(cropped_image)
+                # i1 = ImageOps.grayscale(RGB_frame)
+                # i1 = ImageOps.solarize(i1, threshold=128)
+                # assert i1.mode == i2.mode, "Different kinds of images."
+
+                # pairs = zip(i1.getdata(), i2.getdata())
+                # if len(i1.getbands()) == 1:
+                # for gray-scale jpegs
+                # dif = sum(abs(p1 - p2) for p1, p2 in pairs)
+                # else:
+                # dif = sum(abs(c1 - c2) for p1, p2 in pairs for c1, c2 in zip(p1, p2))
+
+                # ncomponents = i1.size[0] * i1.size[1] * 3
+                # dif = round(dif / 255.0 * 100 / ncomponents, 2)
+                # print("Difference (percentage) pour " + name + " :", dif)
+
+                # if dif > seuil_min and not dif == 0:
+
+                seen = False
+
+                if not authorized.is_alive():
+                    print("ouverture porte")
+                    authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
+                    authorized.start()
+                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                    p.audio_set_volume(100)
+                    p.play()
+
+                if duration.days > 30:
+                    # mettre a jour photo si date > 1 mois
+                    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+            else:
+                seen = name
+
+        else:
+            if not unauthorized.is_alive() and not authorized.is_alive():
+                unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+                unauthorized.start()
+
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
-            mode = 'a' if os.path.isfile("log/" + date) else 'w'
+            mode = 'a' if path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
@@ -160,7 +209,6 @@ while True:
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
-
     #QR CODE
 
     code = qr_code_reader(frame)
@@ -174,3 +222,4 @@ while True:
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
+time.sleep(0.1)

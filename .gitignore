@@ -242,9 +242,9 @@ dmypy.json
 pyvenv.cfg
 .env
 .venv
-env/
+.env/
 venv/
-ENV/
+.env/
 env.bak/
 venv.bak/
 pip-selfcheck.json
