@@ -24,17 +24,19 @@ def get_users():
     headers = authenticate()
     url_users = getenv('API_ALL_USERS_ROUTE')
     with session.get(url_users, headers=headers) as response:
-        all_users = loads(response.text)['data'][0]
+        all_users = loads(response.text)['data']
         return all_users
 
 
 def get_user_by_id():
     headers = authenticate()
-    _id = get_users()['_id']
-    url_user = getenv('API_USER_ROUTE') + str(_id)
-    with session.get(url_user, headers=headers) as response:
-        user_data = loads(response.text)['data']
-        return user_data
+    length = len(get_users())
+    for i in range(length):
+        _id = get_users()[i]['_id']
+        url_user = getenv('API_USER_ROUTE') + str(_id)
+        with session.get(url_user, headers=headers) as response:
+            user_data = loads(response.text)['data']
+    return user_data
 
 
 def compare_qrcode(code):
@@ -55,7 +57,5 @@ def get_audio():
     with session.get(url_audio, headers=headers) as response:
         link = loads(response.text)['link']
         sound = vlc.MediaPlayer('http://' + link)
+
         return sound.play()
-
-
-get_audio()
