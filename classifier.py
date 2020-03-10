@@ -48,6 +48,13 @@ def all_face_encoding():
         user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
 
+
+def qr_code_reader(code_frame):
+    decodedObjects = pyzbar.decode(code_frame)
+    while decodedObjects:
+        decoded = decodedObjects[0].data
+        return decoded
+
 # def lock_control(argument, identifiant):
 #
 #     # declare LCD display
@@ -82,6 +89,7 @@ def all_face_encoding():
 #     lcd.clear()
 #     GPIO.cleanup()
 
+
 # Initialize some variables
 face_locations = []
 face_encodings = []
@@ -91,8 +99,6 @@ face_log = {}
 seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
-print("I know you...")
-
 authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 # seuil_min = 1.5
@@ -147,6 +153,7 @@ while True:
         # else:
             # unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
             # unauthorized.start()
+
             if name == seen:  # check if not a false positive
 
                 # coord = face_locations[0]
@@ -209,6 +216,7 @@ while True:
     if time.time() > reset:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
+
     #QR CODE
 
     code = qr_code_reader(frame)
@@ -219,7 +227,5 @@ while True:
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-# Release handle to the webcam
-video_capture.release()
-cv2.destroyAllWindows()
-time.sleep(0.1)
+
+    time.sleep(0.1)
