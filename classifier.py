@@ -18,7 +18,6 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
