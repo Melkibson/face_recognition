@@ -52,7 +52,7 @@ def lock_control(argument, identifiant):
         lcd.write("Bienvenue ")
         lcd.set_cursor_position(0, 1)
         lcd.write(identifiant)
-        r..ChangeDutyCycle(2.5)
+        r.ChangeDutyCycle(2.5)
         r.ChangeDutyCycle(0)
         backlight.rgb(0, 128, 0)
         time.sleep(5)
