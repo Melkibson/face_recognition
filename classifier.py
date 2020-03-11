@@ -62,6 +62,7 @@ def lock_control(argument, identifiant):
         r.ChangeDutyCycle(0)
         backlight.rgb(128, 128, 128)
         time.sleep(5)
+        r.stop()
         lcd.write("Finish")
 
     if argument == "unauthorized":
