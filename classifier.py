@@ -18,10 +18,6 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-r = GPIO.PWM(18, 50)
-
 
 # Encode all users
 def all_face_encoding():
@@ -46,9 +42,12 @@ def all_face_encoding():
 def lock_control(argument, identifiant):
     # declare LCD display
     lcd.clear()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(18, GPIO.OUT)
+    r = GPIO.PWM(18, 50)
+    r.start(2.5)
 
     if argument == "authorized":
-        r.start(0)
         backlight.rgb(0, 128, 0)
         lcd.write("Bienvenue ")
         lcd.set_cursor_position(0, 1)
@@ -68,12 +67,13 @@ def lock_control(argument, identifiant):
         lcd.write("Acces")
         lcd.set_cursor_position(0, 1)
         lcd.write("non autorise.")
-        time.sleep(1)
+        time.sleep(0.5)
 
     r.stop()
     backlight.graph_off()
     backlight.off()
     lcd.clear()
+    GPIO.cleanup()
 
 
 # Initialize some variables
@@ -192,8 +192,10 @@ while True:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
 
-    if time.time() > reset:
+    if time.time() > reset:  # > 24H d'éxécution, puis on recharge tout les visage
+        timereset = time.time()
         all_face_encoding()
-        reset = time.time() + 60 * 60 * 24
+        timereset = time.time() - timereset
+        reset = time.time() + 60 * 60 * 24 - timereset
 
     time.sleep(0.1)
