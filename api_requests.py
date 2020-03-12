@@ -70,5 +70,5 @@ def post_log(name, method):
     print(headers)
     url_log = getenv('API_LOG_ROUTE')
     mydata = {"pseudo": name, "method": method}
-    response = requests.post(url_log,  headers=headers, data=mydata)
-    print(response.text)
+    with session.post(url_log, headers=headers, data=mydata) as response:
+        print(response.text)
