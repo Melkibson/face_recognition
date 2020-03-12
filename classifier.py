@@ -82,12 +82,12 @@ def lock_control(argument, identifiant):
     backlight.off()
     lcd.clear()
 
+
 def qr_code_reader(code_frame):
     decodedObjects = pyzbar.decode(code_frame)
     while decodedObjects:
         decoded = decodedObjects[0].data
         return decoded
-
 
 
 # Initialize some variables
@@ -99,8 +99,8 @@ face_log = {}
 seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
-# authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
-# unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
+unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 # seuil_min = 1.5
 
 # Get a reference to webcam #0 (the default one)
@@ -150,9 +150,9 @@ while True:
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
             # authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
             # authorized.start()
-        # else:
-            # unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
-            # unauthorized.start()
+        else:
+            unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
+            unauthorized.start()
 
             if name == seen:  # check if not a false positive
 
@@ -185,10 +185,10 @@ while True:
 
                 seen = False
 
-                # if not authorized.is_alive():
-                    # print("ouverture porte")
-                    # authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    # authorized.start()
+                if not authorized.is_alive():
+                    print("ouverture porte")
+                    authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
+                    authorized.start()
 
                 p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
                 p.audio_set_volume(100)
