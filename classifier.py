@@ -14,7 +14,7 @@ import face_recognition
 import datetime
 import time
 import pyzbar.pyzbar as pyzbar
-from api_requests import compare_qrcode, get_audio
+from api_requests import compare_qrcode, get_audio, post_log
 import threading
 import vlc
 
@@ -203,6 +203,7 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
+                post_log()
 
     if time.time() > reset:  # > 24H d'éxécution, puis on recharge tout les visage
         timereset = time.time()
