@@ -16,7 +16,6 @@ import time
 import pyzbar.pyzbar as pyzbar
 from api_requests import authenticate, compare_qrcode, get_audio, post_log
 import threading
-import vlc
 
 known_face_encodings = []
 # Get list of users directories names
@@ -28,6 +27,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
 r.start(0)
+headers = authenticate()
 
 
 # Encode all users
@@ -185,7 +185,7 @@ while True:
                 if not authorized.is_alive():
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    get_audio()
+                    get_audio(headers)
                     authorized.start()
             else:
                 seen = name
@@ -199,7 +199,7 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
-            post_log(name, "face")
+            post_log(headers, name, "face")
             mode = 'a' if path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
