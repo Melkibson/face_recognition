@@ -21,6 +21,7 @@ user_faces_name = np.append([], dir_name)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
+r.start(0)
 
 
 # Encode all users
@@ -46,7 +47,6 @@ def all_face_encoding():
 def lock_control(argument, identifiant):
     # declare LCD display
     lcd.clear()
-    r.start(0)
 
     if argument == "authorized":
         backlight.rgb(0, 128, 0)
@@ -71,7 +71,6 @@ def lock_control(argument, identifiant):
         lcd.write("non autorise.")
         time.sleep(0.5)
 
-    r.stop()
     backlight.graph_off()
     backlight.off()
     lcd.clear()
