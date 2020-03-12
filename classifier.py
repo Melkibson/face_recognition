@@ -142,11 +142,11 @@ while True:
     for name in face_names:
         print(name)
         today = datetime.datetime.today()
-        location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
-        modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
-        duration = today - modified_date
 
         if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
+            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
+            modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
+            duration = today - modified_date
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
