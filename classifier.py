@@ -185,8 +185,8 @@ while True:
                 if not authorized.is_alive():
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    authorized.start()
                     get_audio()
+                    authorized.start()
             else:
                 seen = name
 
