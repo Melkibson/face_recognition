@@ -55,14 +55,17 @@ def get_audio():
     _id = get_user_by_id()['_id']
     url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
     with session.get(url_audio, headers=headers) as response:
-        link = loads(response.text)['link']
-        sound = vlc.MediaPlayer('http://' + link)
-        try:
+        link = 'defaut.mp3'
+        if link is not 'defaut.mp3':
+            link = 'http://' + loads(response.text)['link']
+            sound = vlc.MediaPlayer(link)
             return sound.play()
-        except HTTPError:
-            sound = vlc.MediaPlayer('defaut.mp3')
+        else:
+            sound = vlc.MediaPlayer(link)
             return sound.play()
 
 
 get_audio()
+
+
 
