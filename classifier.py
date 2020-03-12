@@ -31,6 +31,7 @@ r.start(0)
 
 headers = authenticate()
 
+
 # Encode all users
 def all_face_encoding():
     # Get list of users directories names

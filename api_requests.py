@@ -67,5 +67,5 @@ def get_audio(headers):
 def post_log(headers, name, method):
     url_log = getenv('API_LOG_ROUTE')
     mydata = {"pseudo": name, "method": method}
-    response = requests.post(url_log, data=mydata)
+    response = requests.post(url_log,  headers=headers, data=mydata)
     print(response.text)
