@@ -150,7 +150,6 @@ while True:
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
                 cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
-        else:
 
             if name == seen:  # check if not a false positive
 
@@ -187,21 +186,13 @@ while True:
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     authorized.start()
-
-                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                p.audio_set_volume(100)
-                p.play()
-
-                if duration.days > 30:
-                    # mettre a jour photo si date > 1 mois
-                    cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
             else:
                 seen = name
 
-        # else:
-        #     if not unauthorized.is_alive() and not authorized.is_alive():
-        #         unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
-        #         unauthorized.start()
+        else:
+            if not unauthorized.is_alive() and not authorized.is_alive():
+                unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+                unauthorized.start()
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
