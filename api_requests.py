@@ -65,7 +65,4 @@ def get_audio():
             return sound.play()
 
 
-get_audio()
-
-
 
