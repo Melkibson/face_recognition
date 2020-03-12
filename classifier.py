@@ -199,11 +199,11 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
+            post_log(name, "face")
             mode = 'a' if path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
-                post_log(name, "face")
 
     if time.time() > reset:  # > 24H d'éxécution, puis on recharge tout les visage
         timereset = time.time()
