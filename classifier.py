@@ -70,6 +70,7 @@ def lock_control(argument, identifiant):
         time.sleep(3)
         r.ChangeDutyCycle(0)
         lcd.write("Finish")
+        get_audio("fermeture")
 
     if argument == "unauthorized":
         backlight.rgb(128, 0, 0)
@@ -185,7 +186,7 @@ while True:
                 if not authorized.is_alive():
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    get_audio(headers)
+                    get_audio("ouverture")
                     authorized.start()
             else:
                 seen = name
@@ -199,7 +200,7 @@ while True:
         date = today.strftime("%m-%d-%Y")
         if name not in face_log or time.time() > face_log[name]:
             face_log[name] = time.time() + 10
-            post_log(headers, name, "face")
+            post_log(name, "face")
             mode = 'a' if path.isfile("log/" + date) else 'w'
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")

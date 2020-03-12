@@ -50,21 +50,27 @@ def compare_qrcode(code):
             print('wrong code')
 
 
-def get_audio(headers):
+def get_audio(status):
+    headers = authenticate()
     _id = get_user_by_id()['_id']
     url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
-    with session.get(url_audio, headers=headers) as response:
-        link = 'defaut.mp3'
-        if link is not 'defaut.mp3':
-            link = 'http://' + loads(response.text)['link']
-            sound = vlc.MediaPlayer(link)
-            return sound.play()
-        else:
-            sound = vlc.MediaPlayer(link)
-            return sound.play()
+    if status == "ouverture":
+        with session.get(url_audio, headers=headers) as response:
+            link = 'defaut.mp3'
+            if link is not 'defaut.mp3':
+                link = 'http://' + loads(response.text)['link']
+                sound = vlc.MediaPlayer(link)
+                return sound.play()
+            else:
+                sound = vlc.MediaPlayer(link)
+                return sound.play()
+    else:
+        sound = vlc.MediaPlayer("fermeture.mp3")
+        return sound.play()
 
 
-def post_log(headers, name, method):
+def post_log(name, method):
+    headers = authenticate()
     print(headers)
     url_log = getenv('API_LOG_ROUTE')
     mydata = {"pseudo": name, "method": method}
