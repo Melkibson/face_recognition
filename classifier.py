@@ -1,14 +1,20 @@
 #!/usr/bin/.env python
 # coding: utf-8
-from os import path, listdir, makedirs, remove
+
+import sys
+import time
 import RPi.GPIO as GPIO
+
 import dothat.lcd as lcd
 import dothat.backlight as backlight
+from os import path, listdir, makedirs, remove
 import numpy as np
 import cv2
 import face_recognition
 import datetime
 import time
+import pyzbar.pyzbar as pyzbar
+from api_requests import compare_qrcode
 import threading
 import vlc
 
@@ -76,6 +82,13 @@ def lock_control(argument, identifiant):
     backlight.off()
     lcd.clear()
 
+def qr_code_reader(code_frame):
+    decodedObjects = pyzbar.decode(code_frame)
+    while decodedObjects:
+        decoded = decodedObjects[0].data
+        return decoded
+
+
 
 # Initialize some variables
 face_locations = []
@@ -86,8 +99,8 @@ face_log = {}
 seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
-authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
-unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+# authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
+# unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 # seuil_min = 1.5
 
 # Get a reference to webcam #0 (the default one)
@@ -127,12 +140,19 @@ while True:
     process_this_frame = not process_this_frame
     # Display the results
     for name in face_names:
-        print(name)
         today = datetime.datetime.today()
         if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
             location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
+            if duration.days > 30:
+                # mettre a jour photo si date > 1 mois
+                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
+            # authorized = threading.Thread(None, lock_control, None, ("waiting", name), {})
+            # authorized.start()
+        # else:
+            # unauthorized = threading.Thread(None, lock_control, None, ("waiting", "no"), {})
+            # unauthorized.start()
 
             if name == seen:  # check if not a false positive
 
@@ -165,13 +185,14 @@ while True:
 
                 seen = False
 
-                if not authorized.is_alive():
-                    print("ouverture porte")
-                    authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    authorized.start()
-                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                    p.audio_set_volume(100)
-                    p.play()
+                # if not authorized.is_alive():
+                    # print("ouverture porte")
+                    # authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
+                    # authorized.start()
+
+                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                p.audio_set_volume(100)
+                p.play()
 
                 if duration.days > 30:
                     # mettre a jour photo si date > 1 mois
@@ -179,10 +200,10 @@ while True:
             else:
                 seen = name
 
-        else:
-            if not unauthorized.is_alive() and not authorized.is_alive():
-                unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
-                unauthorized.start()
+        # else:
+        #     if not unauthorized.is_alive() and not authorized.is_alive():
+        #         unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+        #         unauthorized.start()
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
@@ -198,5 +219,16 @@ while True:
         all_face_encoding()
         timereset = time.time() - timereset
         reset = time.time() + 60 * 60 * 24 - timereset
+
+    # QR CODE
+
+    code = qr_code_reader(frame)
+    if code is not None:
+        code = code.decode()
+        compare_qrcode(code)
+
+    # Hit 'q' on the keyboard to quit!
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
     time.sleep(0.1)
