@@ -57,5 +57,12 @@ def get_audio():
     with session.get(url_audio, headers=headers) as response:
         link = loads(response.text)['link']
         sound = vlc.MediaPlayer('http://' + link)
+        try:
+            return sound.play()
+        except HTTPError:
+            sound = vlc.MediaPlayer('defaut.mp3')
+            return sound.play()
 
-        return sound.play()
+
+get_audio()
+

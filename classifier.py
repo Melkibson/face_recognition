@@ -24,9 +24,9 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-r = GPIO.PWM(18, 50)
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(18, GPIO.OUT)
+# r = GPIO.PWM(18, 50)
 
 
 # Encode all users
@@ -57,7 +57,7 @@ def qr_code_reader(code_frame):
 
 # def lock_control(argument, identifiant):
 #
-#     # declare LCD display
+#     declare LCD display
 #     lcd.clear()
 #
 #     GPIO.setmode(GPIO.BCM)
@@ -99,8 +99,8 @@ face_log = {}
 seen = False
 process_this_frame = True
 reset = time.time() + 60 * 60 * 24
-authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
-unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+# authorized = threading.Thread(None, lock_control, None, ("authorized", "no"), {})
+# unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
 # seuil_min = 1.5
 
 # Get a reference to webcam #0 (the default one)
@@ -185,13 +185,14 @@ while True:
 
                 seen = False
 
-                if not authorized.is_alive():
-                    print("ouverture porte")
-                    authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    authorized.start()
-                    p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                    p.audio_set_volume(100)
-                    p.play()
+                # if not authorized.is_alive():
+                    # print("ouverture porte")
+                    # authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
+                    # authorized.start()
+
+                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                p.audio_set_volume(100)
+                p.play()
 
                 if duration.days > 30:
                     # mettre a jour photo si date > 1 mois
@@ -199,10 +200,10 @@ while True:
             else:
                 seen = name
 
-        else:
-            if not unauthorized.is_alive() and not authorized.is_alive():
-                unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
-                unauthorized.start()
+        # else:
+        #     if not unauthorized.is_alive() and not authorized.is_alive():
+        #         unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
+        #         unauthorized.start()
 
         datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
         date = today.strftime("%m-%d-%Y")
@@ -217,7 +218,7 @@ while True:
         all_face_encoding()
         reset = time.time() + 60 * 60 * 24
 
-    #QR CODE
+    # QR CODE
 
     code = qr_code_reader(frame)
     if code is not None:
