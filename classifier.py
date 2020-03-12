@@ -29,8 +29,6 @@ GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
 r.start(0)
 
-headers = authenticate()
-
 
 # Encode all users
 def all_face_encoding():
@@ -187,7 +185,7 @@ while True:
                 if not authorized.is_alive():
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
-                    get_audio(headers)
+                    get_audio()
                     authorized.start()
             else:
                 seen = name
@@ -205,7 +203,7 @@ while True:
             with open("log/" + date, mode) as log:
                 log.write(str(name) + " / face / " + str(datestamp) + "\n")
                 log.close()
-                post_log(headers, name, "face")
+                post_log(name, "face")
 
     if time.time() > reset:  # > 24H d'éxécution, puis on recharge tout les visage
         timereset = time.time()
