@@ -14,7 +14,7 @@ import face_recognition
 import datetime
 import time
 import pyzbar.pyzbar as pyzbar
-from api_requests import compare_qrcode
+from api_requests import compare_qrcode, get_audio
 import threading
 import vlc
 
@@ -186,6 +186,7 @@ while True:
                     print("ouverture porte")
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     authorized.start()
+                    get_audio()
             else:
                 seen = name
 
