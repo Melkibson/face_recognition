@@ -18,12 +18,6 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-r = GPIO.PWM(18, 50)
-print("start servo")
-r.start(2.5)
-
 
 # Encode all users
 def all_face_encoding():
@@ -49,21 +43,24 @@ def lock_control(argument, identifiant):
     # declare LCD display
     lcd.clear()
 
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(18, GPIO.OUT)
+    r = GPIO.PWM(18, 50)
+    r.start(0)
+
     if argument == "authorized":
         backlight.rgb(0, 128, 0)
         lcd.write("Bienvenue ")
         lcd.set_cursor_position(0, 1)
         lcd.write(identifiant)
-        r.ChangeDutyCycle(2.5)
-        r.ChangeDutyCycle(0)
+        r.ChangeDutyCycle(5)
         backlight.rgb(0, 128, 0)
-        time.sleep(5)
+        time.sleep(10)
         lcd.clear()
         lcd.write("Closing ...")
-        r.ChangeDutyCycle(12.5)
-        r.ChangeDutyCycle(0)
+        r.ChangeDutyCycle(10)
         backlight.rgb(128, 128, 128)
-        time.sleep(5)
+        time.sleep(3)
         r.stop()
         lcd.write("Finish")
 
@@ -78,6 +75,7 @@ def lock_control(argument, identifiant):
     backlight.graph_off()
     backlight.off()
     lcd.clear()
+    GPIO.cleanup()
 
 
 # Initialize some variables
