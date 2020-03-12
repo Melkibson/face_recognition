@@ -65,11 +65,9 @@ def get_audio():
             return sound.play()
 
 
-def post_log():
+def post_log(name, method):
     headers = authenticate()
     url_log = getenv('API_LOG_ROUTE')
-    with session.get(url_log, headers=headers) as response:
-        if response:
-            print(response)
-        else:
-            print('wrong url')
+    mydata = {"pseudo": name, "method": method}
+    response = requests.post(url_log, data=mydata)
+    print(response.text)
