@@ -51,8 +51,7 @@ def compare_qrcode(code):
 
 def get_audio(status):
     headers = authenticate()
-    # id = get_user_by_id()['_id']
-    _id = "5e6a14e43a2b8f4550db02c4"
+    _id = get_user_by_id()['_id']
     url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
     if status == "ouverture":
         with session.get(url_audio, headers=headers) as response:

@@ -150,34 +150,6 @@ while True:
                 cv2.imwrite('training-data/{0}.jpg'.format(name), frame)
 
             if name == seen:  # check if not a false positive
-
-                # coord = face_locations[0]
-                # cropped_image = frame[coord[0] * 4:coord[2] * 4, coord[3] * 4:coord[1] * 4]
-
-                # if not i1:
-                # RGB_frame = Image.fromarray(cropped_image)
-                # i1 = ImageOps.grayscale(RGB_frame)
-                # i1 = ImageOps.solarize(i1, threshold=128)
-
-                # i2 = i1
-                # RGB_frame = Image.fromarray(cropped_image)
-                # i1 = ImageOps.grayscale(RGB_frame)
-                # i1 = ImageOps.solarize(i1, threshold=128)
-                # assert i1.mode == i2.mode, "Different kinds of images."
-
-                # pairs = zip(i1.getdata(), i2.getdata())
-                # if len(i1.getbands()) == 1:
-                # for gray-scale jpegs
-                # dif = sum(abs(p1 - p2) for p1, p2 in pairs)
-                # else:
-                # dif = sum(abs(c1 - c2) for p1, p2 in pairs for c1, c2 in zip(p1, p2))
-
-                # ncomponents = i1.size[0] * i1.size[1] * 3
-                # dif = round(dif / 255.0 * 100 / ncomponents, 2)
-                # print("Difference (percentage) pour " + name + " :", dif)
-
-                # if dif > seuil_min and not dif == 0:
-
                 seen = False
 
                 if not authorized.is_alive():
