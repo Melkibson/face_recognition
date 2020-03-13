@@ -186,7 +186,6 @@ while True:
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     get_audio("ouverture")
                     authorized.start()
-                    authorized.join()
                     get_audio("fermeture")
             else:
                 seen = name
