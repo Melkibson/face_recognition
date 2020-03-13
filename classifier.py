@@ -1,7 +1,6 @@
 #!/usr/bin/.env python
 # coding: utf-8
 
-
 import sys
 import time
 # import RPi.GPIO as GPIO
@@ -15,7 +14,7 @@ import face_recognition
 import datetime
 import time
 import pyzbar.pyzbar as pyzbar
-from api_requests import compare_qrcode, get_user_img
+from api_requests import compare_qrcode
 import threading
 import vlc
 
@@ -34,7 +33,6 @@ user_faces_name = np.append([], dir_name)
 # Encode all users
 def all_face_encoding():
     # Get list of users directories names
-
     all_user = np.append([], listdir('training-data'))
 
     for user in all_user:
@@ -192,9 +190,9 @@ while True:
                     # authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     # authorized.start()
 
-                # p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                # p.audio_set_volume(100)
-                # p.play()
+                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                p.audio_set_volume(100)
+                p.play()
 
                 if duration.days > 30:
                     # mettre a jour photo si date > 1 mois

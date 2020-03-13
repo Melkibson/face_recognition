@@ -75,11 +75,19 @@ def get_user_img():
             return download
 
 
-for x in listdir('training-data'):
-    base = path.basename(x)
-    users = base.split('-')[0]
-    dst = str(users) + '.jpg'
-    src = 'training-data/' + x
-    dst = 'training-data/' + dst
+# def refactor_img():
+#     for file in listdir('training-data'):
+#         base = path.basename(file)
+#         users = base.split('-')[0]
+#         dst = str(users) + '.jpg'
+#         src = 'training-data/' + file
+#         dst = 'training-data/' + dst
+#         rename(src, dst)
+#         users = np.append([], base)
+#         return users
+#
+#
+# if len(listdir('training-data')) == 0:
+#     get_user_img()
 
-    rename(src, dst)
+
