@@ -212,7 +212,6 @@ while True:
         reset = time.time() + 60 * 60 * 24 - timereset
 
     # QR CODE
-
     code = qr_code_reader(frame)
     if code is not None:
         code = code.decode()
