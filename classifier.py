@@ -217,19 +217,21 @@ while True:
         code = code.decode()
         valid = compare_qrcode(code)
         if valid:
-            today = datetime.datetime.today()
-            datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
-            date = today.strftime("%m-%d-%Y")
-            post_log(str(code), "QRcode")
-            mode = 'a' if path.isfile("log/" + date) else 'w'
-            with open("log/" + date, mode) as log:
-                log.write(str(code) + " / QRcode / " + str(datestamp) + "\n")
-                log.close()
-            if not authorized.is_alive():
-                print("ouverture porte")
-                authorized = threading.Thread(None, lock_control, None, ("authorized", "invité"), {})
-                get_audio("ouverture")
-                authorized.start()
+            if code not in face_log or time.time() > face_log[code]:
+                face_log[code] = time.time() + 10
+                today = datetime.datetime.today()
+                datestamp = today.strftime("%m/%d/%Y, %H:%M:%S")
+                date = today.strftime("%m-%d-%Y")
+                post_log(str(code), "QRcode")
+                mode = 'a' if path.isfile("log/" + date) else 'w'
+                with open("log/" + date, mode) as log:
+                    log.write(str(code) + " / QRcode / " + str(datestamp) + "\n")
+                    log.close()
+                if not authorized.is_alive():
+                    print("ouverture porte")
+                    authorized = threading.Thread(None, lock_control, None, ("authorized", "invité"), {})
+                    get_audio("ouverture")
+                    authorized.start()
         else:
             if not unauthorized.is_alive() and not authorized.is_alive():
                 unauthorized = threading.Thread(None, lock_control, None, ("unauthorized", "no"), {})
