@@ -40,6 +40,7 @@ def all_face_encoding():
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
             if path.exists('training-data/{0}_encoding.txt'.format(user)):
                 remove('training-data/{0}_encoding.txt'.format(user))
+                print("this far")
             np.savetxt('training-data/{0}_encoding.txt'.format(user), user_face_encoding)
             remove("training-data/{0}.jpg".format(user))
         # load every user
