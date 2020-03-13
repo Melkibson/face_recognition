@@ -69,7 +69,6 @@ def lock_control(argument, identifiant):
         time.sleep(3)
         r.ChangeDutyCycle(0)
         lcd.write("Finish")
-        get_audio("fermeture")
 
     if argument == "unauthorized":
         backlight.rgb(128, 0, 0)
@@ -187,6 +186,8 @@ while True:
                     authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     get_audio("ouverture")
                     authorized.start()
+                    authorized.join()
+                    get_audio("fermeture")
             else:
                 seen = name
 
