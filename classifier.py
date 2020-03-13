@@ -32,19 +32,20 @@ r.start(0)
 # Encode all users
 def all_face_encoding():
     # Get list of users directories names
-    all_user = np.append([], len('training-data'))
-    print(all_user)
+    all_user = np.append([], listdir('training-data'))
 
     for user in all_user:
-        if path.exists("training-data/{0}.jpg".format(user)):
-            user_image = face_recognition.load_image_file("training-data/{0}.jpg".format(user))
+        #  if path.exists("training-data/{0}/{1}_encoding2.txt".format(name, name)):
+        # effacer image encoding et rename face encoding2 en encoding
+        if path.exists("training-data/{0}/{1}.jpg".format(user, user)):
+            user_image = face_recognition.load_image_file("training-data/{0}/{1}.jpg".format(user, user))
             user_face_encoding = face_recognition.face_encodings(user_image)[0]
-            if path.exists('training-data/{0}_encoding.txt'.format(user)):
-                remove('training-data/{0}_encoding.txt'.format(user))
-            np.savetxt('training-data/{0}_encoding.txt'.format(user), user_face_encoding)
-            remove("training-data/{0}.jpg".format(user))
+            if path.exists('training-data/{0}/{1}_encoding.txt'.format(user, user)):
+                remove('training-data/{0}/{1}_encoding.txt'.format(user, user))
+            np.savetxt('training-data/{0}/{1}_encoding.txt'.format(user, user), user_face_encoding)
+            remove("training-data/{0}/{1}.jpg".format(user, user))
         # load every user
-        user_face_encoding = np.loadtxt('training-data/{0}_encoding.txt'.format(user))
+        user_face_encoding = np.loadtxt('training-data/{0}/{1}_encoding.txt'.format(user, user))
         known_face_encodings.append(user_face_encoding)
 
 
@@ -142,13 +143,13 @@ while True:
         print(name)
         today = datetime.datetime.today()
 
-        if not name == 'non reconnu' and not path.isfile("training-data/{0}.jpg".format(name)):
-            location_for_update = 'training-data/{0}_encoding.txt'.format(name)
+        if not name == 'non reconnu' and not path.isfile("training-data/{0}/{1}.jpg".format(name, name)):
+            location_for_update = 'training-data/{0}/{1}_encoding.txt'.format(name, name)
             modified_date = datetime.datetime.fromtimestamp(path.getmtime(location_for_update))  # remove datetime
             duration = today - modified_date
             if duration.days > 30:
                 # mettre a jour photo si date > 1 mois
-                cv2.imwrite('training-data/{0}.jpg'.format(name), frame)
+                cv2.imwrite('training-data/{0}/{1}.jpg'.format(name, name), frame)
 
             if name == seen:  # check if not a false positive
                 seen = False
