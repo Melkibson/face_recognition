@@ -1,8 +1,9 @@
 import requests
-from os import getenv
+from os import getenv, path
 from dotenv import load_dotenv
 from json import loads
 import vlc
+import wget
 
 env = load_dotenv('.env')
 session = requests.Session()
@@ -45,9 +46,9 @@ def compare_qrcode(code):
 
     with session.get(url_qrcode, headers=headers) as response:
         if response:
-            print('code:' + loads(response.text)['qrcode'])
+            print('SUCCESS')
         else:
-            print('wrong code')
+            print('Error: Covid-19')
 
 
 def get_audio():
@@ -65,12 +66,13 @@ def get_audio():
 
 
 def get_user_img():
-    _id = get_user_by_id()['_id']
     url_img = getenv('API_USER_IMG_ROUTE')
-    with session.post(url_img % _id, headers=headers) as response:
-        print(loads(response.text))
+    with session.get(url_img, headers=headers) as response:
+        length = len(loads(response.text)['message'])
+        for i in range(length):
+            image = 'http://' + str(loads(response.text)['message'][i])
+            download = wget.download(image, out='training-data')
+            return download
 
-
-print(get_user_img())
 
 

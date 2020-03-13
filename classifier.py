@@ -1,12 +1,13 @@
 #!/usr/bin/.env python
 # coding: utf-8
 
+
 import sys
 import time
-import RPi.GPIO as GPIO
-
-import dothat.lcd as lcd
-import dothat.backlight as backlight
+# import RPi.GPIO as GPIO
+#
+# import dothat.lcd as lcd
+# import dothat.backlight as backlight
 from os import path, listdir, makedirs, remove
 import numpy as np
 import cv2
@@ -24,10 +25,10 @@ dir_path = 'training-data'
 dir_name = listdir(dir_path)
 user_faces_name = np.append([], dir_name)
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-r = GPIO.PWM(18, 50)
-r.start(0)
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(18, GPIO.OUT)
+# r = GPIO.PWM(18, 50)
+# r.start(0)
 
 
 # Encode all users
@@ -50,37 +51,37 @@ def all_face_encoding():
         known_face_encodings.append(user_face_encoding)
 
 
-def lock_control(argument, identifiant):
-    # declare LCD display
-    lcd.clear()
-
-    if argument == "authorized":
-        backlight.rgb(0, 128, 0)
-        lcd.write("Bienvenue ")
-        lcd.set_cursor_position(0, 1)
-        lcd.write(identifiant)
-        r.ChangeDutyCycle(5)
-        backlight.rgb(0, 128, 0)
-        time.sleep(10)
-        r.ChangeDutyCycle(0)
-        lcd.clear()
-        lcd.write("Closing ...")
-        r.ChangeDutyCycle(10)
-        backlight.rgb(128, 128, 128)
-        time.sleep(3)
-        r.ChangeDutyCycle(0)
-        lcd.write("Finish")
-
-    if argument == "unauthorized":
-        backlight.rgb(128, 0, 0)
-        lcd.write("Acces")
-        lcd.set_cursor_position(0, 1)
-        lcd.write("non autorise.")
-        time.sleep(0.5)
-
-    backlight.graph_off()
-    backlight.off()
-    lcd.clear()
+# def lock_control(argument, identifiant):
+#     # declare LCD display
+#     lcd.clear()
+#
+#     if argument == "authorized":
+#         backlight.rgb(0, 128, 0)
+#         lcd.write("Bienvenue ")
+#         lcd.set_cursor_position(0, 1)
+#         lcd.write(identifiant)
+#         r.ChangeDutyCycle(5)
+#         backlight.rgb(0, 128, 0)
+#         time.sleep(10)
+#         r.ChangeDutyCycle(0)
+#         lcd.clear()
+#         lcd.write("Closing ...")
+#         r.ChangeDutyCycle(10)
+#         backlight.rgb(128, 128, 128)
+#         time.sleep(3)
+#         r.ChangeDutyCycle(0)
+#         lcd.write("Finish")
+#
+#     if argument == "unauthorized":
+#         backlight.rgb(128, 0, 0)
+#         lcd.write("Acces")
+#         lcd.set_cursor_position(0, 1)
+#         lcd.write("non autorise.")
+#         time.sleep(0.5)
+#
+#     backlight.graph_off()
+#     backlight.off()
+#     lcd.clear()
 
 
 def qr_code_reader(code_frame):
@@ -190,9 +191,9 @@ while True:
                     # authorized = threading.Thread(None, lock_control, None, ("authorized", name), {})
                     # authorized.start()
 
-                p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
-                p.audio_set_volume(100)
-                p.play()
+                # p = vlc.MediaPlayer("training-data/{0}/{1}.mp3".format(name, name))
+                # p.audio_set_volume(100)
+                # p.play()
 
                 if duration.days > 30:
                     # mettre a jour photo si date > 1 mois
