@@ -217,6 +217,7 @@ while True:
         code = code.decode()
         valid = compare_qrcode(code)
         if valid:
+            print(str(code))
             if code not in face_log or time.time() > face_log[code]:
                 face_log[code] = time.time() + 10
                 today = datetime.datetime.today()
