@@ -27,7 +27,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 r = GPIO.PWM(18, 50)
 r.start(0)
-headers = authenticate()
 
 
 # Encode all users
