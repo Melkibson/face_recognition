@@ -1,5 +1,5 @@
 import requests
-from os import getenv, path
+from os import getenv, path, listdir, rename
 from dotenv import load_dotenv
 from json import loads
 import vlc
@@ -75,4 +75,11 @@ def get_user_img():
             return download
 
 
+for x in listdir('training-data'):
+    base = path.basename(x)
+    users = base.split('-')[0]
+    dst = str(users) + '.jpg'
+    src = 'training-data/' + x
+    dst = 'training-data/' + dst
 
+    rename(src, dst)
