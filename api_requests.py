@@ -20,8 +20,10 @@ def authenticate():
         return headers
 
 
+headers = authenticate()
+
+
 def get_users():
-    headers = authenticate()
     url_users = getenv('API_ALL_USERS_ROUTE')
     with session.get(url_users, headers=headers) as response:
         all_users = loads(response.text)['data']
@@ -29,18 +31,16 @@ def get_users():
 
 
 def get_user_by_id():
-    headers = authenticate()
     length = len(get_users())
     for i in range(length):
+        url_user = getenv('API_USER_ROUTE')
         _id = get_users()[i]['_id']
-        url_user = getenv('API_USER_ROUTE') + str(_id)
-        with session.get(url_user, headers=headers) as response:
+        with session.get(url_user % _id, headers=headers) as response:
             user_data = loads(response.text)['data']
     return user_data
 
 
 def compare_qrcode(code):
-    headers = authenticate()
     url_qrcode = getenv('API_QRCODE_ROUTE') + str(code)
 
     with session.get(url_qrcode, headers=headers) as response:
@@ -51,10 +51,9 @@ def compare_qrcode(code):
 
 
 def get_audio():
-    headers = authenticate()
     _id = get_user_by_id()['_id']
-    url_audio = getenv('API_AUDIO_ROUTE') + str(_id)
-    with session.get(url_audio, headers=headers) as response:
+    url_audio = getenv('API_AUDIO_ROUTE')
+    with session.get(url_audio % _id, headers=headers) as response:
         link = 'defaut.mp3'
         if link is not 'defaut.mp3':
             link = 'http://' + loads(response.text)['link']
@@ -65,7 +64,13 @@ def get_audio():
             return sound.play()
 
 
-get_audio()
+def get_user_img():
+    _id = get_user_by_id()['_id']
+    url_img = getenv('API_USER_IMG_ROUTE')
+    with session.post(url_img % _id, headers=headers) as response:
+        print(loads(response.text))
 
+
+print(get_user_img())
 
 

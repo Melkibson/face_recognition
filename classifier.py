@@ -82,12 +82,12 @@ def lock_control(argument, identifiant):
     backlight.off()
     lcd.clear()
 
+
 def qr_code_reader(code_frame):
     decodedObjects = pyzbar.decode(code_frame)
     while decodedObjects:
         decoded = decodedObjects[0].data
         return decoded
-
 
 
 # Initialize some variables
