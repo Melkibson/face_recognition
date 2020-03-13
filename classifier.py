@@ -65,10 +65,10 @@ def lock_control(argument, identifiant):
         lcd.clear()
         lcd.write("Closing ...")
         r.ChangeDutyCycle(10)
+        get_audio("fermeture")
         backlight.rgb(128, 128, 128)
         time.sleep(3)
         r.ChangeDutyCycle(0)
-        get_audio("fermeture")
         lcd.write("Finish")
 
     if argument == "unauthorized":
