@@ -14,8 +14,7 @@ def authenticate():
     with session.post(url_login, data=params) as response:
         token = loads(response.text)['token']
         headers = {
-            "Authorization": "Bearer " + token,
-            "content-type": "application/json",
+            "Authorization": "Bearer " + token
         }
         return headers
 
