@@ -70,7 +70,6 @@ def get_audio(status):
 
 def post_log(name, method):
     headers = authenticate()
-    print(headers)
     url_log = getenv('API_LOG_ROUTE')
     mydata = {"pseudo": name, "method": method}
     with session.post(url_log, headers=headers, data=mydata) as response:
